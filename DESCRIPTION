@@ -1,0 +1,12 @@
+Package: microinactivation
+Type: Package
+Title: Simulation of Dynamic Microbial Inactivation
+Version: 0.0.0.9000
+Date: 2015-09-29
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: Prediction and adjustment to experimental data of microbial
+    inactivation. Several models available in the literature are implemented.
+License: What license is it under?
+LazyData: TRUE
+Imports: dplyr, deSolve, FME, lazyeval
