@@ -34,9 +34,9 @@
 #'
 #' @export
 #'
-fit_model <- function(experiment_data, simulation_model, temp_profile,
-                      starting_points, upper_bounds, lower_bounds,
-                      fixed_parameters, minimize_log) {
+fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_profile,
+                                     starting_points, upper_bounds, lower_bounds,
+                                     fixed_parameters, minimize_log) {
 
     #- Gather the information
 

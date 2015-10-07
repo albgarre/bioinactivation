@@ -24,7 +24,7 @@
 #'
 #' @export
 #'
-fit_isothermal <- function(model_name, death_data, starting_point, adjust_log, ref_temp){
+fit_isothermal_inactivation <- function(model_name, death_data, starting_point, adjust_log, ref_temp){
 
     if (grepl(model_name, "weibull-mafart", ignore.case = TRUE)) {
 
