@@ -11,7 +11,6 @@
 #'          \item log_diff: Number of logarithmic reductions at each data point.
 #'          \item temp: Temperature of the data point.
 #'          \item time: time of the data point.
-#'          \item S: value of N/N0 at the data point.
 #'          }
 #' @param starting_point Named vector with the initial values of the parameters
 #'        for the adjustment.
@@ -26,7 +25,9 @@
 #'
 fit_isothermal_inactivation <- function(model_name, death_data, starting_point, adjust_log, ref_temp){
 
-    if (grepl(model_name, "weibull-mafart", ignore.case = TRUE)) {
+    death_data <- mutate(death_data, S = 10^log_diff)
+
+    if (grepl(model_name, "Weibull-Mafart", ignore.case = TRUE)) {
 
         if (adjust_log){
 
@@ -43,7 +44,7 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point, 
         }
 
 
-    } else if (grepl(model_name, "weibull-pelec", ignore.case = TRUE)) {
+    } else if (grepl(model_name, "Weibull-Pelec", ignore.case = TRUE)) {
 
         if (adjust_log){
 
@@ -59,7 +60,7 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point, 
 
         }
 
-    } else if (grepl(model_name, "bigelow", ignore.case = TRUE)) {
+    } else if (grepl(model_name, "Bigelow", ignore.case = TRUE)) {
 
         if (adjust_log){
 
@@ -78,4 +79,22 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point, 
     }
 
     return(adjust.results)
+}
+
+#' Isothermal Model Keys
+#'
+#' Provides a list of all the models keys valid for the fitting of isothermal
+#' inactivation data.
+#'
+#' @return a list whose values are the valid model keys.
+#'
+#' @export
+#'
+get_isothermal_keys <- function() {
+
+    models_available <- list("Weibull-Mafart",
+                             "Weibull-Pelec",
+                             "Bigelow"
+                             )
+    return(models_available)
 }
