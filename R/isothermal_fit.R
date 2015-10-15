@@ -23,78 +23,58 @@
 #'
 #' @export
 #'
-fit_isothermal_inactivation <- function(model_name, death_data, starting_point, adjust_log, ref_temp){
+fit_isothermal_inactivation <- function(model_name, death_data, starting_point, adjust_log, ref_temp) {
 
-    death_data <- mutate(death_data, S = 10^log_diff)
+    model_data <- get_isothermal_model_data(model_name)
 
-    if (grepl(model_name, "Weibull-Mafart", ignore.case = TRUE)) {
+    if (is.null(model_data)) {
+        stop(paste("Unknown model:", model_data))
+    }
 
-        if (adjust_log){
+    if (adjust_log) {
 
-            adjust.results <- nls(log_diff ~ WeibullMafart_iso(time, temp, delta_ref, z, p, ref_temp),
-                                  data = death_data,
-                                  start = starting_point)
+        my_formula = as.formula( paste("log_diff ~", model_data$formula_iso) )
 
-        } else {
-
-            adjust.results <- nls(S ~ 10^WeibullMafart_iso(time, temp, delta_ref, z, p, ref_temp),
-                                  data = death_data,
-                                  start = starting_point)
-
-        }
-
-
-    } else if (grepl(model_name, "Weibull-Pelec", ignore.case = TRUE)) {
-
-        if (adjust_log){
-
-            adjust.results <- nls(log_diff ~ WeibullPelec_iso(time, temp, n, k_b, temp_crit),
-                                  data = death_data,
-                                  start = starting_point)
-
-        } else {
-
-            adjust.results <- nls(S ~ 10^WeibullPelec_iso(time, temp, n, k_b, temp_crit),
-                                  data = death_data,
-                                  start = starting_point)
-
-        }
-
-    } else if (grepl(model_name, "Bigelow", ignore.case = TRUE)) {
-
-        if (adjust_log){
-
-            adjust.results <- nls(log_diff ~ Bigelow_iso(time, temp, z, D_ref, ref_temp),
-                                  data = death_data,
-                                  start = starting_point)
-
-        } else {
-
-            adjust.results <- nls(S ~ 10^Bigelow_iso(time, temp, z, D_ref, ref_temp),
-                                  data = death_data,
-                                  start = starting_point)
-
-        }
+    } else {
+        death_data <- mutate(death_data, S = 10^log_diff)
+        my_formula = as.formula( paste("S ~10^", model_data$formula_iso) )
 
     }
+
+    adjust.results <- nls(my_formula,
+                          data = death_data,
+                          start = starting_point)
 
     return(adjust.results)
 }
 
-#' Isothermal Model Keys
+#' Isothermal Model Data
 #'
-#' Provides a list of all the models keys valid for the fitting of isothermal
-#' inactivation data.
+#' Provides information of the models implemented for fitting of isothermal data.
 #'
-#' @return a list whose values are the valid model keys.
+#' @param model_name Optional string with the key of the model to use.
+#' @return If \code{model_name} is missing, a list of the valid model keys.
+#'         If \code{model_name} is not a valid key, NULL is returned.
+#'         Otherwise, a list with the parameters of the model selected and its
+#'         \code{formula} for the nonlinear adjustment.
 #'
 #' @export
 #'
-get_isothermal_keys <- function() {
+get_isothermal_model_data <- function(model_name = "valids") {
 
-    models_available <- list("Weibull-Mafart",
-                             "Weibull-Pelec",
-                             "Bigelow"
-                             )
-    return(models_available)
+    switch(as.character(model_name),
+           Weibull_Mafart = list(params = c("delta_ref", "z", "p", "temp_ref"),
+                                 formula_iso = "WeibullMafart_iso(time, temp, delta_ref, z, p, ref_temp)"
+                                 ),
+
+           Weibull_Pelec = list(params = c("n", "k_b", "temp_crit"),
+                                formula_iso = "WeibullPelec_iso(time, temp, n, k_b, temp_crit)"
+                                ),
+
+           Bigelow = list(params = c("z", "D_ref", "ref_temp"),
+                        formula_iso = "Bigelow_iso(time, temp, z, D_ref, ref_temp)"
+                        ),
+           valids = c("Weibull_Mafart", "Weibull_Pelec", "Bigelow")
+           )
+
 }
