@@ -31,7 +31,8 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile){
 
     } else if (all(model_data$variable == c("N", "C_c"))) {
 
-        xstart <- c(N = parms[["N0"]], C_c = parms[["C_0"]])
+
+        xstart <- c(N = parms[["N0"]], C_c = parms[["C_c0"]])
 
     } else if (all(model_data$variable == "logS")) {
 
@@ -83,6 +84,8 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile){
     }
 
     out_value$simulation <- out
+
+    class(out_value) <- c("SimulInactivation", class(out_value))
 
     return(out_value)
 

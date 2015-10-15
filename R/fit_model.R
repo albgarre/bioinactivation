@@ -44,8 +44,6 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
     model_data <- get_model_data(simulation_model)
 
     if (minimize_log) {
-#         data_for_fit <- mutate(experiment_data, logN = log10(N)) %>%
-#             select(., time, logN)
 
         data_for_fit <- mutate_(experiment_data,
                                 logN = interp(~log10(N), N=as.name("N")))
@@ -53,7 +51,6 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
         data_for_fit <- select_(data_for_fit, as.name("time"), as.name("logN"))
 
     } else {
-#         data_for_fit <- select(experiment_data, time, N)
         data_for_fit <- select_(experiment_data, as.name("time"), as.name("N"))
     }
 
@@ -82,6 +79,7 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
                         best_prediction = best_prediction
                         )
 
+    class(out_results) <- c("FitInactivation", class(out_results))
     return(out_results)
 
 }

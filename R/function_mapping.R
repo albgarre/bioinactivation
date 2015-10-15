@@ -50,7 +50,7 @@ get_model_data <- function(simulation_model = NULL) {
                          Geeraerd = list(ode = dGeeraerd_model,
                                          dtemp = FALSE,
                                          variable = c("N", "C_c"),
-                                         parameters = c("D_R", "z", "N_min")
+                                         parameters = c("D_R", "z", "N_min", "temp_ref")
                                          ),
 
                          Weibull_Peleg = list(ode = dPeleg_model,
