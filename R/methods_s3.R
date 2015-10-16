@@ -59,3 +59,28 @@ plot.IsoFitInactivation <- function(obj, y=NULL, ...) {
     }
 }
 
+#'
+#' Plot of FitInactivation Object
+#'
+#' Plots a comparison between the experimental data provided and the prediction
+#' produced by the model parameters adjusted.
+#'
+#' @param obj The object of class \code{FitInactivation} to plot.
+#'
+#' @export
+#'
+plot.FitInactivation <- function(obj, y=NULL, ...) {
+
+    plot(obj$best_prediction)
+
+    death_data <- obj$data
+
+    if (!("logN" %in% names(death_data))) {
+
+        death_data$logN <- log10(death_data$N)
+    }
+
+    points(logN ~ time, data = death_data)
+
+}
+

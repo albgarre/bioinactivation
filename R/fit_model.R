@@ -30,6 +30,7 @@
 #'          \item fit_results: a list of class \code{modFit}
 #'          \item best_prediction: a list of class \code{SimulInactivation}
 #'                with the results.
+#'          \item data: a \code{data.frame} with the data used for the fitting.
 #'          }
 #'
 #' @export
@@ -76,7 +77,8 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
                                             )
 
     out_results <- list(fit_results = Fit,
-                        best_prediction = best_prediction
+                        best_prediction = best_prediction,
+                        data = data_for_fit
                         )
 
     class(out_results) <- c("FitInactivation", class(out_results))
