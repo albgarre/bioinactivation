@@ -27,3 +27,35 @@ plot.SimulInactivation <- function(obj, y=NULL, ...) {
 
 }
 
+#'
+#' Plot of IsoFitInactivation Object
+#'
+#' For each one of the temperatures studied, plots a comparison between the
+#' predicted result and the experimental one.
+#'
+#' @param obj The object of class \code{IsoFitInactivation} to plot.
+#'
+#' @export
+#'
+plot.IsoFitInactivation <- function(obj, y=NULL, ...) {
+
+    death_data <- obj$data
+    model_data <- get_isothermal_model_data(obj$model)
+
+    for (each_temp in unique(death_data$temp)) {
+
+        my_data <- subset(death_data, temp == each_temp)
+
+        plot(log_diff ~ time, data = my_data)
+
+        max_time <- max(my_data$time)
+        times <- seq(0, max_time, length= 100)
+        arguments_call <- c(list(time = times, temp = each_temp), obj$parameters)
+
+        prediction <- do.call(model_data$prediction, arguments_call)
+
+        lines(times, prediction)
+
+    }
+}
+

@@ -16,36 +16,60 @@
 #'        for the adjustment.
 #' @param adjust_log Boolean. If TRUE, the error of logarithmic reductions is
 #'        optimized. Otherwise, the error of the total number of microorganism.
-#' @param ref_temp Numeric indicating the reference temperature. This value is
-#'        not used for the Weibull-Pelec model.
+#' @param known_params List of the parameters of the model known.
 #'
-#' @return an instance of class \code{SimulInactivation} with the results.
+#' @return An instance of class \code{IsoFitInactivation} with the results.
+#'         This list has four entries:
+#'         \itemize{
+#'           \item nls: The object of class \code{nls} with the results of the
+#'                      adjustment.
+#'           \item parameters: a list with the values of the parameters, both
+#'                             fixed and adjusted.
+#'           \item model: a string with the key identifying the model used.
+#'           \item data: the inactivation data used for the fit.
+#'           }
 #'
 #' @export
 #'
-fit_isothermal_inactivation <- function(model_name, death_data, starting_point, adjust_log, ref_temp) {
+fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
+                                        adjust_log, known_params) {
 
-    model_data <- get_isothermal_model_data(model_name)
+    adjust_results <- with(known_params, {
 
-    if (is.null(model_data)) {
-        stop(paste("Unknown model:", model_data))
-    }
+        model_data <- get_isothermal_model_data(model_name)
 
-    if (adjust_log) {
+        if (is.null(model_data)) {
+            stop(paste("Unknown model:", model_data))
+        }
 
-        my_formula = as.formula( paste("log_diff ~", model_data$formula_iso) )
+        if (adjust_log) {
 
-    } else {
-        death_data <- mutate(death_data, S = 10^log_diff)
-        my_formula = as.formula( paste("S ~10^", model_data$formula_iso) )
+            my_formula = as.formula( paste("log_diff ~", model_data$formula_iso) )
 
-    }
+        } else {
+            death_data <- mutate(death_data, S = 10^log_diff)
+            my_formula = as.formula( paste("S ~10^", model_data$formula_iso) )
 
-    adjust.results <- nls(my_formula,
-                          data = death_data,
-                          start = starting_point)
+        }
 
-    return(adjust.results)
+        adjust_results <- nls(my_formula,
+                              data = death_data,
+                              start = starting_point)
+
+        return(adjust_results)
+
+    })
+
+    out <- list()
+    class(out) <- c("IsoFitInactivation", class(out))
+
+    out$nls <- adjust_results
+    out$parameters <- c(known_params, coefficients(adjust_results))
+    out$model <- model_name
+    out$data <- death_data
+
+    return(out)
+
 }
 
 #' Isothermal Model Data
@@ -63,16 +87,19 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point, 
 get_isothermal_model_data <- function(model_name = "valids") {
 
     switch(as.character(model_name),
-           Weibull_Mafart = list(params = c("delta_ref", "z", "p", "temp_ref"),
-                                 formula_iso = "WeibullMafart_iso(time, temp, delta_ref, z, p, ref_temp)"
+           Weibull_Mafart = list(params = c("delta_ref", "z", "p", "ref_temp"),
+                                 formula_iso = "WeibullMafart_iso(time, temp, delta_ref, z, p, ref_temp)",
+                                 prediction = "WeibullMafart_iso"
                                  ),
 
            Weibull_Pelec = list(params = c("n", "k_b", "temp_crit"),
-                                formula_iso = "WeibullPelec_iso(time, temp, n, k_b, temp_crit)"
+                                formula_iso = "WeibullPelec_iso(time, temp, n, k_b, temp_crit)",
+                                prediction = "WeibullPelec_iso"
                                 ),
 
            Bigelow = list(params = c("z", "D_ref", "ref_temp"),
-                        formula_iso = "Bigelow_iso(time, temp, z, D_ref, ref_temp)"
+                        formula_iso = "Bigelow_iso(time, temp, z, D_ref, ref_temp)",
+                        prediction = "Bigelow_iso"
                         ),
            valids = c("Weibull_Mafart", "Weibull_Pelec", "Bigelow")
            )
