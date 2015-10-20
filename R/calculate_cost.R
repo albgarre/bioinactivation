@@ -5,13 +5,13 @@
 #' the chosen inactivation model and the given parameters with respect to
 #' the experimental data provided.
 #'
-#' @param data_for_fit \code{data.frame} with the experimental data to fit. It
-#'        must contain a column named "time" and another named "N".
+#' @param data_for_fit A data frame with the experimental data to fit. It
+#'        must contain a column named "time" and another one named "N".
 #' @param temp_profile \code{data.frame} defining the temperature profile. It
 #'        must have a column named "time" and another named "temperature".
 #' @param simulation_model character key defining the inactivation model.
 #' @param P,fixed_parameters list with the parameters of the model. Divided in
-#'        two variables to be adjusted by FME::modFit
+#'        two variables to be adjusted by FME::modFit.
 #'
 #' @importFrom FME modCost
 #'

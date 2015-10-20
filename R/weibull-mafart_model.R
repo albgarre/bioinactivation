@@ -1,6 +1,4 @@
 
-## FUNCTIONS FOR SOLUTION OF THE ODE ------------------------------------------
-
 #'
 #' First Derivate of the Mafart Model
 #'
@@ -11,7 +9,7 @@
 #'      dN/dt = -N * p * (1/delta)^p * t^(p-1)
 #'      delta = delta_ref * 10^(- (T-T_ref)/z )
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of N at t.
 #' @param parms parameters for the secondary model. No explicit check of their validity
 #'             is performed (see section \bold{Model Parameters}).
@@ -56,7 +54,7 @@ dMafart_model<- function(t, x, parms, temp_profile)  {
 #'      dN/dt = -N * p * (t/delta)^(p-1) * log(10)/delta*( 1+log(10)*t/z*dtemp )
 #'      delta = delta_ref * 10^(- (T-T_ref)/z )
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of N at t.
 #' @param parms parameters for the secondary model. No explicit check of their validity
 #'             is performed (see section \bold{Model Parameters}).

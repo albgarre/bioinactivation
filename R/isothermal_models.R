@@ -1,8 +1,8 @@
 
 #' Isothermal Bigelow Model
 #'
-#' For some conditions given, returns the predicted logarithmic reduction
-#' according to the Bigelow's model.
+#' Returns the predicted logarithmic reduction in microbial count according
+#' to Bigelow's model for the time, temperature and model parameters given.
 #'
 #' @param time numeric indicating the time at which the prediction is taken.
 #' @param temp numeric indicating the temperature of the treatment.
@@ -21,8 +21,9 @@ Bigelow_iso <- function(time, temp, z, D_ref, ref_temp){
 
 #' Isothermal Weibull-Mafart Model
 #'
-#' For some conditions given, returns the predicted logarithmic reduction
-#' according to the Weibull-Mafart model.
+#' Returns the predicted logarithmic reduction in microbial count according
+#' to Weibull-Mafarts's model for the time, temperature and model parameters
+#' given.
 #'
 #' @param time numeric indicating the time at which the prediction is taken.
 #' @param temp numeric indicating the temperature of the treatment.
@@ -40,10 +41,11 @@ WeibullMafart_iso <- function(time, temp, delta_ref, z, p, ref_temp){
     return(log_diff)
 }
 
-#' Isothermal Weibull-Pelec Model
+#' Isothermal Weibull-Peleg Model
 #'
-#' For some conditions given, returns the predicted logarithmic reduction
-#' according to the Weibull-Pelec model.
+#' Returns the predicted logarithmic reduction in microbial count according
+#' to Weibull-Peleg's model for the time, temperature and model parameters
+#' given.
 #'
 #' @param time numeric indicating the time at which the prediction is taken.
 #' @param temp numeric indicating the temperature of the treatment.
@@ -53,7 +55,7 @@ WeibullMafart_iso <- function(time, temp, delta_ref, z, p, ref_temp){
 #'
 #' @return A numeric with the predicted logarithmic reduction (log10(N/N0)).
 #'
-WeibullPelec_iso <- function(time, temp, n, k_b, temp_crit){
+WeibullPeleg_iso <- function(time, temp, n, k_b, temp_crit){
 
     b <- log( 1 + exp(k_b*(temp - temp_crit)))
     log_diff <- -b * time^n

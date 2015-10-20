@@ -91,7 +91,7 @@ __XX Cambiar nombre del data set__
 
 ## Inactivation models implemented
 
-The most commonly used models for the modelization of microbial inactivation have been implemented in the __inactivation__ package: Bigelow, Weibull-Mafart, Weibull-Pelec and Geeraerd. A brief mathematical description of each one of them is presented through this section.
+The most commonly used models for the modelization of microbial inactivation have been implemented in the __inactivation__ package: Bigelow, Weibull-Mafart, Weibull-Peleg and Geeraerd. A brief mathematical description of each one of them is presented through this section.
 
 ### Bigelow's model
 
@@ -109,7 +109,7 @@ __XXdesarrollar modelo dinamico__
 
 ### Weibullian models
 
-Weibullian models assume that the the inactivation process can be viewed as a failure phenomenon. According to this hypothesis, the time that each microorganism within the population can resists the environmental conditions given follows a probability distribution type Weibull. Two models of this family have been implemented: Weibull-Mafart and Weibull-Pelec.
+Weibullian models assume that the the inactivation process can be viewed as a failure phenomenon. According to this hypothesis, the time that each microorganism within the population can resists the environmental conditions given follows a probability distribution type Weibull. Two models of this family have been implemented: Weibull-Mafart and Weibull-Peleg.
 
 #### Weibull-Mafart model
 

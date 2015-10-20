@@ -4,9 +4,10 @@
 #' Predicts the inactivation of a microorganism for some given dynamic conditions.
 #'
 #' @param simulation_model Character identifying the model to be used.
-#' @param times Numeric vector of times on wich the results will be output.
+#' @param times Numeric vector of output times.
 #' @param parms List of parameters defining the parameters of the model.
-#' @param temp_profile data.frame with discrete values of the temperature for each time.
+#' @param temp_profile data frame with discrete values of the temperature for
+#'        each time.
 #'
 #' @importFrom deSolve ode
 #' @importFrom dplyr mutate_
@@ -59,7 +60,6 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile){
     #- Prepare result for output
 
     out_value <- list()
-    # class(out_value) <- c("SimulInactivation")
     out_value$model <- simulation_model
     out_value$model_parameters <- parms
     out_value$temp_approximations <- temp_approximations

@@ -1,11 +1,9 @@
 
-## FUNCTIONS FOR SOLUTION OF THE ODE ------------------------------------------
-
 #'
 #' First Derivate of the Bigelow Model with Full Derivation.
 #'
-#' Calculates the first derivative of the Bigelow model. The function is compatible with
-#' the ode function of the library deSolve.
+#' Calculates the first derivative of the Bigelow model. The function is
+#' compatible with the ode function of the library deSolve.
 #'
 #' @section Model Equation:
 #' N = N0 * 10^(-t/D_T)
@@ -14,12 +12,13 @@
 #' dN = - N * ln(10) * (1/D_T + t*dD_T/DT * dT/dt )
 #'    = - N * ln(10) / D_T * (1 + ln(10)*t/z * dT/dt)
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of N at t.
-#' @param parms parameters for the secondary model. No explicit check of their validity
-#'             is performed (see section \bold{Model Parameters}.
+#' @param parms parameters for the secondary model. No explicit check of their
+#'        validity is performed (see section \bold{Model Parameters}).
 #' @param temp_profile a function that provides the temperature at a given time.
-#' @param dtemp_profile a function that provides the derivative of the temperature at a given time.
+#' @param dtemp_profile a function that provides the derivative of the
+#'        temperature at a given time.
 #'
 #' @return The value of the first derivative of N at time \code{t} as a list.
 #'
@@ -41,7 +40,7 @@ dBigelow_model <- function(t, x, parms, temp_profile, dtemp_profile)  {
 
         D_T <- D_R * 10^( (temp_ref - temp)/z )
 
-        correction <- abs( log(10)/z * t * dtemp + 1 )  # Correction for the temperature variation
+        correction <- abs( log(10)/z * t * dtemp + 1 )  # Correction from temp variation
 
         dN <- - N * log(10)/D_T * correction
 
@@ -64,7 +63,7 @@ dBigelow_model <- function(t, x, parms, temp_profile, dtemp_profile)  {
 #'
 #'    dN = - N * ln(10) /D_T
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of N at t.
 #' @param parms parameters for the secondary model. No explicit check of their validity
 #'             is performed.

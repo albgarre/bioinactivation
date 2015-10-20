@@ -1,20 +1,22 @@
 
 #' Mapping of Simulation Model Functions
 #'
-#' Given a valid simulation_model key, provides the data of the functions
-#' associated to it.
+#' Returns the data of the functions associated to a valid simulation_model
+#' key.
 #'
 #' @param simulation_model character with a valid model key or NULL
 #'
 #' @return If simulation_model is NULL or missing, a character vector of
-#'      possible names. If not, a list including all the data of the function:
+#'      possible names. Otherwise, a list including all the data of the
+#'      function:
 #'      \itemize{
-#'          \item ode: Pointer to the function defining the model ode,
+#'          \item ode: Pointer to the function defining the model ode.
 #'          \item cost: Pointer to the function calculating the error of the
-#'                approximation,
-#'          \item dtemp: Whether the function requires the definition of dtemp,
+#'                approximation.
+#'          \item dtemp: logical defining whether the function requires the
+#'                       definition of the first derivative of temperature.
 #'          \item variable: a character vector defining which entry variables
-#'                needed by the model,
+#'                needed by the model.
 #'          \item parameters: character vector with the parameters needed by
 #'                            the model.
 #'          }

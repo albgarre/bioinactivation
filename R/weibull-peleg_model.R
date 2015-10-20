@@ -1,6 +1,4 @@
 
-## FUNCTIONS FOR SOLUTION OF THE ODE ------------------------------------------
-
 #'
 #' First Derivate of the Peleg Model
 #'
@@ -11,7 +9,7 @@
 #'      d(log10(S))/dt = -b * n *( - log10(S)/b )^( (n-1)/n)
 #'      b(T) = ln( 1 + exp( k_b*(T - T_crit) ) )
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of logS at t.
 #' @param parms parameters for the secondary model. No explicit check of their validity
 #'             is performed (see section \bold{Model Parameters}).
@@ -21,8 +19,9 @@
 #'
 #' @section Model Parameters:
 #'      \itemize{
-#'          \item temp_crit: Temperature below which there is inactivation,
-#'          \item k_b: slope of the b ~ temp line for temperatures above the critical one.
+#'          \item temp_crit: Temperature below which there is inactivation.
+#'          \item k_b: slope of the b ~ temp line for temperatures above the
+#'                     critical one.
 #'          \item n: shape factor of the Weibull distribution.
 #'          }
 #'
@@ -58,7 +57,7 @@ dPeleg_model <- function(t, x, parms, temp_profile)  {
 #'      dN/dt = N0 * exp(-b(T)*t^n) * (-b(T)*n*t^(n-1) - t^n * db/dT*dT/dt)
 #'            = -N * t^n * (b(T)*n/t + db/dT*dT/dt)
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of N at t.
 #' @param parms parameters for the secondary model. No explicit check of their validity
 #'             is performed (see section \bold{Model Parameters}).
@@ -70,8 +69,9 @@ dPeleg_model <- function(t, x, parms, temp_profile)  {
 #'
 #' @section Model Parameters:
 #'      \itemize{
-#'          \item temp_crit: Temperature below which there is inactivation,
-#'          \item k_b: slope of the b ~ temp line for temperatures above the critical one.
+#'          \item temp_crit: Temperature below which there is inactivation.
+#'          \item k_b: slope of the b ~ temp line for temperatures above the
+#'                     critical one.
 #'          \item n: shape factor of the Weibull distribution.
 #'          }
 #'

@@ -1,6 +1,4 @@
 
-## FUNCTIONS FOR SOLUTION OF THE ODE ------------------------------------------
-
 #'
 #' First Derivate of the Geeraerd Model
 #'
@@ -12,7 +10,7 @@
 #'      dC_c/dt = -k_max * C_c
 #'      k_max = ln(10)/D_ref * exp(ln(10)/z * (T - T_ref))
 #'
-#' @param t time.
+#' @param t numeric vector indicating the time of the experiment.
 #' @param x list with two entries: N and C_c.
 #' @param parms parameters for the secondary model. No explicit check of their validity
 #'             is performed (see section \bold{Model Parameters}).
@@ -29,8 +27,8 @@
 #'          }
 #'
 #' @section Notes:
-#'      To define the Geeraerd model without tail, asign \code{N_min = 0}.
-#'      For the model without shoulder, asign \code{C_0 = 0}
+#'      To define the Geeraerd model without tail, assign \code{N_min = 0}.
+#'      For the model without shoulder, assign \code{C_0 = 0}
 #'
 dGeeraerd_model<- function(t, x, parms, temp_profile)  {
 

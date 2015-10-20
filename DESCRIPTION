@@ -10,3 +10,5 @@ Description: Prediction and adjustment to experimental data of microbial
 License: What license is it under?
 LazyData: TRUE
 Imports: dplyr, deSolve, FME, lazyeval
+Suggests: knitr
+VignetteBuilder: knitr

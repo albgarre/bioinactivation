@@ -1,21 +1,23 @@
 
 #' Fit of Isothermal Experiments
 #'
-#' Fits the parameters of the model chosen to the isothermal experiments
-#' provided by means of nonlinear regression.
+#' Fits the parameters of the model chosen to a set of isothermal experiments
+#' using nonlinear regression.
 #'
 #' @param model_name character specyfing the model to adjust.
-#' @param death_data \code{data.frame} with the experiment data. It must have the
-#'        following columns:
+#' @param death_data \code{data.frame} with the experiment data. It must have
+#'        the following columns:
 #'        \itemize{
 #'          \item log_diff: Number of logarithmic reductions at each data point.
 #'          \item temp: Temperature of the data point.
-#'          \item time: time of the data point.
+#'          \item time: Time of the data point.
 #'          }
 #' @param starting_point Named vector with the initial values of the parameters
 #'        for the adjustment.
-#' @param adjust_log Boolean. If TRUE, the error of logarithmic reductions is
-#'        optimized. Otherwise, the error of the total number of microorganism.
+#' @param adjust_log Boolean. If \code{TRUE}, the adjustment is based on the
+#'        minimization of the error of the logarithmic microbial count. If
+#'        \cod{FALSE}, it is based on the minimization of the error of the
+#'        microbial count.
 #' @param known_params List of the parameters of the model known.
 #'
 #' @return An instance of class \code{IsoFitInactivation} with the results.
@@ -74,7 +76,8 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
 
 #' Isothermal Model Data
 #'
-#' Provides information of the models implemented for fitting of isothermal data.
+#' Provides information of the models implemented for fitting of isothermal
+#' data.
 #'
 #' @param model_name Optional string with the key of the model to use.
 #' @return If \code{model_name} is missing, a list of the valid model keys.
@@ -92,16 +95,17 @@ get_isothermal_model_data <- function(model_name = "valids") {
                                  prediction = "WeibullMafart_iso"
                                  ),
 
-           Weibull_Pelec = list(params = c("n", "k_b", "temp_crit"),
-                                formula_iso = "WeibullPelec_iso(time, temp, n, k_b, temp_crit)",
-                                prediction = "WeibullPelec_iso"
+           Weibull_Peleg = list(params = c("n", "k_b", "temp_crit"),
+                                formula_iso = "WeibullPeleg_iso(time, temp, n, k_b, temp_crit)",
+                                prediction = "WeibullPeleg_iso"
                                 ),
 
            Bigelow = list(params = c("z", "D_ref", "ref_temp"),
                         formula_iso = "Bigelow_iso(time, temp, z, D_ref, ref_temp)",
                         prediction = "Bigelow_iso"
                         ),
-           valids = c("Weibull_Mafart", "Weibull_Pelec", "Bigelow")
+
+           valids = c("Weibull_Mafart", "Weibull_Peleg", "Bigelow")
            )
 
 }
