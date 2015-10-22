@@ -348,29 +348,23 @@ plot(iso_fit)
 
 ## Fitting of dynamic experiments
 
-The __inactivation__ package implements the function `fit_dynamic_inactivation()`, which allows the adjustment of inactivation models to experimental data with time dependent temperature profiles. This function requires several input arguments:
+The __inactivation__ package implements the function `fit_dynamic_inactivation()`, which allows the adjustment of inactivation models to experimental data with time dependent temperature profiles.
 
-* The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the time at which the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time.
+The function `fit_dynamic_inactivation()` requires several input arguments:
 
-* The model to use for the fitting is defined by the character variable `simulation_model`. A list of the available models for dynamic adjustment can be obtained by calling the function `get_model_data()` without any input argument.
+* The experimental data to use for the fit.
+* A string identifying the inactivation model to use.
+* The temperature profile of the experiment.
+* The values of the known model parameters, as well as starting points and bounds for the unknown ones.
+* A logical specifying whether the adjustment will be based on the error of the logarithmic count or the total count.
 
-* The temperature profile of the experiment is given by the data frame `temp_profile`. This variable provides the values of the temperature at discrete time points. Temperetures at time points not provided are calculated by linear interpolation.
-
-* The values of the known model parameters are given by the input argument `fixed_parameters`. This variable is a named numeric vector whose names must match the predefined ones for the model parameters. These predefined names can be obtained by calling the function `get_model_data()` with the model key as argument.
-
-* The model parameters that need to be adjusted are calculated by nonlinear optimization with the function `modFit` of the package `FME` (Soetaert et al. 2010). This function requires the definition of initial points and upper and lower bounds for all the parameters to be adjusted. This is made through the variables `starting_points`, `upper_bounds` and `lower_bounds`. These variables share format with the input argument `fixed_parameters`. In case of unbounded variables, `+Inf` or `-Inf` must be assigned to the desired entries of `upper_bounds` or `lower_bounds`. 
-
-* As well as the model parameters, the initial number of microorganism must be defined as either a fixed parameter or a parameter to be fitted. This definition is analogous to the one of the model parameters, although its name must be equal to the one provided by the function `get_model_data()` plus a caracter `"0"` . For example, the initial value of the variable `"N"` must be named `"N0"`.
-
-* The adjustment can be based on the minimization of the error of the total count of microorganism ($N$) or the logarithmic count ($\mathrm{log}_{10}N$). This distinction is made by the boolean input argument `minimize_log`. In case it is `TRUE`, the error of the logarithmic count is minimized.
-
-The data set `inactivation_example` included in the __inactivation__ package will be used for the demonstration of the capabilities of the `fit_dynamic_inactivation()` function.
+The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the time at which the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time. The data set `inactivation_example` included in the __inactivation__ package will be used for this demonstration.
 
 ```{r}
 data(inactivation_example)
 ```
 
-Calling the function `get_model_data()` without any input argument provides a list of valid model keys for dynamic adjustment.
+The model to use for the fitting is defined by the character variable `simulation_model`. A list of the available models for dynamic adjustment can be obtained by calling the function `get_model_data()` without any input argument.
 
 ```{r}
 get_model_data()
@@ -382,27 +376,29 @@ The Weibull-Peleg model, whose key is *Weibull_Peleg* will be used in this examp
 simulation_model <- "Weibull_Peleg"
 ```
 
-A dummy trapezoidal temperature profile will be used for the model fitting.
+The temperature profile of the experiment is given by the data frame `temp_profile`. This variable provides the values of the temperature at discrete time points. Temperatures at time points not provided are calculated by linear interpolation. For this example, a generic trapezoidal temperature profile will be used:
 
 ```{r}
 dummy_temp <- data.frame(time = c(0, 1.25, 2.25, 4.6),
                          temperature = c(70, 105, 105, 70))
 ```
 
-In order to retrieve the names of the model parameters, the function `get_model_data()` is called with the model key as argument.
+The `fit_dynamic_inactivation()` functions permits the distinction between known and unknown (i.e., to be adjusted) model parameters. The known model parameters are asigned to the argument `fixed_parameters`, which is a named numeric vector.
+
+The names of model parameters can be retrieved by calling the function `get_model_data()` with the model key as argument.
 
 ```{r}
 model_data <- get_model_data(simulation_model)
 model_data$parameters
 ```
 
-Therefore, this model requires three parameters. The parameter *temp_crit* will be considered known equal to 100ºC in this example.
+The parameter *temp_crit* will be considered known equal to 100ºC in this example, so we will assign it to the `fixed_parameters` argument.
 
 ```{r}
 fixed_parameters = c(temp_crit = 100)
 ```
 
-The rest of the parameters, as well as the initial number of microorganism, will be considered unknown. Initial values relatively close to the expected solution will be used.
+The rest of the model parameters, as well as number of microorganism at time zero, will be adjusted to the experimental data. The `fit_dynamic_inactivation()` function makes the adjustment through the function `modFit` of the `FME` package (Soetaert et al. 2010). This function requires the definition of both starting points and bounds for every single one of the parameters to adjust. This information is passed by the input arguments `starting_points`, `upper_bounds` and `lower_bounds`, which share format with the input argument `fixed_parameters`. In case of unbounded variables, `+Inf` or `-Inf` must be assigned to the desired entries of `upper_bounds` or `lower_bounds`.
 
 ```{r}
 starting_points <- c(n = 1,
@@ -420,9 +416,11 @@ lower_bounds <- c(n = 0,
                   N0 = 1e4)
 ```
 
+Note that the initial number of microorganism (`N0`) has also been assigned initial values and bounds. This definition is analogous to the one of the model parameters, although its name must be equal to the one provided by the function `get_model_data()` plus a caracter `"0"` . In this example, the initial value of the variable `"N"` has been named `"N0"`.
+
 Care must be taken when setting initial points and bounds, because if they are unreasonable the fitting algorithm will fail.
 
-For this example, the error in the total number of microorganism will be optimized. We, thus, define the variable `minimize_log` accordingly:
+The adjustment can be based on the minimization of the error of the total count of microorganism ($N$) or the logarithmic count ($\mathrm{log}_{10}N$). This distinction is made by the boolean input argument `minimize_log`. In case it is `TRUE`, the error of the logarithmic count is minimized. For this example, the error in the total number of microorganism will be optimized. We, thus, define the variable `minimize_log` accordingly:
 
 ```{r}
 minimize_log = TRUE
