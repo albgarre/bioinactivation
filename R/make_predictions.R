@@ -1,11 +1,19 @@
 
 #' Prediction of Dynamic Microbial Inactivation
 #'
-#' Predicts the inactivation of a microorganism for some given dynamic conditions.
+#' Predicts the inactivation of a microorganism for dynamic temperature
+#' conditions. The characteristics of the microorganism are defined by
+#' the model parameters defined.
 #'
-#' @param simulation_model Character identifying the model to be used.
-#' @param times Numeric vector of output times.
-#' @param parms List of parameters defining the parameters of the model.
+#' The value of the temperature is calculated at each value of time by
+#' linear interpolation of the values provided by the input argument
+#' \code{temp_profile}.
+#' The function \code{\link{ode}} of the package \code{\link{deSolve}} is
+#' used for the resolution of the differential equation.
+#'
+#' @param simulation_model character identifying the model to be used.
+#' @param times numeric vector of output times.
+#' @param parms list of parameters defining the parameters of the model.
 #' @param temp_profile data frame with discrete values of the temperature for
 #'        each time.
 #'
@@ -13,9 +21,24 @@
 #' @importFrom dplyr mutate_
 #' @importFrom lazyeval interp
 #'
-#' @return an instance of class \code{SimulInactivation} with the results.
+#' @return A list of class \code{SimulInactivation} with the results. It has
+#'         the following entries:
+#'         \itemize{
+#'           \item model: character defining the model use for the prediction.
+#'           \item model_parameters: named numeric vector with the values of
+#'                                   the model parameters used.
+#'           \item temp_approximation: function used for the interpolation of
+#'                                     the temperature. For a numeric value of
+#'                                     time given, returns the value of the
+#'                                     temperature.
+#'           \item simulation: A data frame with the results calculated. It
+#'                             includes 4 columns: time, logN, N, logS and S.
+#'           }
+#'
 #'
 #' @export
+#'
+#' @seealso \code{\link{ode}}
 #'
 predict_inactivation <- function(simulation_model, times, parms, temp_profile){
 

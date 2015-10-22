@@ -1,17 +1,22 @@
-#' Continuum Interpolation of Discrete Temperatures
+
+#' Continuum Interpolation of Discrete Temperatures Values
 #'
-#' Builds an interpolator of the temperature at each time and its first derivative.
-#' First derivatives are approximated using forward finite differences.
-#' It is assumed that temperature is 0 and constant out of the interval provided.
+#' Builds an interpolator of the temperature at each time and its first
+#' derivative.
+#' First derivatives are approximated using forward finite
+#' differences (\code{\link{approxfun}}). It is assumed that temperature is 0
+#' and constant outside the time interval provided.
 #'
-#' @param temperature_data data.frame with the values of the temperatures at each time.
-#'     It has 2 columns: time and temperature.
+#' @param temperature_data data frame with the values of the temperatures at
+#'        each value of time. It need to have 2 columns, named time and
+#'        temperature.
 #'
 #' @return a list with with two elements: \itemize{
 #'      \item temp, the interpolator of the temperature and
 #'      \item dtemp, the interpolator of its first derivative
 #' }
 #'
+#' @seealso \code{\link{approxfun}}
 #'
 build_temperature_interpolator <- function(temperature_data){
 

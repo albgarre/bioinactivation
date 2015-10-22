@@ -1,5 +1,5 @@
 
-#' Isothermal Bigelow Model
+#' Isothermal Bigelow's Model
 #'
 #' Returns the predicted logarithmic reduction in microbial count according
 #' to Bigelow's model for the time, temperature and model parameters given.
@@ -10,7 +10,8 @@
 #' @param D_ref numeric defining the D-value at the reference temperature.
 #' @param ref_temp numeric defining the reference temperature.
 #'
-#' @return A numeric with the predicted logarithmic reduction (log10(N/N0)).
+#' @return A numeric with the predicted logarithmic reduction
+#'         (\eqn{log10(N/N0)}).
 #'
 Bigelow_iso <- function(time, temp, z, D_ref, ref_temp){
 
@@ -32,7 +33,8 @@ Bigelow_iso <- function(time, temp, z, D_ref, ref_temp){
 #' @param p numeric defining shape factor of the Weibull distribution.
 #' @param ref_temp numeric indicating the reference temperature.
 #'
-#' @return A numeric with the predicted logarithmic reduction (log10(N/N0)).
+#' @return A numeric with the predicted logarithmic reduction
+#'         (\eqn{log10(N/N0)}).
 #'
 WeibullMafart_iso <- function(time, temp, delta_ref, z, p, ref_temp){
 
@@ -53,7 +55,8 @@ WeibullMafart_iso <- function(time, temp, delta_ref, z, p, ref_temp){
 #' @param k_b numeric indicating the slope of the b~temp line.
 #' @param temp_crit numeric with the value of the critical temperature.
 #'
-#' @return A numeric with the predicted logarithmic reduction (log10(N/N0)).
+#' @return A numeric with the predicted logarithmic reduction
+#'         (\eqn{log10(N/N0)}).
 #'
 WeibullPeleg_iso <- function(time, temp, n, k_b, temp_crit){
 

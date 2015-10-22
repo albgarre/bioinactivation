@@ -1,22 +1,38 @@
 
 #'
-#' First Derivate of the Geeraerd Model
+#' First Derivate of Geeraerd's Model
 #'
-#' Calculates the first derivative of the Geeraerd model. The function is compatible with
-#' the ode function of the library deSolve.
+#' Calculates the first derivative of the Geeraerd's model at a given time for
+#' the model parameters provided and the environmental conditions given.
+#'
+#' This function is compatible with the function
+#' \code{\link{predict_inactivation}}.
 #'
 #' @section Model Equation:
-#'      dN/dt = - N * k_max * (1/(1+C_c))
-#'      dC_c/dt = -k_max * C_c
-#'      k_max = ln(10)/D_ref * exp(ln(10)/z * (T - T_ref))
+#'      \deqn{\frac{dN}{dt} = -N \cdot k_{max} \cdot \alpha \cdot \gamma}{
+#'            dN/dt = - N * k_max * \alpha * \gamma}
+#'
+#'      \deqn{\frac{dN}{dt} = - C_c \cdot k_{max}}{
+#'            dN/dt = - C_c * k_max}
+#'
+#'      \deqn{\alpha = \frac {1}{1+C_c}}{
+#'            \alpha = 1/(1+C_c)}
+#'
+#'      \deqn{\gamma = 1 - \frac{N_{res}}{N}}{
+#'            \gamma = 1 - N_res/N}
+#'
+#'      \deqn{k_{max} = \frac{\mathrm{ln}(10)}{D_{ref}} \cdot
+#'                         \mathrm{exp}(\mathrm{ln}(10)(T-T_{ref})/z)}{
+#'            k_max = ln(10)/D_ref * exp(ln(10)/z * (T - T_ref))}
 #'
 #' @param t numeric vector indicating the time of the experiment.
-#' @param x list with two entries: N and C_c.
-#' @param parms parameters for the secondary model. No explicit check of their validity
-#'             is performed (see section \bold{Model Parameters}).
+#' @param x list with the values of the variables at time \eqn{t}.
+#' @param parms parameters for the secondary model. No explicit check of their
+#'        validity is performed (see section \bold{Model Parameters}).
 #' @param temp_profile a function that provides the temperature at a given time.
 #'
-#' @return A list with value of the first derivatives of N and C_c at time \code{t}.
+#' @return A list with the value of the first derivatives of N and C_c at time
+#'         \code{t}.
 #'
 #' @section Model Parameters:
 #'      \itemize{
@@ -29,6 +45,8 @@
 #' @section Notes:
 #'      To define the Geeraerd model without tail, assign \code{N_min = 0}.
 #'      For the model without shoulder, assign \code{C_0 = 0}
+#'
+#' @seealso \code{\link{predict_inactivation}}
 #'
 dGeeraerd_model<- function(t, x, parms, temp_profile)  {
 

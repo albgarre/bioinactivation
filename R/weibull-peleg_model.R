@@ -1,13 +1,27 @@
 
 #'
-#' First Derivate of the Peleg Model
+#' First Derivate of the Weibull-Peleg Model
 #'
-#' Calculates the first derivative of the Peleg model. The function is compatible with
-#' the ode function of the library deSolve.
+#' Calculates the first derivative of Weibull-Peleg model at a given time for
+#' the model parameters provided and the environmental conditions given.
+#'
+#' The model is developed from the isothermal Weibull model without
+#' taking into
+#' account in the derivation the time dependence of \eqn{b} for
+#' non-isothermal temperature profiles.
+#' For the version with full derivation, see \code{\link{dPeleg_model_full}}.
+#'
+#' This function is compatible with the function
+#' \code{\link{predict_inactivation}}.
 #'
 #' @section Model Equation:
-#'      d(log10(S))/dt = -b * n *( - log10(S)/b )^( (n-1)/n)
-#'      b(T) = ln( 1 + exp( k_b*(T - T_crit) ) )
+#'      \deqn{\frac{d(\mathrm{log}_{10}(S))}{dt}=-b(T) \cdot n \cdot
+#'                 (- log10(S)/b(T))^{(n-1)/n)} }{
+#'            d(log10(S))/dt = -b * n *( - log10(S)/b )^( (n-1)/n)}
+#'
+#'      \deqn{b(T) = \mathrm{ln}(1 + exp( k_b*(T - T_{crit}) ))}{
+#'            b(T) = ln( 1 + exp( k_b*(T - T_crit) ) )}
+#'
 #'
 #' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of logS at t.
@@ -29,6 +43,7 @@
 #'      For logS=0, dlogS = 0 unless n=1. Hence, a small shift needs to be introduced
 #'      to logS.
 #'
+#' @seealso \code{\link{predict_inactivation}}
 #'
 dPeleg_model <- function(t, x, parms, temp_profile)  {
 
@@ -49,13 +64,26 @@ dPeleg_model <- function(t, x, parms, temp_profile)  {
 #'
 #' First Derivate of the Peleg Model with Full Derivation
 #'
-#' Calculates the first derivative of the Peleg model developed with full derivation.
-#' The function is compatible with the ode function of the library deSolve.
+#' Calculates the first derivative of Weibull-Peleg model at a given time for
+#' the model parameters provided and the environmental conditions given.
+#'
+#' The model is developed from the isothermal Weibull model
+#' taking into
+#' account in the derivation the time dependence of \eqn{b} for
+#' non-isothermal temperature profiles.
+#' For the version with full derivation, see \code{\link{dPeleg_model}}.
+#'
+#' This function is compatible with the function
+#' \code{\link{predict_inactivation}}.
 #'
 #' @section Model Equation:
-#'      N = N0 * exp(-b(T)*t^n)
-#'      dN/dt = N0 * exp(-b(T)*t^n) * (-b(T)*n*t^(n-1) - t^n * db/dT*dT/dt)
-#'            = -N * t^n * (b(T)*n/t + db/dT*dT/dt)
+#'
+#'      \deqn{\frac{dN}{dt}= -N \cdot t^n \cdot (b(T) \frac{n}{t} +
+#'                \frac{db}{dT}\frac{dT}{dt})}{
+#'            dN/dt = -N * t^n * (b(T)*n/t + db/dT*dT/dt)}
+#'
+#'      \deqn{b(T) = \mathrm{ln}(1 + exp( k_b*(T - T_{crit}) ))}{
+#'            b(T) = ln( 1 + exp( k_b*(T - T_crit) ) )}
 #'
 #' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the value of N at t.
@@ -79,6 +107,7 @@ dPeleg_model <- function(t, x, parms, temp_profile)  {
 #'      For t=0, dN = 0 unless n=1. Hence, a small shift needs to be introduced
 #'      to t.
 #'
+#' @seealso \code{\link{predict_inactivation}}
 #'
 dPeleg_model_full<- function(t, x, parms, temp_profile, dtemp_profile)  {
 

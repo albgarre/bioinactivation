@@ -4,18 +4,20 @@
 #' Fits the parameters of an inactivation model to experimental data.
 #'
 #' @param experiment_data data frame with the experimental data to be adjusted.
-#'        It must have a column named time and another named N.
-#' @param simulation_model Character identifying the model to be used.
+#'        It must have a column named \dQuote{time} and another one named
+#'        \dQuote{N}.
+#' @param simulation_model character identifying the model to be used.
 #' @param temp_profile data frame with discrete values of the temperature for
 #'        each time.
 #' @param starting_points starting values of the parameters for the adjustment.
-#' @param upper_bounds numerical vector defining the upper bounds of the
+#' @param upper_bounds named numerical vector defining the upper bounds of the
 #'        parameters for the adjustment.
-#' @param lower_bounds numerical vector defining the lower bounds of the
+#' @param lower_bounds named numerical vector defining the lower bounds of the
 #'        parameters for the adjustment.
-#' @param fixed_parameters Fixed (i.e., not adjustable) model parameters.
-#' @param minimize_log logical. If true, the error is calculated as the
-#'        logarithmic difference.
+#' @param fixed_parameters named numerical vector with the fixed (i.e., not
+#'        adjustable) model parameters.
+#' @param minimize_log logical. If \code{TRUE}, the adjustment is based on the
+#'        minimization of the error of the logarithmic count.
 #'
 #' @importFrom deSolve ode
 #' @importFrom dplyr mutate_
@@ -24,7 +26,7 @@
 #' @importFrom FME modFit
 #' @importFrom lazyeval interp
 #'
-#' @return A list with two entries
+#' @return A list of class \code{FitInactivation} with the following items:
 #'      \itemize{
 #'          \item fit_results: a list of class \code{modFit}.
 #'          \item best_prediction: a list of class \code{SimulInactivation}
@@ -33,6 +35,8 @@
 #'          }
 #'
 #' @export
+#'
+#' @seealso \code{\link{modFit}}
 #'
 fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_profile,
                                      starting_points, upper_bounds, lower_bounds,

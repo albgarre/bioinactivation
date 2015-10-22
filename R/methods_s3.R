@@ -2,11 +2,12 @@
 #'
 #' Test of SimulInactivation
 #'
-#' Tests if an object is of class SimulInactivation.
+#' Tests if an object is of class \code{SimulInactivation}.
 #'
-#' @param x Object to be checked.
+#' @param x object to be checked.
 #'
-#' @return a boolean specifying whether \code{x} is of class SimulInactivation
+#' @return A logic specifying whether \code{x} is of class
+#'         \code{SimulInactivation}
 #'
 #' @export
 #'
@@ -15,7 +16,8 @@ is.SimulInactivation <- function(x) inherits(x, "SimulInactivation")
 #'
 #' Plot of SimulInactivation Object
 #'
-#' Plots the predicted evolution of the logarithmic count with time.
+#' Plots the predicted evolution of the logarithmic count with time for an
+#' instance of \code{SimulInactivation}.
 #'
 #' @param obj The object of class \code{SimulInactivation} to plot.
 #'
@@ -31,9 +33,10 @@ plot.SimulInactivation <- function(obj, y=NULL, ...) {
 #' Plot of IsoFitInactivation Object
 #'
 #' For each one of the temperatures studied, plots a comparison between the
-#' predicted result and the experimental one.
+#' predicted result and the experimental one for an instance of
+#' \code{IsoFitInactivation}.
 #'
-#' @param obj The object of class \code{IsoFitInactivation} to plot.
+#' @param obj the object of class \code{IsoFitInactivation} to plot.
 #'
 #' @export
 #'
@@ -63,9 +66,10 @@ plot.IsoFitInactivation <- function(obj, y=NULL, ...) {
 #' Plot of FitInactivation Object
 #'
 #' Plots a comparison between the experimental data provided and the prediction
-#' produced by the model parameters adjusted.
+#' produced by the model parameters adjusted for an instance of
+#' \code{FitInactivation}.
 #'
-#' @param obj The object of class \code{FitInactivation} to plot.
+#' @param obj the object of class \code{FitInactivation} to plot.
 #'
 #' @export
 #'

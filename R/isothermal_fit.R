@@ -2,11 +2,11 @@
 #' Fit of Isothermal Experiments
 #'
 #' Fits the parameters of the model chosen to a set of isothermal experiments
-#' using nonlinear regression.
+#' using nonlinear regression through the function \code{\link{nls}}.
 #'
 #' @param model_name character specyfing the model to adjust.
-#' @param death_data \code{data.frame} with the experiment data. It must have
-#'        the following columns:
+#' @param death_data data frame with the experiment data where each row is one
+#'        observation. It must have the following columns:
 #'        \itemize{
 #'          \item log_diff: Number of logarithmic reductions at each data point.
 #'          \item temp: Temperature of the data point.
@@ -14,24 +14,26 @@
 #'          }
 #' @param starting_point Named vector with the initial values of the parameters
 #'        for the adjustment.
-#' @param adjust_log Boolean. If \code{TRUE}, the adjustment is based on the
+#' @param adjust_log logical. If \code{TRUE}, the adjustment is based on the
 #'        minimization of the error of the logarithmic microbial count. If
-#'        \cod{FALSE}, it is based on the minimization of the error of the
+#'        \code{FALSE}, it is based on the minimization of the error of the
 #'        microbial count.
 #' @param known_params List of the parameters of the model known.
 #'
 #' @return An instance of class \code{IsoFitInactivation} with the results.
 #'         This list has four entries:
 #'         \itemize{
-#'           \item nls: The object of class \code{nls} with the results of the
-#'                      adjustment.
-#'           \item parameters: a list with the values of the parameters, both
-#'                             fixed and adjusted.
+#'           \item nls: The object of class \code{\link{nls}} with the results
+#'                      of the adjustment.
+#'           \item parameters: a list with the values of the model parameters,
+#'                             both fixed and adjusted.
 #'           \item model: a string with the key identifying the model used.
 #'           \item data: the inactivation data used for the fit.
 #'           }
 #'
 #' @export
+#'
+#' @seealso \code{\link{nls}}
 #'
 fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
                                         adjust_log, known_params) {
