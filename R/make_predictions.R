@@ -67,14 +67,14 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile){
 
     if (model_data$dtemp) {
 
-        out <- ode(y = xstart, times = times,
+        out <- ode(y = xstart, times = sort(times),
                    func = model_data$ode, parms = parms,
                    temp_profile = temp_approximations$temp,
                    dtemp_profile = temp_approximations$dtemp)
 
     } else {
 
-        out <- ode(y = xstart, times = times,
+        out <- ode(y = xstart, times = sort(times),
                    func = model_data$ode, parms = parms,
                    temp_profile = temp_approximations$temp)
 
