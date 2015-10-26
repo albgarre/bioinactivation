@@ -55,6 +55,7 @@ dPeleg_model <- function(t, x, parms, temp_profile)  {
 
         dlogS <- -b * n * ( - logS/b ) ^( (n-1)/n)
         res <- c(dlogS)
+
         return(list(res))
     })
 

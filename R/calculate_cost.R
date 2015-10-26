@@ -31,7 +31,7 @@ get_prediction_cost <- function(data_for_fit, temp_profile,
                                 ) {
 
     prediction_data <- predict_inactivation(simulation_model = simulation_model,
-                                            times = unique(data_for_fit$time),
+                                            times = sort(unique(data_for_fit$time)),
                                             parms = as.list(c(P, fixed_parameters)),
                                             temp_profile = temp_profile
                                             )
