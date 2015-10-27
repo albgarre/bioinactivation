@@ -33,9 +33,9 @@ The __inactivation__ package provides several functions which help in the modeli
 
 * `predict_inactivation()` returns the predicted inactivation process, given a set of model parameters.
 
-* `fit_isothermal_inactivation` adjusts the parameters of a selected inactivation model to a set of isothermal experimental data.
+* `fit_isothermal_inactivation()` adjusts the parameters of a selected inactivation model to a set of isothermal experimental data.
 
-* `fit_dynamic_inactivation` fits the parameters of a given inactivation model to a set of dynamic inactivation experiments.
+* `fit_dynamic_inactivation()` fits the parameters of a given inactivation model to a set of dynamic inactivation experiments.
 
 Moreover, several functions with miscellaneous information about the models implemented are provided.
 
@@ -113,7 +113,7 @@ __XXdesarrollar modelo dinamico__
 
 Weibullian models assume that the the inactivation process can be viewed as a failure phenomenon. According to this hypothesis, the time that each microorganism within the population can sustain the environmental conditions follows a Weibull-type probability distribution. Two models of this family have been implemented: Weibull-Mafart and Weibull-Peleg.
 
-#### Weibull-Mafart model
+#### Weibull-Mafart model for isothermal inactivation
 
 The Weibullian model presented by Mafart et al. (2002) for isothermal cases is described by the equation:
 
@@ -129,7 +129,7 @@ where $T_{ref}$ is a reference temperature, $\delta_{ref}$ is the value of $\del
 
 __XXmodelo dinamico__
 
-#### Weibull-Peleg model
+#### Weibull-Peleg model for isothermal inactivation
 
 The Weibullian model presented by __XXreference__ for isothermal cases follows the equation:
 
@@ -148,7 +148,37 @@ $$ b(T) = \mathrm{ln} \big\{ 1 + \mathrm{exp} \big[ k(T - T_c) \big] \big\} $$
 
 This equation states that for temperatures much lower than the critical one ($T_c$) $b(T) = 0$, so there is no inactivation. For temperatures close to $T_c$, there is and exponential growth of $b(T)$ with respect to the temperature. For temperatures much higher than the critical one, a linear relation exists between $T$ and $b(T)$ with a slope $k$.
 
-__XX dynamic model__
+```{r}
+Temperature <- seq(30, 80, length=100)
+b <- log( 1 + exp(0.3*(Temperature - 60)))
+b_1 <- log( 1 + exp(0.2*(Temperature - 60)))
+plot(Temperature, b, type = "l", col="red")
+lines(Temperature, b_1, type = "l", col = "blue")
+legend("topleft", c("k = 0.3","k = 0.2"), col=c("red", "blue"), lwd=1, cex = 0.5)
+```
+
+#### Weibull-Peleg model for non-isothermal inactivation
+
+The model developed for nonisothermal inactivation by Peleg in __XX reference__ has been implemented in the __inactivation__ package. This model begins with the hypothesis that isothermal survival curves are described by the equation:
+
+$$ \mathrm{log}_{10}S(t) = -b(T) \cdot t^n $$
+
+The inactivation rate for a constant temperature can be calculated as the first derivative with respect to time of this equation asuming that the model parameters do not depend on temperature.
+
+$$ \Bigg| \frac{\mathrm{log}_{10}S(t)}{dt} \Bigg|_{T=const} = -b(T) \cdot n \cdot t^{n-1} $$
+
+The time required to achieve any survival ratio, $t^\star$, can be calculated from the model equation as:
+
+$$ t^\star = \Bigg| \frac{-\mathrm{log}_{10}S(t)}{b(T)} \Bigg|^{1/n} $$
+
+Substituting this expression into the rate equation, the differential constitutive equation of the model is obtained:
+
+$$ \Bigg| \frac{\mathrm{log}_{10}S(t)}{dt} \Bigg| =
+    -b(T) \cdot n \cdot \Bigg| \frac{ -\mathrm{log}_{10}S(t) }{b(T)} \Bigg|^\frac{n-1}{n} $$
+
+where $b(T)$ follows the same expression as for the isothermal model.
+
+$$ b(T) = \mathrm{ln} \big\{ 1 + \mathrm{exp} \big[ k(T - T_c) \big] \big\} $$
 
 ### Geeraerd's model
 
@@ -291,14 +321,14 @@ model_data$params
 Therefore, the isothermal Bigelow model requires the definition of three parameters: `z`, `D_ref` and `ref_temp`. The `fit_isothermal_inactivation()` function allows to distinguish between known and unknown (i.e., to be adjusted) model parameters. The known model parameters are set by the input argument `known_parameters`, which must be a `list`. The reference temperature is usually set, so we will fix it to 100ºC in this example.
 
 ```{r}
-known_params = list(ref_temp = 100)
+known_params = list(temp_ref = 100)
 ```
 
 Due to the use of the `nls` functions, initial points are required for the unknown model parameters. These initial values are provided by the input argument `starting_point`. This variable needs to be a named numeric vector.
 
 ```{r}
 starting_point <- c(z = 10,
-                    D_ref = 1
+                    D_R = 1
                     )
 ```
 
