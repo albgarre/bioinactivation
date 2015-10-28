@@ -11,7 +11,7 @@
 #' @docType data
 #' @keywords datasets
 #' @name inactivation_example
-#' @usage data(inactivation_example)
+#' @usage data(dynamic_inactivation)
 #' @format A data frame with 19 rows and 2 variables.
 NULL
 
@@ -29,6 +29,6 @@ NULL
 #' @docType data
 #' @keywords datasets
 #' @name isothermal_example
-#' @usage data(isothermal_example)
+#' @usage data(isothermal_inactivation)
 #' @format A data frame with 36 rows and 3 variables.
 NULL
