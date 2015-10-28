@@ -58,6 +58,7 @@ plot.IsoFitInactivation <- function(obj, y=NULL, ...) {
         prediction <- do.call(model_data$prediction, arguments_call)
 
         lines(times, prediction)
+        title(paste("Temperature:", each_temp))
 
     }
 }
