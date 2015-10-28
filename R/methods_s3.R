@@ -19,13 +19,14 @@ is.SimulInactivation <- function(x) inherits(x, "SimulInactivation")
 #' Plots the predicted evolution of the logarithmic count with time for an
 #' instance of \code{SimulInactivation}.
 #'
-#' @param obj The object of class \code{SimulInactivation} to plot.
+#' @param x The object of class \code{SimulInactivation} to plot.
+#' @param y,... ignored
 #'
 #' @export
 #'
-plot.SimulInactivation <- function(obj, y=NULL, ...) {
+plot.SimulInactivation <- function(x, y=NULL, ...) {
 
-    plot(logN ~ time, data = obj$simulation, type = "l")
+    plot(logN ~ time, data = x$simulation, type = "l")
 
 }
 
@@ -36,24 +37,28 @@ plot.SimulInactivation <- function(obj, y=NULL, ...) {
 #' predicted result and the experimental one for an instance of
 #' \code{IsoFitInactivation}.
 #'
-#' @param obj the object of class \code{IsoFitInactivation} to plot.
+#' @param x the object of class \code{IsoFitInactivation} to plot.
+#' @param y,... ignored
 #'
 #' @export
 #'
-plot.IsoFitInactivation <- function(obj, y=NULL, ...) {
+plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 
-    death_data <- obj$data
-    model_data <- get_isothermal_model_data(obj$model)
+    death_data <- x$data
+    model_data <- get_isothermal_model_data(x$model)
 
     for (each_temp in unique(death_data$temp)) {
 
-        my_data <- subset(death_data, temp == each_temp)
+        temp_indexes <- death_data$temp == each_temp
+        my_data <- death_data[temp_indexes, ]
+
+        # my_data <- subset(death_data, temp == each_temp)
 
         plot(log_diff ~ time, data = my_data)
 
         max_time <- max(my_data$time)
         times <- seq(0, max_time, length= 100)
-        arguments_call <- c(list(time = times, temp = each_temp), obj$parameters)
+        arguments_call <- c(list(time = times, temp = each_temp), x$parameters)
 
         prediction <- do.call(model_data$prediction, arguments_call)
 
@@ -70,15 +75,16 @@ plot.IsoFitInactivation <- function(obj, y=NULL, ...) {
 #' produced by the model parameters adjusted for an instance of
 #' \code{FitInactivation}.
 #'
-#' @param obj the object of class \code{FitInactivation} to plot.
+#' @param x the object of class \code{FitInactivation} to plot.
+#' @param y,... ignored
 #'
 #' @export
 #'
-plot.FitInactivation <- function(obj, y=NULL, ...) {
+plot.FitInactivation <- function(x, y=NULL, ...) {
 
-    plot(obj$best_prediction)
+    plot(x$best_prediction)
 
-    death_data <- obj$data
+    death_data <- x$data
 
     if (!("logN" %in% names(death_data))) {
 
