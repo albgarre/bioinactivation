@@ -38,6 +38,41 @@
 #'
 #' @seealso \code{\link{modFit}}
 #'
+#' @examples
+#' ## EXAMPLE 1 ------
+#'
+#' data(isothermal_inactivation)  # dynamic_inactivation data set is used for the example
+#'
+#' ## Retrieve the valid model keys
+#' get_isothermal_model_data()
+#'
+#' model_name <- "Bigelow"  # Bigelow's model used for the fit.
+#'
+#' model_data <- get_isothermal_model_data(model_name)
+#'
+#' ## Get the names of the model parameters
+#' model_data <- get_isothermal_model_data(model_name)
+#' model_data$params
+#'
+#' ## Set the starting points for the adjustment
+#'
+#' known_params = list(temp_ref = 100)
+#'
+#' starting_point <- c(z = 10, D_R = 1)
+#'
+#' adjust_log <- TRUE
+#'
+#' ## Call the fitting function
+#'
+#' iso_fit <- fit_isothermal_inactivation(model_name, isothermal_inactivation,
+#'                                        starting_point, adjust_log, known_params)
+#'
+#' ## Output of the results
+#'
+#' plot(iso_fit)
+#'
+#' ## END EXAMPLE 1 -----
+#'
 fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_profile,
                                      starting_points, upper_bounds, lower_bounds,
                                      fixed_parameters, minimize_log) {
