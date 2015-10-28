@@ -66,10 +66,8 @@ head(isothermal_example)
 
 plot(log_diff  ~ time, data=isothermal_example, col = as.factor(temp))
 title("Example dataset: isothermal_example")
-legend("topright", c("95ºC", "105ºC"), col = c(1, 2), pch = c(1,1))
+legend("topright", c("95ºC", "105ºC"), col = c(1, 2), pch = c(1,1), cex=0.5)
 ```
-
-__XX Añadir leyenda__
 
 ### The example data set for dynamic fit
 
@@ -95,19 +93,29 @@ __XX Cambiar nombre del data set__
 
 The most commonly used models for the modelization of microbial inactivation have been implemented in the __inactivation__ package: Bigelow, Weibull-Mafart, Weibull-Peleg and Geeraerd. A brief mathematical description of each one of them is presented through this section.
 
-### Bigelow's model
+### Bigelow's model for isothermal data
 
 Bigelow's model __XXreference__ assumes that the inactivation process follows a first order kinetics and, therefore, a negative linear relation exists between the logarithm of the number of microorganisms ($N$) and the time ($t$).
 
-$$ \mathrm{log}_{10}(N) = -\frac{1}{D_T}t $$
+$$ \mathrm{log}_{10}(N) = -\frac{1}{D_T(T)}t $$
 
 The parameter $D_T$ (also named D-value) equals the inverse of the slope of the line. Its relationship with temperature ($T$) is described by the equation
 
-$$ \mathrm{log}_{10}D_T = \mathrm{log}_{10}D_R + \frac{T_R-T}{z} $$
+$$ \mathrm{log}_{10}D_T(T) = \mathrm{log}_{10}D_R + \frac{T_R-T}{z} $$
 
 where $T_R$ is a reference temperature and $D_R$ the D-value at this temperature. The parameter $z$ is usually named z-value and provides an indication of the sensitivity of the microorganism to temperature variations.
 
-__XXdesarrollar modelo dinamico__
+### Bigelow's model for nonisothermal data
+
+Bigelow's model for nonisothermal data is developed from the isothermal one by calculating the first derivative of its constitutive equation with respect to time.
+
+$$ \frac{d\mathrm{log}_{10}(N)}{dt} = - \frac{1}{D_T(T)} $$
+
+Please note that for nonisothermal experiments, the temperature is time dependent. Therefore, $D_T(T)$ is also time dependent. This dependency is not taken into account in the derivation of the equation.
+
+In this model, the evolution of $D_T(T)$ with temperatures is ruled by the same expression as for the isothermal model:
+
+$$ \mathrm{log}_{10}D_T(T) = \mathrm{log}_{10}D_R + \frac{T_R-T}{z} $$
 
 ### Weibullian models
 
@@ -117,7 +125,7 @@ Weibullian models assume that the the inactivation process can be viewed as a fa
 
 The Weibullian model presented by Mafart et al. (2002) for isothermal cases is described by the equation:
 
-$$ \mathrm{log}_{10}S(t) = - \Big( \frac{t}{\delta} \Big)^\beta $$
+$$ \mathrm{log}_{10}S(t) = - \Big( \frac{t}{\delta(T)} \Big)^\beta $$
 
 where $S = N/N_0$ represents the fraction of survivors and $t$ the time. $\delta$ and $\beta$ are respectively the rate and shape factors of the Weibull distribution.
 
@@ -127,7 +135,17 @@ $$ \delta(T) = \frac {\delta_{ref}} {10^ {\Big( \frac{T-T_{ref}}{z} \Big)} } $$
 
 where $T_{ref}$ is a reference temperature, $\delta_{ref}$ is the value of $\delta$ at this reference temperature and $z$ describes the sensitivity of the microorganism to temperature variations.
 
-__XXmodelo dinamico__
+#### Weibull-Mafart model for nonisothermal inactivation
+
+The dynamic Weibull-Mafart model is developed from the isothermal one following a process analogous to the one used for the Bigelow model. The rate of reduction at each time is calculated as the first derivative of the constitutive equation with respect to time:
+
+$$ \frac{d\mathrm{log}_{10}S(t)}{dt} =  -\beta \frac{t^{\beta-1}}{\delta(T)^\beta} $$
+
+Note that, as well as for Bigelow's model, the dependency of $\delta(T)$ with temperature has not been considered in the derivation.
+
+As well as for the isothermal model, an exponential relation between $\delta(T)$ and temperature is assumed.
+
+$$ \delta(T) = \frac {\delta_{ref}} {10^ {\Big( \frac{T-T_{ref}}{z} \Big)} } $$
 
 #### Weibull-Peleg model for isothermal inactivation
 
