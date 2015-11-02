@@ -41,35 +41,34 @@
 #' @examples
 #' ## EXAMPLE 1 ------
 #'
-#' data(isothermal_inactivation)  # dynamic_inactivation data set is used for the example
+#' data(dynamic_inactivation)  # The example data set is used.
 #'
-#' ## Retrieve the valid model keys
-#' get_isothermal_model_data()
+#' get_model_data()  # Retrieve the valid model keys.
 #'
-#' model_name <- "Bigelow"  # Bigelow's model used for the fit.
+#' simulation_model <- "Weibull_Peleg"  # Peleg's model will be used
 #'
-#' model_data <- get_isothermal_model_data(model_name)
+#' model_data <- get_model_data(simulation_model)
+#' model_data$parameters  # Set the model parameters
 #'
-#' ## Get the names of the model parameters
-#' model_data <- get_isothermal_model_data(model_name)
-#' model_data$params
+#' dummy_temp <- data.frame(time = c(0, 1.25, 2.25, 4.6),
+#'                          temperature = c(70, 105, 105, 70))  # Dummy temp. profile
 #'
-#' ## Set the starting points for the adjustment
+#' ## Set known parameters and initial points/bounds for unknown ones
 #'
-#' known_params = list(temp_ref = 100)
+#' fixed_parameters = c(temp_crit = 100)
 #'
-#' starting_point <- c(z = 10, D_R = 1)
+#' starting_points <- c(n = 1, k_b = 0.25, N0 = 1e+05)
+#' upper_bounds <- c(n = 2, k_b = 1, N0 = Inf)
+#' lower_bounds <- c(n = 0, k_b = 0, N0 = 1e4)
 #'
-#' adjust_log <- TRUE
+#' minimize_log = TRUE
 #'
-#' ## Call the fitting function
+#' dynamic_fit <- fit_dynamic_inactivation(dynamic_inactivation, simulation_model,
+#'                                         dummy_temp, starting_points,
+#'                                         upper_bounds, lower_bounds,
+#'                                         fixed_parameters, minimize_log)
 #'
-#' iso_fit <- fit_isothermal_inactivation(model_name, isothermal_inactivation,
-#'                                        starting_point, adjust_log, known_params)
-#'
-#' ## Output of the results
-#'
-#' plot(iso_fit)
+#' plot(dynamic_fit)
 #'
 #' ## END EXAMPLE 1 -----
 #'
