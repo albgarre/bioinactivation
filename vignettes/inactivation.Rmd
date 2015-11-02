@@ -19,7 +19,6 @@ Once installed, the __inactivation__ package can be loaded by writing,
 
 ```{r}
 library(microinactivation)
-library(ggplot2)
 ```
 
 __inactivation__ uses the packages `deSolve` (Soetaert, Petzoldt, and Setzer 2010) and `FME` (Soetaert, Petzoldt, and Setzer 2010) to both predict results and adjust common inactivation models to experimental data. The inactivation models most commonly used in the industry have been implemented in this package:
@@ -47,10 +46,10 @@ The __inactivation__ package contains two data sets that will be used within thi
 
 ### The example data set for isothermal fit
 
-The __inactivation__ package includes the `isothermal_example` data set, which imitates the data obtained during a set of isothermal inactivation experiments. This data set can be loaded as:
+The __inactivation__ package includes the `isothermal_inactivation` data set, which imitates the data obtained during a set of isothermal inactivation experiments. This data set can be loaded as:
 
 ```{r}
-data(isothermal_example)
+data(isothermal_inactivation)
 ```
 
 This example data set has 3 variables and 36 observations.
@@ -62,10 +61,10 @@ This example data set has 3 variables and 36 observations.
 * the logarithmic difference is given by the third column (`log_diff`).
 
 ```{r}
-head(isothermal_example)
+head(isothermal_inactivation)
 
-plot(log_diff  ~ time, data=isothermal_example, col = as.factor(temp))
-title("Example dataset: isothermal_example")
+plot(log_diff  ~ time, data=isothermal_inactivation, col = as.factor(temp))
+title("Example dataset: isothermal_inactivation")
 legend("topright", c("95ºC", "105ºC"), col = c(1, 2), pch = c(1,1), cex=0.5)
 ```
 
@@ -73,18 +72,18 @@ legend("topright", c("95ºC", "105ºC"), col = c(1, 2), pch = c(1,1), cex=0.5)
 
 __XX Añadir la temperatura de cada observación al data set??__
 
-The `inactivation_example` data set contained within the __inactivation__ package provides a `data.set` imitating the data obtained during a non-isothermal inactivation experiment. This data set can be loaded as follows:
+The `dynamic_inactivation` data set contained within the __inactivation__ package provides a `data.set` imitating the data obtained during a non-isothermal inactivation experiment. This data set can be loaded as follows:
 
 ```{r}
-data(inactivation_example)
+data(dynamic_inactivation)
 ```
 
 This example data set contains 2 variables and 19 observations. The first column, `time`, reflects the time point at which the the observation was taken. The second one, `N` provides the number of microorganisms counted on the observation.
 
 ```{r}
-head(inactivation_example)
-plot(log10(N)  ~ time, data=inactivation_example)
-title("Example dataset: inactivation_example")
+head(dynamic_inactivation)
+plot(log10(N)  ~ time, data=dynamic_inactivation)
+title("Example dataset: dynamic_inactivation")
 ```
 
 __XX Cambiar nombre del data set__
@@ -208,7 +207,12 @@ However, the parameter $k$ is corrected with two parameters to include for shoul
 
 $$ k = k_{max} \cdot \alpha \cdot \gamma $$
 
-where $k_{max}$ stands for the maximum inactivation rate of the microorganism for some conditions given. The shoulder parameter is defined as
+where $k_{max}$ stands for the maximum inactivation rate of the microorganism at the current environmental conditions. A model equivalent to Bigelow's is used:
+
+$$ k_{max} = \frac{\mathrm{ln}10}{D_{ref}} \cdot \mathrm{exp}
+        \Big( \mathrm{ln}(10) \frac{T - T_{ref}}{z} \Big) $$
+
+The shoulder parameter is defined as
 
 $$ \alpha = \frac {1}{1+C_c} $$
 
@@ -311,10 +315,10 @@ plot(prediction_results)
 
 The package __inactivation__ can fit the parameters of an inactivation model to a set of isothermal experimental data through the function `fit_isothermal_inactivation()`. This function makes use of the `nls` function included in the `stats` package to fit the parameters of an inactivation model to a set of experimental data.
 
-The experimental data to fit is provided by the data frame variable `death_data`. It must contain at least three columns providing the times at which the observations were made (_time_), the temperature of the experiment (_temp_) and the logarithmic difference observed with respect to the orginal population (*log_diff*). The example data set `isothermal_example` will be used for this demonstration.
+The experimental data to fit is provided by the data frame variable `death_data`. It must contain at least three columns providing the times at which the observations were made (_time_), the temperature of the experiment (_temp_) and the logarithmic difference observed with respect to the orginal population (*log_diff*). The example data set `isothermal_inactivation` will be used for this demonstration.
 
 ```{r}
-data(isothermal_example)
+data(isothermal_inactivation)
 ```
 
 The model to use for the adjustment is defined by the character variable `model_name`. A list of the valid model keys for isothermal adjustment can be obtained by calling the function `get_isothermal_model_data()` without any arguments.
@@ -359,7 +363,7 @@ adjust_log <- TRUE
 The adjustment is made by calling the `fit_isothermal_inactivation()` function with the arguments which have just been defined. 
 
 ```{r}
-iso_fit <- fit_isothermal_inactivation(model_name, isothermal_example,  
+iso_fit <- fit_isothermal_inactivation(model_name, isothermal_inactivation,  
                                        starting_point, adjust_log, known_params)
 ```
 This function returns a list of class `IsoFitInactivation`. This object contains the results of the adjustment, as well as the statistical information of the adjustment process. This information is divided in four entries:
@@ -406,10 +410,10 @@ The function `fit_dynamic_inactivation()` requires several input arguments:
 * The values of the known model parameters, as well as starting points and bounds for the unknown ones.
 * A logical specifying whether the adjustment will be based on the error of the logarithmic count or the total count.
 
-The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the time at which the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time. The data set `inactivation_example` included in the __inactivation__ package will be used for this demonstration.
+The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the time at which the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time. The data set `dynamic_inactivation` included in the __inactivation__ package will be used for this demonstration.
 
 ```{r}
-data(inactivation_example)
+data(dynamic_inactivation)
 ```
 
 The model to use for the fitting is defined by the character variable `simulation_model`. A list of the available models for dynamic adjustment can be obtained by calling the function `get_model_data()` without any input argument.
@@ -477,7 +481,7 @@ minimize_log = TRUE
 The adjustment is made by calling the function `fit_dynamic_inactivation()` with the variables which have been just defined.
 
 ```{r}
-dynamic_fit <- fit_dynamic_inactivation(inactivation_example, simulation_model, dummy_temp,  
+dynamic_fit <- fit_dynamic_inactivation(dynamic_inactivation, simulation_model, dummy_temp,  
                                         starting_points, upper_bounds, lower_bounds,  
                                         fixed_parameters, minimize_log)
 ``` 
