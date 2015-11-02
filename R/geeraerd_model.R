@@ -21,9 +21,10 @@
 #'      \deqn{\gamma = 1 - \frac{N_{res}}{N}}{
 #'            \gamma = 1 - N_res/N}
 #'
-#'      \deqn{k_{max} = \frac{\mathrm{ln}(10)}{D_{ref}} \cdot
-#'                         \mathrm{exp}(\mathrm{ln}(10)(T-T_{ref})/z)}{
-#'            k_max = ln(10)/D_ref * exp(ln(10)/z * (T - T_ref))}
+#'      \deqn{k_{max} = \frac{1}{D_T}}{k_max = 1/D_T}
+#'
+#'      \deqn{log_{10}D_T = log_{10}D_R + \frac{T_R-T}{z}}{
+#'             log(D_T) = log(D_R) + (T_R-T)/z}
 #'
 #' @param t numeric vector indicating the time of the experiment.
 #' @param x list with the values of the variables at time \eqn{t}.
@@ -54,7 +55,9 @@ dGeeraerd_model<- function(t, x, parms, temp_profile)  {
 
     with(as.list(c(x, parms)),{
 
-        k_max <- log(10)/D_R * exp(log(10)/z * (temp - temp_ref))
+        D_T <- D_R*10^((temp_ref - temp)/z)
+        k_max <- 1/D_T
+
         dC_c <- - k_max * C_c
         dN <- - N * k_max * (1/(1+C_c)) * (1 - N_min/N)
 
