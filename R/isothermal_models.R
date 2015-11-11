@@ -66,3 +66,26 @@ WeibullPeleg_iso <- function(time, temp, n, k_b, temp_crit){
 
 }
 
+### ---------------------------------------------------------- ###
+### SECONDARY  MODEL FOR N_RES IS NEEDED  TO DEVELOP THE MODEL ###
+
+# #' Isothermal Geeraerd Model
+# #'
+# #' Returns the predicted logarithmic reduction in microbial cont according
+# #' to Geeraerd's model.
+# #' The isothermal prediction is calculated by analytical integration of the
+# #' ode for constant temperature
+# #'
+# Geeraerd_iso <- function(time, temp, C_c0, N_min, z, D_R, temp_ref) {
+#
+#     D_T <- D_R * 10^( (temp_ref - temp)/z )
+#     k_max <- 1/D_T
+#     N0 <- 1e6
+#     C1 <- (C_c0 + 1)*N0 - N_min
+#     N <- C1/(C_c0+exp(k_max*time)) + N_min*exp(k_max*time)/(C_c0+exp(k_max*time))
+#     log_diff <- log10(N/N0)
+#     return(log_diff)
+#
+#
+# }
+

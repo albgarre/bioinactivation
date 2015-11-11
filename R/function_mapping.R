@@ -35,33 +35,33 @@
 get_model_data <- function(simulation_model = NULL) {
 
     function_map <- list(Bigelow = list(ode = dBigelow_model,
-                                        dtemp = TRUE,
+                                        dtemp = FALSE,
                                         variable = "N",
                                         parameters = c("D_R", "z", "temp_ref")
                                         ),
 
-                         Bigelow_linearized = list(ode = dBigelow_model_linear,
-                                                   dtemp = FALSE,
-                                                   variable = "N",
-                                                   parameters = c("D_R", "z",
-                                                                  "temp_ref")
-                                                   ),
+#                          Bigelow_full = list(ode = dBigelow_model_full,
+#                                                    dtemp = TRUE,
+#                                                    variable = "N",
+#                                                    parameters = c("D_R", "z",
+#                                                                   "temp_ref")
+#                                                    ),
 
-                         Weibull_Mafart = list(ode = dMafart_model,
-                                               dtemp = FALSE,
-                                               variable = "N",
-                                               parameters = c("delta_ref",
-                                                              "temp_ref", "z",
-                                                              "p")
-                                               ),
+                         Mafart = list(ode = dMafart_model,
+                                             dtemp = FALSE,
+                                             variable = "N",
+                                             parameters = c("delta_ref",
+                                                            "temp_ref", "z",
+                                                            "p")
+                                             ),
 
-                         Weibull_Mafart_full = list(ode = dMafart_model_full,
-                                                    dtemp = TRUE,
-                                                    variable = "N",
-                                                    parameters = c("delta_ref",
-                                                                   "temp_ref",
-                                                                   "z", "p")
-                                                    ),
+#                          Weibull_Mafart_full = list(ode = dMafart_model_full,
+#                                                     dtemp = TRUE,
+#                                                     variable = "N",
+#                                                     parameters = c("delta_ref",
+#                                                                    "temp_ref",
+#                                                                    "z", "p")
+#                                                     ),
 
                          Geeraerd = list(ode = dGeeraerd_model,
                                          dtemp = FALSE,
@@ -70,20 +70,20 @@ get_model_data <- function(simulation_model = NULL) {
                                                         "temp_ref")
                                          ),
 
-                         Weibull_Peleg = list(ode = dPeleg_model,
-                                              dtemp = FALSE,
-                                              variable = "logS",
-                                              parameters = c("k_b", "temp_crit",
-                                                             "n")
-                                              ),
+                         Peleg = list(ode = dPeleg_model,
+                                            dtemp = FALSE,
+                                            variable = "logS",
+                                            parameters = c("k_b", "temp_crit",
+                                                           "n")
+                                            )
 
-                         Weibull_Peleg_full = list(ode = dPeleg_model_full,
-                                                   dtemp = TRUE,
-                                                   variable = "N",
-                                                   parameters = c("k_b",
-                                                                  "temp_crit",
-                                                                  "n")
-                                                   )
+#                          Weibull_Peleg_full = list(ode = dPeleg_model_full,
+#                                                    dtemp = TRUE,
+#                                                    variable = "N",
+#                                                    parameters = c("k_b",
+#                                                                   "temp_crit",
+#                                                                   "n")
+#                                                    )
                          )
 
     if (is.null(simulation_model)) {

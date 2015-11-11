@@ -120,22 +120,22 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
 get_isothermal_model_data <- function(model_name = "valids") {
 
     switch(as.character(model_name),
-           Weibull_Mafart = list(params = c("delta_ref", "z", "p", "temp_ref"),
-                                 formula_iso = "WeibullMafart_iso(time, temp, delta_ref, z, p, temp_ref)",
-                                 prediction = "WeibullMafart_iso"
-                                 ),
+           Mafart = list(params = c("delta_ref", "z", "p", "temp_ref"),
+                         formula_iso = "WeibullMafart_iso(time, temp, delta_ref, z, p, temp_ref)",
+                         prediction = "WeibullMafart_iso"
+                         ),
 
-           Weibull_Peleg = list(params = c("n", "k_b", "temp_crit"),
-                                formula_iso = "WeibullPeleg_iso(time, temp, n, k_b, temp_crit)",
-                                prediction = "WeibullPeleg_iso"
-                                ),
+           Peleg = list(params = c("n", "k_b", "temp_crit"),
+                        formula_iso = "WeibullPeleg_iso(time, temp, n, k_b, temp_crit)",
+                        prediction = "WeibullPeleg_iso"
+                        ),
 
            Bigelow = list(params = c("z", "D_R", "temp_ref"),
                         formula_iso = "Bigelow_iso(time, temp, z, D_R, temp_ref)",
                         prediction = "Bigelow_iso"
                         ),
 
-           valids = c("Weibull_Mafart", "Weibull_Peleg", "Bigelow")
+           valids = c("Mafart", "Peleg", "Bigelow")
            )
 
 }
