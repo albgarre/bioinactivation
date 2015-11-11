@@ -14,7 +14,7 @@
 #'        parameters for the adjustment.
 #' @param lower_bounds named numerical vector defining the lower bounds of the
 #'        parameters for the adjustment.
-#' @param fixed_parameters named numerical vector with the fixed (i.e., not
+#' @param known_params named numerical vector with the fixed (i.e., not
 #'        adjustable) model parameters.
 #' @param minimize_log logical. If \code{TRUE}, the adjustment is based on the
 #'        minimization of the error of the logarithmic count.
@@ -45,7 +45,7 @@
 #'
 #' get_model_data()  # Retrieve the valid model keys.
 #'
-#' simulation_model <- "Weibull_Peleg"  # Peleg's model will be used
+#' simulation_model <- "Peleg"  # Peleg's model will be used
 #'
 #' model_data <- get_model_data(simulation_model)
 #' model_data$parameters  # Set the model parameters
@@ -55,7 +55,7 @@
 #'
 #' ## Set known parameters and initial points/bounds for unknown ones
 #'
-#' fixed_parameters = c(temp_crit = 100)
+#' known_params = c(temp_crit = 100)
 #'
 #' starting_points <- c(n = 1, k_b = 0.25, N0 = 1e+05)
 #' upper_bounds <- c(n = 2, k_b = 1, N0 = Inf)
@@ -66,7 +66,7 @@
 #' dynamic_fit <- fit_dynamic_inactivation(dynamic_inactivation, simulation_model,
 #'                                         dummy_temp, starting_points,
 #'                                         upper_bounds, lower_bounds,
-#'                                         fixed_parameters, minimize_log)
+#'                                         known_params, minimize_log)
 #'
 #' plot(dynamic_fit)
 #'
@@ -74,7 +74,7 @@
 #'
 fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_profile,
                                      starting_points, upper_bounds, lower_bounds,
-                                     fixed_parameters, minimize_log) {
+                                     known_params, minimize_log) {
 
     #- Gather the information
 
@@ -98,7 +98,7 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
                   temp_profile = temp_profile,
                   data_for_fit = data_for_fit,
                   lower = lower_bounds, upper = upper_bounds,
-                  fixed_parameters = fixed_parameters,
+                  known_params = known_params,
                   simulation_model = simulation_model
                   )
 
@@ -109,7 +109,7 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
     prediction_time <- seq(min(data_for_fit$time), max(data_for_fit$time), length=100)
     best_prediction <- predict_inactivation(simulation_model,
                                             prediction_time,
-                                            as.list(c(pars_fit, fixed_parameters)),
+                                            as.list(c(pars_fit, known_params)),
                                             temp_profile
                                             )
 

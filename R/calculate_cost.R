@@ -15,7 +15,7 @@
 #'        \dQuote{temperature}.
 #' @param simulation_model character key defining the inactivation model.
 #' @param P list with the unknown parameters of the model to be adjusted.
-#' @param fixed_parameters list with the parameters of the model fixed (i.e.,
+#' @param known_params list with the parameters of the model fixed (i.e.,
 #'        not adjusted)
 #'
 #' @importFrom FME modCost
@@ -27,12 +27,12 @@
 #'
 get_prediction_cost <- function(data_for_fit, temp_profile,
                                 simulation_model,
-                                P, fixed_parameters
+                                P, known_params
                                 ) {
 
     prediction_data <- predict_inactivation(simulation_model = simulation_model,
                                             times = sort(unique(data_for_fit$time)),
-                                            parms = as.list(c(P, fixed_parameters)),
+                                            parms = as.list(c(P, known_params)),
                                             temp_profile = temp_profile
                                             )
 
