@@ -49,7 +49,7 @@ dMafart_model<- function(t, x, parms, temp_profile)  {
 
     with(as.list(c(x, parms)),{
         delta <- delta_ref * 10^( -(temp-temp_ref)/z)
-        dN <- - N * p * (1/delta)^p * t^(p-1)
+        dN <- - N * p * (1/delta)^p * t^(p-1) * log(10)
 
         res <- c(dN)
         return(list(res))
