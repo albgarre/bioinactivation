@@ -84,16 +84,16 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile){
 
     #- Build the initial value
 
-    if (all(model_data$variable == "N")) {
+    if (all(model_data$variables_priv == "N")) {
 
         xstart <- c(N = parms[["N0"]])
 
-    } else if (all(model_data$variable == c("N", "C_c"))) {
+    } else if (all(model_data$variables_priv == c("N", "C_c"))) {
 
 
         xstart <- c(N = parms[["N0"]], C_c = parms[["C_c0"]])
 
-    } else if (all(model_data$variable == "logS")) {
+    } else if (all(model_data$variables_priv == "logS")) {
 
         xstart <- c(logS = -1e-6)
     }

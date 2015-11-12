@@ -25,8 +25,9 @@
 #'                approximation.
 #'          \item dtemp: logical defining whether the function requires the
 #'                       definition of the first derivative of temperature.
-#'          \item variable: a character vector defining which entry variables
-#'                          are needed by the model.
+#'          \item variables: a character vector defining which entry variables
+#'                           are needed by the model.
+#'          \item variables_priv: for internal use only.
 #'          \item parameters: character vector with the parameters needed by
 #'                            the model.
 #'          }
@@ -53,7 +54,8 @@ get_model_data <- function(simulation_model = NULL) {
 
                          Mafart = list(ode = dMafart_model,
                                              dtemp = FALSE,
-                                             variable = "N",
+                                             variables = "N",
+                                             variables_priv = "N",
                                              parameters = c("delta_ref",
                                                             "temp_ref", "z",
                                                             "p")
@@ -69,14 +71,16 @@ get_model_data <- function(simulation_model = NULL) {
 
                          Geeraerd = list(ode = dGeeraerd_model,
                                          dtemp = FALSE,
-                                         variable = c("N", "C_c"),
+                                         variables = c("N", "C_c"),
+                                         variables_priv = c("N", "C_c"),
                                          parameters = c("D_R", "z", "N_min",
                                                         "temp_ref")
                                          ),
 
                          Peleg = list(ode = dPeleg_model,
                                             dtemp = FALSE,
-                                            variable = "logS",
+                                            variables = "N",
+                                            variables_priv = "logS",
                                             parameters = c("k_b", "temp_crit",
                                                            "n")
                                             )
