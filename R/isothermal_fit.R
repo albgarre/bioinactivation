@@ -12,7 +12,7 @@
 #'          \item temp: Temperature of the data point.
 #'          \item time: Time of the data point.
 #'          }
-#' @param starting_point Named vector with the initial values of the parameters
+#' @param starting_point List with the initial values of the parameters
 #'        for the adjustment.
 #' @param adjust_log logical. If \code{TRUE}, the adjustment is based on the
 #'        minimization of the error of the logarithmic microbial count. If
@@ -108,6 +108,11 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
 #'
 #' Provides information of the models implemented for fitting of isothermal
 #' data.
+#' This models are valid only for isothermal adjustment with the function
+#' \code{\link{fit_isothermal_inactivation}}. To make predictions with the
+#' function \code{\link{predict_inactivation}} or adjust dynamic experiments
+#' with \code{\link{fit_dynamic_inactivation}}, use
+#' \code{\link{get_model_data}}.
 #'
 #' @param model_name Optional string with the key of the model to use.
 #' @return If \code{model_name} is missing, a list of the valid model keys.
