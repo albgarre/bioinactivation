@@ -7,7 +7,11 @@
 #' of valid model keys is provided.
 #' This function is designed as an assistant for using the functions
 #' \code{\link{predict_inactivation}} and
-#' \code{\link{fit_dynamic_inactivation}}
+#' \code{\link{fit_dynamic_inactivation}}.
+#' For the adjustment of isothermal experiments with the function
+#' \code{\link{fit_isothermal_inactivation}}, use the function
+#' \code{\link{get_isothermal_model_data}}.
+#'
 #'
 #' @param simulation_model (optional) character with a valid model key or
 #'        \code{NULL}.
