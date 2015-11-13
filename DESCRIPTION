@@ -15,5 +15,6 @@ Imports: dplyr (>= 0.4.1),
          deSolve (>= 1.11),
          FME (>= 1.3.2),
          lazyeval (>= 0.1.10)
-Suggests: knitr (>= 1.9)
+Suggests: knitr (>= 1.9),
+    testthat
 VignetteBuilder: knitr
