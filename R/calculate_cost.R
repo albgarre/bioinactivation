@@ -40,7 +40,7 @@ get_prediction_cost <- function(data_for_fit, temp_profile,
     prediction <- prediction[names(data_for_fit)]  # Take only the relevant columns
     prediction <- prediction[complete.cases(prediction),]  # NAs produced by negative values in x. This is caused by numerical error when N is very small.
 
-    cost <- modCost(prediction, data_for_fit)
+    cost <- modCost(model = prediction, obs = data_for_fit)
     return(cost)
 
 }
