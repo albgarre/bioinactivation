@@ -21,7 +21,6 @@
 #' @param minimize_log logical. If \code{TRUE}, the adjustment is based on the
 #'        minimization of the error of the logarithmic count.
 #'
-#' @importFrom deSolve ode
 #' @importFrom dplyr mutate_
 #' @importFrom dplyr %>%
 #' @importFrom dplyr select_
