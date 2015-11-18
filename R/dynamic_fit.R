@@ -2,6 +2,8 @@
 #' Fitting of Dynamic Inactivation Models
 #'
 #' Fits the parameters of an inactivation model to experimental data.
+#' The function \code{\link{modFit}} of the package \code{\link{FME}} is
+#' used for the adjustment.
 #'
 #' @param experiment_data data frame with the experimental data to be adjusted.
 #'        It must have a column named \dQuote{time} and another one named
