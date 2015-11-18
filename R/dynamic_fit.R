@@ -78,7 +78,6 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
 
     #- Gather the information
 
-    temp_approximations <- build_temperature_interpolator(temp_profile)
     model_data <- get_model_data(simulation_model)
 
     if (minimize_log) {
