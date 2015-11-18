@@ -95,3 +95,30 @@ plot.FitInactivation <- function(x, y=NULL, ...) {
 
 }
 
+#'
+#' Plot of FitInactivationMCMC Object
+#'
+#' Plots a comparison between the experimental data provided and the prediction
+#' produced by the model parameters adjusted for an instance of
+#' \code{FitInactivationMCMC}.
+#'
+#' @param x the object of class \code{FitInactivation} to plot.
+#' @param y,... ignored
+#'
+#' @export
+#'
+plot.FitInactivationMCMC <- function(x, y=NULL, ...) {
+
+    plot(x$best_prediction)
+
+    death_data <- x$data
+
+    if (!("logN" %in% names(death_data))) {
+
+        death_data$logN <- log10(death_data$N)
+    }
+
+    points(logN ~ time, data = death_data)
+
+}
+
