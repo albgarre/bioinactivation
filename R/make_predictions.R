@@ -52,7 +52,7 @@
 #'
 #' model_data <- get_model_data(example_model)  # Retrive the data of the model used
 #' print(model_data$parameters)
-#' print(model_data$variable)
+#' print(model_data$variables)
 #' model_parms <- c(D_R = 1,
 #'                  z = 10,
 #'                  N_min = 100,
@@ -76,6 +76,10 @@
 #' ## END EXAMPLE 1 -----------
 #'
 predict_inactivation <- function(simulation_model, times, parms, temp_profile){
+
+    #- Check of the model parameters
+
+    check_model_params(simulation_model, c(), parms, TRUE)
 
     #- Gather the information
 

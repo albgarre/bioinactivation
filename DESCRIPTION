@@ -1,7 +1,7 @@
 Package: bioinactivation
 Type: Package
 Title: Simulation of Dynamic Microbial Inactivation
-Version: 0.0.0.9010
+Version: 0.0.0.9011
 Date: 2015-09-29
 Authors@R: c(person("Alberto", "Garre Perez", email = "garre.alberto@gmail.com", role = c("aut", "cre")),
              person("Pablo S.", "Fernandez Egea", email = "pablo.fernandez@upct.es", role = "aut"),

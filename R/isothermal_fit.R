@@ -66,6 +66,12 @@
 fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
                                         adjust_log, known_params) {
 
+    #- Check of the model parameters
+
+    check_model_params(model_name, known_params, starting_point, FALSE)
+
+    #- Make the adjustment
+
     adjust_results <- with(known_params, {
 
         model_data <- get_isothermal_model_data(model_name)
@@ -91,6 +97,8 @@ fit_isothermal_inactivation <- function(model_name, death_data, starting_point,
         return(adjust_results)
 
     })
+
+    #- Output of the results
 
     out <- list()
     class(out) <- c("IsoFitInactivation", class(out))

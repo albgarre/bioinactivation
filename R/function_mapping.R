@@ -110,3 +110,89 @@ get_model_data <- function(simulation_model = NULL) {
         }
     }
 }
+
+#' Correctness Check of Model Parameters
+#'
+#' Makes 3 checks of compatibility between the input parameters for the
+#' adjustment and the DOF of the inactivation model selected.
+#' \itemize{
+#'      \item Check of equal length of model DOF and input DOF. Raises a
+#'            warning if failed.
+#'      \item Check that every single one of the input DOF is a model DOF.
+#'            Raises a warning if failed.
+#'      \item Check that every single one of the model DOF are defined as
+#'            an input DOF.}
+#'
+#' @param simulation_model character with a valid model key.
+#' @param known_params named vector or list with the dof of the model
+#'                     known.
+#' @param starting_points named vector or list with the dof of the model to
+#'                        be adjusted.
+#' @param adjust_vars logical specifying whether the model variables need to
+#'                    be included in the check (not used for isothermal
+#'                    fit)
+#'
+check_model_params <- function(simulation_model, known_params,
+                               starting_points, adjust_vars) {
+
+    model_data <- get_model_data(simulation_model)
+
+    variable_names <- paste0(model_data$variables, "0")
+
+    if (adjust_vars) {
+        model_dof <- c(model_data$parameters, variable_names)
+    } else {
+        model_dof <- c(model_data$parameters)
+    }
+
+
+    #- Check of lengths
+
+    in_length <- length(known_params) + length(starting_points)
+
+    if (length(model_dof) != in_length) {
+
+        warning_msg <- paste0("Length of known_params + starting_points (",
+                              in_length, ") not equal to model_dof (",
+                              length(model_dof), ").")
+
+        warning(warning_msg)
+    }
+
+    #- Check for input param names
+
+    in_dof <- names(c(known_params, starting_points))
+
+    for (each_dof in in_dof) {
+
+        if (!(each_dof %in% model_dof)) {
+
+            warning(paste0("Unknown input DoF: ", each_dof))
+        }
+    }
+
+    #- Check for missing params
+
+    for (each_dof in model_dof) {
+
+        if (!(each_dof %in% in_dof)) {
+
+            stop(paste("DOF ", each_dof, "not defined."))
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
