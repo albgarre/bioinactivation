@@ -96,6 +96,11 @@ fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profil
         data_for_fit <- select_(experiment_data, as.name("time"), as.name("N"))
     }
 
+    #- Add a small tolerance to data at time 0 to avoid singularities
+
+    data_0 <- data_for_fit$time == 0
+    data_for_fit[data_0, "time"] <- 1e-6
+
     #- Call the fitting function
 
     Fit <- modMCMC(f = get_prediction_cost, p = unlist(starting_points),
@@ -108,7 +113,7 @@ fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profil
 
     #- Prepare the output
 
-    prediction_time <- seq(min(data_for_fit$time), max(data_for_fit$time), length=100)
+    prediction_time <- seq(1e-6, max(data_for_fit$time), length=100)
 
     best_prediction <- predict_inactivation(simulation_model,
                                             prediction_time,
