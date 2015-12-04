@@ -1,10 +1,10 @@
 ---
-title: "bioinactivation: Software for modeling microbial inactivation"
+title: "bioinactivation: Software for modelling microbial inactivation"
 author: "Alberto Garre, Pablo S. Fernandez, Jose A. Egea"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{bioinactivation: Software for modeling microbial inactivation}
+  %\VignetteIndexEntry{bioinactivation: Software for modelling microbial inactivation}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -17,9 +17,9 @@ R-package __bioinactivation__ implements functions for the modelization of micro
 library(bioinactivation)
 ```
 
-The __bioinactivation__ package allows to predict the inactivation process of a population of microorganism for isothermal conditions or varying with time (dynamic). Moreover, it permits to adjust the parameters of inactivation models to isothermal or dynamic experimental data. All the functions contained in __bioinactivation__ are written in R.
+The __bioinactivation__ package allows to predict the inactivation process of a population of microorganism microorganisms exposed to isothermal conditions (temperature remains constant with time) or non isothermal (temperature changes with time, dynmic conditions). Moreover, it can be used to adjust the parameters of different inactivation models to both isothermal and dynamic experimental data. All the functions contained in __bioinactivation__ are written in R.
 
-__bioinactivation__ takes advantage of the capabilities of packages `deSolve` (Soetaert, Petzoldt, and Setzer 2010) and `FME` (Soetaert, Petzoldt, and Setzer 2010) to make predictions of the inactivation process and to adjust model parameters to experimental data. The inactivation models most commonly used in the industry have been implemented in this package:
+__bioinactivation__ takes advantage of the capabilities of the packages `deSolve` (Soetaert, Petzoldt, and Setzer 2010a) and `FME` (Soetaert, Petzoldt, and Setzer 2010b) to make predictions of the inactivation process and to adjust model parameters to experimental data. The inactivation models most commonly used in the industry have been implemented in this package:
 
 * Bigelow's model (Bigelow, 1921),
 * Weibull-Peleg model (Peleg and Cole, 1998),
@@ -28,21 +28,23 @@ __bioinactivation__ takes advantage of the capabilities of packages `deSolve` (S
 
 The __bioinactivation__ package provides three functions for the modelization of microbial inactivation:
 
-* `predict_inactivation()` predicts the inactivation process of a population for some temperature conditions given, isothermal or not.
+* `predict_inactivation()` predicts the inactivation process of a population for some given temperature conditions, isothermal or not.
 
 * `fit_isothermal_inactivation()` adjusts the parameters of a selected inactivation model to a set of isothermal inactivation experiments.
 
-* `fit_dynamic_inactivation()` fits the parameters of the inactivation model chosen to a set of dynamic inactivation experiments.
+* `fit_dynamic_inactivation()` fits the parameters of a chosen inactivation model to a set of dynamic inactivation experiments.
 
-Moreover, two functions with meta information of the inactivation models implemented are provided:
+Moreover, two functions with meta information of the inactivation models implemented are included:
 
-* `get_model_data()`, with meta information about the models used for prediction and adjustment of non-isothermal experiments.
+* `get_model_data()`, provides meta information about the models used for prediction and adjustment of non-isothermal experiments.
 
-* `get_isothermal_model_data()`, with meta information about the models for fitting of isothermal experiments.
+* `get_isothermal_model_data()`, provides meta information about the models for fitting of isothermal experiments.
 
-Furthermore, two data sets mimicking the results of an isothermal inactivation experiment (`isothermal_inactivation`) and a dynamic experiment (`dynamic_inactivation`).
+Furthermore, two data sets mimicking the results of an isothermal inactivation experiment (`isothermal_inactivation`) and a dynamic experiment (`dynamic_inactivation`) are included in the package.
 
-In this document, a survey of the functionalities implemented in the __bioinactivation__ package is provided.
+__bioinactivation__ does not require the user to introduce the data in any particular units system. The units system used for input is kept on the output. For this reason, units are not shown in any figure within this document.
+
+In this document, the functionalities of the __bioinactivation__ package are presented.
 
 ## Example data sets included in the package
 
@@ -58,9 +60,9 @@ This data set supplies experiments made at six different temperature levels, wit
 
 * The first variable (`time`) provides the experiment time at which the observation was made.
 
-* The second column (`temp`) contains the temperature of the experiment.
+* The second column (`temp`) contains the temperature of the experiment at a given time.
 
-* The logarithmic difference is given by the third column (`log_diff`).
+* The logarithmic difference between the initial concentration and the one at a time-temperature combination is given by the third column (`log_diff`).
 
 The following plot illustrates the data contained in the data set.
 
@@ -81,7 +83,7 @@ The `dynamic_inactivation` data set contained within the __bioinactivation__ pac
 data(dynamic_inactivation)
 ```
 
-This example data set contains 3 variables and 19 observations. The first column, `time`, reflects the time point at which the the observation was taken. The second and third ones provide the number of microorganism (`N`) and the temperature (`temperature`) recorded.
+This example data set contains 3 variables and 19 observations. The first column, `time`, reflects the time point at which the observation was taken. The second and third ones provide the number of microorganism (`N`) and the temperature (`temperature`) recorded.
 
 The following plot depicts the data contained in the data set.
 
@@ -141,7 +143,7 @@ In the Weibull-Peleg model the parameter $n$ is assumed to be temperature indepe
 
 $$ b(T) = \mathrm{ln} \big\{ 1 + \mathrm{exp} \big[ k_b(T - T_c) \big] \big\} $$
 
-This equation is based on the definition of a critical temperature ($T_c$). For temperatures ($T$) much lower than the critical on, $b(T) = 0$ and the inactivation is insignificant. For temperatures close to $T_c$, there is an exponential growth of $b(T)$ with respect to the temperature. For temperatures much higher than the critical one, a linear relation exists between $T$ and $b(T)$ with a slope $k_b$. This evolution is illustrated in the following plot:
+This equation is based on the definition of a critical temperature ($T_c$). For temperatures ($T$) much lower than $T_c$, $b(T) \simeq 0$ and the inactivation is insignificant. For temperatures close to $T_c$, there is an exponential growth of $b(T)$ with respect to the temperature. For temperatures much higher than the critical one, a linear relation exists between $T$ and $b(T)$ with a slope $k_b$. This evolution is illustrated in the following plot:
 
 
 ```{r, echo=FALSE, fig.width=6, fig.height=4, fig.align='center'}
@@ -155,7 +157,7 @@ legend("topleft", c("k = 0.3","k = 0.2"), col=c("red", "blue"), lwd=1, cex = 1)
 
 #### Weibull-Peleg model for non-isothermal inactivation
 
-The inactivation model for dynamic inactivation described by Peleg and Cole (1998) has been implemented in the __bioinactivation__ package. This model is based on the constitutive equation of the Weibull-Peleg model (Peleg and Cole, 1998) for isothermal inactivation:
+The model described by Peleg and Cole (1998) for dynamic inactivation has been implemented in the __bioinactivation__ package. This model is based on the constitutive equation of the Weibull-Peleg model (Peleg and Cole, 1998) for isothermal inactivation:
 
 $$ \mathrm{log}_{10}S(t) = -b(T) \cdot t^n $$
 
@@ -182,11 +184,11 @@ The Weibullian model presented by Mafart et al. (2002) for isothermal cases is d
 
 $$ \mathrm{log}_{10}S(t) = - \Big( \frac{t}{\delta(T)} \Big)^\beta $$
 
-where $S = N/N_0$ represents the fraction of survivors and $t$ the time. $\delta$ and $\beta$ are respectively the rate and shape factors of the Weibull distribution.
+where $S = N/N_0$ represents the fraction of survivors and $t$ is the time. $\delta$ and $\beta$ are, respectively, the rate and shape factors of the Weibull distribution.
 
 In this model, $\beta$ is considered to be temperature independent and $\delta$ follows and exponential relation with temperature ($T$):
 
-$$ \delta(T) = \frac {\delta_{ref}} {10^ {\Big( \frac{T-T_{ref}}{z} \Big)} } $$
+$$ \delta(T) = \frac {\delta_{ref}} {10^ {\big( T-T_{ref}/z \big)} } $$
 
 where $T_{ref}$ is a reference temperature, $\delta_{ref}$ is the value of $\delta$ at this reference temperature and $z$ describes the sensitivity of the microorganism to temperature variations.
 
@@ -198,7 +200,7 @@ $$ \frac{d\mathrm{log}_{10}S(t)}{dt} =  -\beta \frac{t^{\beta-1}}{\delta(T)^\bet
 
 As well as for the isothermal model, an exponential relation between $\delta(T)$ and temperature is assumed:
 
-$$ \delta(T) = \frac {\delta_{ref}} {10^ {\Big( \frac{T-T_{ref}}{z} \Big)} } $$
+$$ \delta(T) = \frac {\delta_{ref}} {10^ {\big( T-T_{ref}/z \big)} }  $$
 
 ### Geeraerd's model
 
@@ -244,7 +246,7 @@ The __bioinactivation__ package includes capabilities for the prediction of the 
 * `parms` and
 * `temp_profile`.
 
-`simulation_model` is a string identifying the model to use. A list of the available models can be obtained by calling the function `get_model_data()` without any argument.
+`simulation_model` is a string identifying the model to be used. A list of the available models can be obtained by calling the function `get_model_data()` without any argument.
 
 ```{r}
 get_model_data()
@@ -256,13 +258,13 @@ In this example Geeraerd's model will be used, so the value `Geeraerd` will be a
 example_model <- "Geeraerd"
 ```
 
-`times` is a numeric vector which specifies at which values of time the results will be output. It does not define the points at which the numerical integration is done, so changing it will not affect the values calculated at individual time points. An arbitrary equally spaced vector will be used for this example.
+`times` is a numeric vector which specifies the values of time when results will be returned. It does not define the points at which the numerical integration is done, so changing it does not affect the values calculated at individual time points. An arbitrary equally spaced vector will be used for this example.
 
 ```{r}
 times <- seq(0, 5, length=100)
 ```
 
-`parms` is a named numeric vector specifying the values of the model parameters, as well as the initial values of the model variables. A call to the function `get_model_data()` with a valid model identifier as an input argument provides several data concerning this model as a list. Namely, its parameters and its variables.
+`parms` is a named numeric vector specifying the values of the model parameters, as well as the initial values of the model variables. A call to the function `get_model_data()` with a valid model identifier as an input argument provides several data concerning this model as a list. Namely, its parameters and variables.
 
 ```{r}
 model_data <- get_model_data(example_model)
@@ -270,7 +272,7 @@ print(model_data$parameters)
 print(model_data$variables)
 ```
 
-The input arguments `parms` must provide values for every degree of freedom of the model, i.e. model parameters and variables. The names of the model parameters must be identical to those provided by the function `get_model_data()`. On the other hand, the names assigned to the initial values of the values must be equal to the ones provided by `get_model_data()` plus a character \code{"0"}. For instance, the initial value for the variable `N` needs to be labeled \code{"N0"}.
+The input arguments `parms` must provide values for every degree of freedom of the model, i.e. model parameters and variables. The names of the model parameters must be identical to those provided by the function `get_model_data()`. On the other hand, the names assigned to the initial values of the model variables must be equal to the ones provided by `get_model_data()` plus a character `"0"`. For instance, the initial value for the variable named `N` needs to be labeled `"N0"`.
 
 ```{r}
 model_parms <- c(D_R = 1,
@@ -284,7 +286,9 @@ model_parms <- c(D_R = 1,
 
 The last input variable required for the function is a data frame defining a discrete temperature profile. Values of the temperature at time points not provided will be approximated by linear interpolation. In case a temperature value outside the time range specified is requested, the temperature of the closest extreme will be used.
 
-A temperature profile with constant a slope of 10ºC/min ranging between 70 and 120ºC will be used for this prediction.
+Predictions for isothermal conditions can also be calculated using this function. In this case, a constant temperature profile has to be defined.
+
+A temperature profile with a constant slope of 10ºC/min ranging between 70 and 120ºC will be used for this prediction.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 temperature_profile <- data.frame(time = c(0, 5),
@@ -312,7 +316,9 @@ The entry _simulation_ provides a data frame with the calculated results.
 head(prediction_results$simulation)
 ```
 
-The first column contains the times at which results are output are given. They are equal to the values provided by the `times` input variable, although sorted. In case there were some repeated values, results are output only once.
+The first columns contains the output times.
+
+The first column contains the times at which results are output are given. They are equal to the values provided by the `times` input variable, although sorted. In case there were some repeated values in the input argument `times`, results are output only once.
 
 The following columns provide the results obtained for the variables of the models. In this case, as Geeraerd's model has been used, `N` and `C_c`. The last three columns provide the values of $\mathrm{log}_{10}(N)$, $S$ and $\mathrm{log}_{10}(S)$.
 
@@ -322,7 +328,7 @@ The `SimulInactivation` object includes S3 methods for the plotting of its resul
 plot(prediction_results)
 ```
 
-The implementation of the Geeraerd model allows to model inactivation process without shoulder and/or tail effects. For the model without shoulder, assign zero to the parameter C_c0:
+The implementation of the Geeraerd model allows to model inactivation process without shoulder and/or tail effects. For the model without shoulder, assign zero to the parameter `C_c0`:
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 parms_no_shoulder <- c(D_R = 1,
@@ -341,8 +347,6 @@ plot(prediction_no_shoulder)
 ```
 Although the effect is not fully clear with the temperature profile used due to the increasing temperature, assigning zero to the initial value of `C_c` eliminates the shoulder.
 
-__XX a lo mejor deberia usar otro perfil para este ejemplo__
-
 The model without tail effect can be obtained by assigning zero to `N_min`.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
@@ -360,13 +364,11 @@ prediction_no_tail <- predict_inactivation(example_model, times, parms_no_tail, 
 plot(prediction_no_tail)
 
 ```
-Note that this operation causes some warnings. The differential equation of the system is solved for the variable `N`. For values of this variable very close to zero (on the order of $10^{-5}$), the numerical error may cause the calculated value of `N` to be lower than zero. Afterwards, when the logarithmic count of microorganism is calculated, warnings are generated for these values. However, this problem only occurs for values of `N` so low that cannot be observed in laboratory and are irrelevant for most calculations.
-
-__XX Por favor revisad este último párrafo__
+Note that this operation causes some warnings. The differential equation of the system is solved for the variable `N`. For values of this variable very close to zero (of an order of magnitude lower than $10^{-5}$), the numerical error may cause the calculated value of `N` to be lower than zero. Afterwards, when the logarithmic count of microorganisms is calculated, warnings are generated for these values. However, this problem only occurs for values of `N` below the level of detection in normal laboratory conditions and are not relevant in most cases.
 
 ## Fitting of isothermal data
 
-The package __bioinactivation__ includes functionality for the fitting of inactivation models to isothermal experiments. This is accomplished through the function `fit_isothermal_inactivation()`, which makes use of the `nls` function from the `stats` package to fit the model parameters using non linear regression.
+The package __bioinactivation__ includes functionality for the fitting of inactivation models to isothermal data. The function `fit_isothermal_inactivation()` makes use of the `nls` function from the `stats` package to fit the model parameters using non-linear regression.
 
 The `fit_isothermal_inactivation()` function requires the definition of five input parameters:
 
@@ -376,19 +378,21 @@ The `fit_isothermal_inactivation()` function requires the definition of five inp
 * `adjust_log` and 
 * `known_params`.
 
-The experimental data to fit is provided with argument `death_data`, which is a data frame. It must contain at least three columns providing the times at which the observations were made (_time_), the temperature of the experiment (_temp_) and the logarithmic difference observed with respect to the original population (*log_diff*). The example data set `isothermal_inactivation`, which already has this format, will be used for this demonstration.
+The experimental data to fit is provided by the argument `death_data`, which is a data frame. It must contain at least three columns providing the times when the observations were made (_time_), the temperature of the experiment (_temp_) and the logarithmic difference observed with respect to the original population (*log_diff*). The example data set `isothermal_inactivation`, which already has this format, is used for this demonstration.
 
 ```{r}
 data(isothermal_inactivation)
 ```
 
-The model to use for the adjustment is defined by the character variable `model_name`. A list of the valid model keys for isothermal adjustment can be obtained by calling the function `get_isothermal_model_data()` without any arguments.
+The model to be used for the adjustment is defined by the character variable `model_name`. A list of the valid model keys for isothermal adjustment can be obtained by calling the function `get_isothermal_model_data()` without any arguments.
 
 ```{r}
 get_isothermal_model_data()
 ```
 
-Bigelow's model, whose key is `"Bigelow"`, will be used in this example.
+Note that Geeraerd's model is not available for isothermal adjustment. The reason for this is the absence of a secondary model that explains the relation between $N_{res}$ and temperature, making impossible the adjustment using non-linear regression. A possible alternative for the adjustment of Geeraerd's model to individual isothermal experiments is the use of the function `fit_dynamic_inactivation()` with a constant temperature profile.
+
+Bigelow's model, whose key is `"Bigelow"`, is used in this example.
 
 ```{r}
 model_name <- "Bigelow"
@@ -407,7 +411,7 @@ Therefore, the isothermal Bigelow model requires the definition of three paramet
 known_params = list(temp_ref = 100)
 ```
 
-Due to the use of the `nls` functions, initial points are required for the unknown model parameters. These initial values are provided by the input argument `starting_point`. This variable needs to be a list with its names identical to those retrieved using `get_isothermal_model_data()`.
+According to the requirements of the `nls` function, initial points are required for the unknown model parameters. These initial values are provided by the input argument `starting_point`. This variable needs to be a list with its names identical to those retrieved using `get_isothermal_model_data()`.
 
 ```{r}
 starting_point <- list(z = 10,
@@ -415,9 +419,9 @@ starting_point <- list(z = 10,
                        )
 ```
 
-Defining starting points too unrealistic might result in `nls` raising an error. Hence, it is important to define values relatively close to the solution. This can be done from experience, consulting the literature or testing isothermal predictions with the `predict_inactivation` function.
+Definition of unrealistic starting points might result in `nls` raising an error. Hence, it is important to define values relatively close to the solution. This can be done from experience, consulting the literature or testing isothermal predictions with the `predict_inactivation` function.
 
-The `fit_isothermal_inactivation()` functions can to make the adjustment based on the minimization of the error of either the logarithmic count ($\mathrm{log}_{10}(N)$) or the total number of microorganisms ($N$). In this example, the adjustment will be based on the minimization of the error of the logarithmic count, so the `adjust_log` argument will be set to `TRUE`.
+The `fit_isothermal_inactivation()` functions can base the adjustment on the minimization of the error of either the logarithmic count ($\mathrm{log}_{10}(N)$) or the total number of microorganisms ($N$). In this example, the adjustment is based on the minimization of the error of the logarithmic count, so the `adjust_log` argument will be set to `TRUE`.
 
 ```{r}
 adjust_log <- TRUE
@@ -440,8 +444,8 @@ The information of the adjustment process is provided under the entry `nls`, whe
 
 ```{r}
 summary(iso_fit$nls)
-vcov(iso_fit$nls)
-confint(iso_fit$nls)
+vcov(iso_fit$nls)  # Calculates variance-covariance matrix {stats}
+confint(iso_fit$nls)  # Calculates confidence intervals {stats}
 ```
 
 The entry `parameters` contains the values of both the parameters fixed through the input argument `known_params` and those adjusted by non linear regression. These values are saved as a list.
@@ -462,7 +466,7 @@ The data used for the adjustment is saved  under the header `data`.
 head(iso_fit$data)
 ```
 
-The class `IsoFitInactivation` implements S3 methods for `plot`. This method generates a comparison plot between experimental data and predicted values for every single one experiment temperatures. The title of each of the plots specifies the temperature of the experiments.
+The class `IsoFitInactivation` implements S3 methods for `plot`. This method generates a comparison plot between experimental data and predicted values for every single experimental temperature. The title of each of the plots specifies the temperature of the experiments.
 
 ```{r}
 plot(iso_fit)
@@ -470,7 +474,7 @@ plot(iso_fit)
 
 ## Fitting of dynamic experiments
 
-The __bioinactivation__ package implements the function `fit_dynamic_inactivation()`, which permits the adjustment of inactivation models to experimental data with time dependent temperature profiles. This is accomplished using the function `modFit` of the FME package (Soetaert, Petzoldt, and Setzer 2010).
+The __bioinactivation__ package implements the function `fit_dynamic_inactivation()`, which permits the adjustment of inactivation models to experimental data with time dependent temperature profiles. This is accomplished using the function `modFit` of the FME package (Soetaert, Petzoldt, and Setzer 2010b).
 
 The function `fit_dynamic_inactivation()` requires the definition of eight input arguments:
 
@@ -483,7 +487,7 @@ The function `fit_dynamic_inactivation()` requires the definition of eight input
 * `known_params` and
 * `minimize_log`.
 
-The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the time at which the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time. The data set `dynamic_inactivation` included in the __bioinactivation__ package will be used for this demonstration.
+The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the times when the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time. The function requires the initial number of microorganism $N_0$ to be the same for each experiment. The data set `dynamic_inactivation` included in the __bioinactivation__ package is used for this demonstration.
 
 ```{r}
 data(dynamic_inactivation)
@@ -495,21 +499,21 @@ The inactivation model is specified by the character variable `simulation_model`
 get_model_data()
 ```
 
-The Weibull-Peleg model will be used in this example.
+The Weibull-Peleg model is used in this example.
 
 ```{r}
 simulation_model <- "Peleg"
 ```
 
-The temperature profile of the experiment is given by the data frame `temp_profile`. This variable provides the values of the temperature at discrete time points. Temperatures at time points not provided are calculated by linear interpolation. The `dynamic_inactivation` data set provides the temperature of each observation. The temperature profile defined by this observations will be used for the adjustment.
+The temperature profile of the experiment is given by the data frame `temp_profile`, which provides the values of the temperature at discrete time points. Temperatures at time points not included in `temp_profile` are calculated by linear interpolation. The `dynamic_inactivation` data set includes the temperature of each observation. Hence, the temperature profile defined by this observations is used for the adjustment.
 
 ```{r}
 dummy_temp <- data.frame(time = dynamic_inactivation$time,
                          temperature = dynamic_inactivation$temperature)
 ```
-Although the temperature profile defined defines several different values of temperature for each value of time, the function will only use the one calculated by linear interpolation for the resolution of the differential equation.
+Although the temperature profile defines several different values of temperature for each time value, only the one calculated by linear interpolation will be used for the resolution of the differential equation.
 
-It is required for the adjustment the classification of every degree of freedom of the model (model parameters and initial values of the values) as either known or to be adjusted. The degrees of freedom of the model selected can be obtained by calling `get_model_data()` with the model key as argument.
+The classification of every degree of freedom of the model (model parameters and initial values of the variables) as either known or to be adjusted is required for the adjustment. The degrees of freedom of the model selected can be obtained by calling `get_model_data()` with the model key as argument.
 
 ```{r}
 model_data <- get_model_data(simulation_model)
@@ -517,13 +521,14 @@ model_data$parameters
 model_data$variables
 ```
 
-The degrees of freedom known are defined through the argument `known_parameters`. It has to be a named vector with its names identical to the names of the model parameters provided by `get_model_data()`. For model variables, the name must be equal to the variable name plus a character zero ("0"). Solely the parameter *temp_crit* will be considered known in this example.
+The degrees of freedom (parameters or inial values of variables) known are defined through the named list `known_parameters`. The names of known model parameters need to be identical to those provided by the function `get_model_data()`. The names of known initial values must be equal to the variable name provided by `get_model_data()` plus a caracter zero (`"0"`). In this example, solely the parameter *temp_crit* will be considered as known.
 
 ```{r}
 known_params = c(temp_crit = 100)
 ```
 
-The rest of the degrees of freedom will be adjusted to the experimental data. Unknown parameters need the definition of initial points for the adjustment as well as upper and lower bounds. This information is passed by the input arguments `starting_points`, `upper_bounds` and `lower_bounds`, which share format with the input argument `known_params`. In case of unbounded variables, `+Inf` or `-Inf` must be assigned to the desired entries of `upper_bounds` or `lower_bounds`.
+The rest of the degrees of freedom are adjusted to the experimental data.
+The fitting algorithm requires the definition of starting points for the adjustment of unknown parameters, as well as upper and lower bounds. This information is passed by the input arguments `starting_points`, `upper_bounds` and `lower_bounds`, which share format with the input argument `known_params`. In case of unbounded variables, `+Inf` or `-Inf` must be assigned to the desired entries of `upper_bounds` or `lower_bounds`.
 
 ```{r}
 starting_points <- c(n = 1,
@@ -538,11 +543,11 @@ lower_bounds <- c(n = 0,
                   N0 = 1e4)
 ```
 
-Too unrealistic initial points for the adjustment will cause the adjustment algorithm to fail. Realistic initial points can be obtained from experience, literature or by testing predictions using with `predict_inactivation()`.
+Unrealistic initial points for the adjustment will cause the fitting algorithm to fail. Realistic initial points can be obtained from experience, literature or by testing different predictions using `predict_inactivation()`.
 
 It is advisable to use reasonable lower and upper bounds, so degrees of freedom do not become negative or unrealistically large.
 
-The adjustment can be based on the minimization of the error of the total count of microorganism ($N$) or the logarithmic count ($\mathrm{log}_{10}N$). This distinction is made by the boolean input argument `minimize_log`. In case it is `TRUE`, the error of the logarithmic count is minimized. For this example, the error in the total number of microorganism will be optimized. The variable `minimize_log` is, thus, defined accordingly:
+The adjustment can be based on the minimization of the error of the total count of microorganism ($N$) or on the logarithmic count ($\mathrm{log}_{10}N$). This distinction is made by the boolean input argument `minimize_log`. In case it is `TRUE`, the error of the logarithmic count is minimized. For this example, the latter will be used.
 
 ```{r}
 minimize_log = TRUE
@@ -590,14 +595,14 @@ plot(dynamic_fit)
 
 ## References
 
-Bigelow W.D. (1921). _The logarithmic nature of thermal death time curves._ J. Infectious Disease, 29: 528-536.
+Bigelow W.D. (1921). The logarithmic nature of thermal death time curves. _Journal Infectious Disease_, 29: 528-536.
 
-Peleg M. and Cole M.B. (1998). _Reinterpretation of microbial survival curves._ Critical Reviews in Food Science 38, 353-380.
+Peleg M. and Cole M.B. (1998). Reinterpretation of microbial survival curves. _Critical Reviews in Food Science_ 38, 353-380.
 
-Mafart, P., Couvert, O., Gaillard, S., & Leguerinel, I. (2002). *On calculating sterility in thermal preservation methods: Application of the Weibull frequency distribution model.* International Journal of Food Microbiology, 72, 107–113.
+Mafart, P., Couvert, O., Gaillard, S., & Leguerinel, I. (2002). On calculating sterility in thermal preservation methods: Application of the Weibull frequency distribution model. _International Journal of Food Microbiology_, 72, 107–113.
 
-Geeraerd AH, Valdramidis V and Van Impe JF, (2005). *GInaFiT, a freeware tool to assess non-log-linear microbial survivor curves.* International Journal of Food Microbiology, 102, 95-105.
+Geeraerd AH, Valdramidis V and Van Impe JF, (2005). GInaFiT, a freeware tool to assess non-log-linear microbial survivor curves. _International Journal of Food Microbiology_, 102, 95-105.
 
-Karline Soetaert, Thomas Petzoldt, R. Woodrow Setzer (2010).  *Solving Differential Equations in R: Package deSolve.* Journal of Statistical Software, 33(9), 1--25.  URL http://www.jstatsoft.org/v33/i09/.
+Soetaert K., Petzoldt T., Setzer R.W. (2010).  Solving Differential Equations in R: Package deSolve. _Journal of Statistical Software_, 33(9), 1--25.  URL http://www.jstatsoft.org/v33/i09/.
 
-Soetaert, Karline and Petzoldt, Thomas (2010). *Inverse Modelling, Sensitivity and Monte Carlo Analysis in R Using Package FME.* Journal of Statistical Software, 33(3), 1-28. URL http://www.jstatsoft.org/v33/i03/.
+Soetaert K., Petzoldt T., Setzer R.W. (2010). Inverse Modelling, Sensitivity and Monte Carlo Analysis in R Using Package FME. _Journal of Statistical Software_, 33(3), 1-28. URL http://www.jstatsoft.org/v33/i03/.
