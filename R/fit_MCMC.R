@@ -99,7 +99,7 @@ fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profil
     #- Add a small tolerance to data at time 0 to avoid singularities
 
     data_0 <- data_for_fit$time == 0
-    data_for_fit[data_0, "time"] <- 1e-6
+    data_for_fit[data_0, "time"] <- 1e-5
 
     #- Call the fitting function
 
