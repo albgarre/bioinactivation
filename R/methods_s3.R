@@ -26,7 +26,7 @@ is.SimulInactivation <- function(x) inherits(x, "SimulInactivation")
 #'
 plot.SimulInactivation <- function(x, y=NULL, ...) {
 
-    plot(logN ~ time, data = x$simulation, type = "l")
+    plot(logN ~ time, data = x$simulation, type = "l", ...)
 
 }
 
@@ -82,14 +82,28 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 #'
 plot.FitInactivation <- function(x, y=NULL, ...) {
 
-    plot(x$best_prediction)
-
     death_data <- x$data
 
     if (!("logN" %in% names(death_data))) {
 
         death_data$logN <- log10(death_data$N)
     }
+
+    #- Find the limits
+
+    min_logN_data <- min(death_data$logN)
+    min_logN_pred <- min(x$best_prediction$simulation$logN)
+    min_logN <- min(c(min_logN_data, min_logN_pred))
+
+    max_logN_data <- max(death_data$logN)
+    max_logN_pred <- max(x$best_prediction$simulation$logN)
+    max_logN <- max(c(max_logN_data, max_logN_pred))
+
+    ylim <- c(floor(min_logN), ceiling(max_logN))
+
+    #- Make the plot
+
+    plot(x$best_prediction, ylim = ylim)
 
     points(logN ~ time, data = death_data)
 
@@ -109,16 +123,7 @@ plot.FitInactivation <- function(x, y=NULL, ...) {
 #'
 plot.FitInactivationMCMC <- function(x, y=NULL, ...) {
 
-    plot(x$best_prediction)
-
-    death_data <- x$data
-
-    if (!("logN" %in% names(death_data))) {
-
-        death_data$logN <- log10(death_data$N)
-    }
-
-    points(logN ~ time, data = death_data)
+    plot.FitInactivation(x)
 
 }
 
