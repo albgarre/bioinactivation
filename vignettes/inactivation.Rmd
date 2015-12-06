@@ -32,7 +32,9 @@ The __bioinactivation__ package provides three functions for the modelization of
 
 * `fit_isothermal_inactivation()` adjusts the parameters of a selected inactivation model to a set of isothermal inactivation experiments.
 
-* `fit_dynamic_inactivation()` fits the parameters of a chosen inactivation model to a set of dynamic inactivation experiments.
+* `fit_dynamic_inactivation()` fits the parameters of a chosen inactivation model to a set of dynamic inactivation experiments using non-linear regression.
+
+* `fit_inactivation_MCMC()` adjusts an inactivation model to a set of dynamic inactivation experiments using Markov Chain Monte Carlo methods.
 
 Moreover, two functions with meta information of the inactivation models implemented are included:
 
@@ -368,7 +370,7 @@ Note that this operation causes some warnings. The differential equation of the 
 
 ## Fitting of isothermal data
 
-The package __bioinactivation__ includes functionality for the fitting of inactivation models to isothermal data. The function `fit_isothermal_inactivation()` makes use of the `nls` function from the `stats` package to fit the model parameters using non-linear regression.
+The package __bioinactivation__ includes functionality for the fitting of inactivation models to isothermal data. The function `fit_isothermal_inactivation()` makes use of the `nls()` function from the `stats` package to fit the model parameters using non-linear regression.
 
 The `fit_isothermal_inactivation()` function requires the definition of five input parameters:
 
@@ -472,9 +474,9 @@ The class `IsoFitInactivation` implements S3 methods for `plot`. This method gen
 plot(iso_fit)
 ```
 
-## Fitting of dynamic experiments
+## Fitting of dynamic experiments using non-linear regression
 
-The __bioinactivation__ package implements the function `fit_dynamic_inactivation()`, which permits the adjustment of inactivation models to experimental data with time dependent temperature profiles. This is accomplished using the function `modFit` of the FME package (Soetaert, Petzoldt, and Setzer 2010b).
+The __bioinactivation__ package implements the function `fit_dynamic_inactivation()`, which permits the adjustment of inactivation models to experimental data with time dependent temperature profiles. This is accomplished using the function `modFit()` of the FME package (Soetaert, Petzoldt, and Setzer 2010b), which adjusts the model using non-linear regression.
 
 The function `fit_dynamic_inactivation()` requires the definition of eight input arguments:
 
@@ -591,6 +593,52 @@ The `FitInactivation` object includes S3 methods for the creation of a compariso
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 plot(dynamic_fit)
+```
+
+## Fitting of dynamic experiments using Markov Chain Monte Carlo methods
+
+The function `fit_inactivation_MCMC()` from __bioinactivation__ is able to wrap the `modMCMC()` function from the FME package (Soetaert, Petzoldt, and Setzer 2010b). Therefore, inactivation models can be adjusted to dynamic experiments using Markov Chain Monte Carlo methods.
+
+The function `fit_inactivation_MCMC()` has nine input arguments:
+
+* `experiment_data`,
+* `simulation_model`,
+* `temp_profile`,
+* `starting_points`,
+* `upper_bounds`,
+* `lower_bounds`,
+* `known_params`,
+* `minimize_log` and
+* `...`.
+
+The first eight are identical in contents and format to those defined for `fit_dynamic_inactivation()` and will not be described again here. The only addition is the `...` argument, which permits to include additional arguments for the `modMCMC()` function.
+
+The same arguments used for the demonstration of `fit_dynamic_inactivation()` will be used in this example, with the addition of the `niter` argument, which sets the number of iterations of the MCMC.
+
+```{r}
+set.seed(82619)
+
+MCMC_fit <- fit_inactivation_MCMC(dynamic_inactivation, simulation_model, dummy_temp,  
+                                        starting_points, upper_bounds, lower_bounds,  
+                                        known_params, minimize_log, niter = 50)
+```
+
+`fit_inactivation_MCMC()` returns a list of class `FitInactivationMCMC` with three entries:
+
+* _modMCMC_,
+* *best_prediction* and
+* _data_.
+
+_modMCMC_ provides the instance of _modMCMC_ returned by the function `modMCMC()`. This object includes broad information about the adjustment process. For more information, refer to the help of `modMCMC()`.
+
+```{r}
+summary(MCMC_fit$modMCMC)
+```
+
+*best_prediction* contains a list of class `SimulInactivation` with the prediction of the adjusted parameters. Finally, the data used for the fit is saved under _data_. The `FitInactivationMCMC` instance includes a S3 implementation of `plot()` for comparing the prediction against the data.
+
+```{r}
+plot(MCMC_fit, fig.width=6, fig.height=4, fig.align='center')
 ```
 
 ## References
