@@ -637,8 +637,8 @@ summary(MCMC_fit$modMCMC)
 
 *best_prediction* contains a list of class `SimulInactivation` with the prediction of the adjusted parameters. Finally, the data used for the fit is saved under _data_. The `FitInactivationMCMC` instance includes a S3 implementation of `plot()` for comparing the prediction against the data.
 
-```{r}
-plot(MCMC_fit, fig.width=6, fig.height=4, fig.align='center')
+```{r, fig.width=6, fig.height=4, fig.align='center'}
+plot(MCMC_fit)
 ```
 
 ## References
