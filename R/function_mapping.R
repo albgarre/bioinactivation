@@ -41,7 +41,8 @@ get_model_data <- function(simulation_model = NULL) {
 
     function_map <- list(Bigelow = list(ode = dBigelow_model,
                                         dtemp = FALSE,
-                                        variable = "N",
+                                        variables = "N",
+                                        variables_priv = "N",
                                         parameters = c("D_R", "z", "temp_ref")
                                         ),
 
