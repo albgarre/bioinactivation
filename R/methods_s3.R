@@ -91,12 +91,12 @@ plot.FitInactivation <- function(x, y=NULL, ...) {
 
     #- Find the limits
 
-    min_logN_data <- min(death_data$logN)
-    min_logN_pred <- min(x$best_prediction$simulation$logN)
+    min_logN_data <- min(death_data$logN, na.rm = TRUE)
+    min_logN_pred <- min(x$best_prediction$simulation$logN, na.rm = TRUE)
     min_logN <- min(c(min_logN_data, min_logN_pred))
 
-    max_logN_data <- max(death_data$logN)
-    max_logN_pred <- max(x$best_prediction$simulation$logN)
+    max_logN_data <- max(death_data$logN, na.rm = TRUE)
+    max_logN_pred <- max(x$best_prediction$simulation$logN, na.rm = TRUE)
     max_logN <- max(c(max_logN_data, max_logN_pred))
 
     ylim <- c(floor(min_logN), ceiling(max_logN))
