@@ -18,6 +18,8 @@
 #'
 #' @seealso \code{\link{approxfun}}
 #'
+#' @importFrom stats approxfun
+#'
 build_temperature_interpolator <- function(temperature_data){
 
     temp_profile <- approxfun(temperature_data$time, temperature_data$temperature, rule=2)

@@ -24,6 +24,8 @@ is.SimulInactivation <- function(x) inherits(x, "SimulInactivation")
 #'
 #' @export
 #'
+#' @importFrom graphics plot
+#'
 plot.SimulInactivation <- function(x, y=NULL, ...) {
 
     plot(logN ~ time, data = x$simulation, type = "l", ...)
@@ -41,6 +43,8 @@ plot.SimulInactivation <- function(x, y=NULL, ...) {
 #' @param y,... ignored
 #'
 #' @export
+#'
+#' @importFrom graphics plot lines title
 #'
 plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 
@@ -79,6 +83,8 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 #' @param y,... ignored
 #'
 #' @export
+#'
+#' @importFrom graphics plot points
 #'
 plot.FitInactivation <- function(x, y=NULL, ...) {
 

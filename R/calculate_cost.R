@@ -19,6 +19,7 @@
 #'        not adjusted)
 #'
 #' @importFrom FME modCost
+#' @importFrom stats complete.cases
 #'
 #' @return An instance of \code{\link{modCost}} with the error of the
 #'         prediction.

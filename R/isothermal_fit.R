@@ -33,6 +33,8 @@
 #'
 #' @export
 #'
+#' @importFrom stats coefficients
+#'
 #' @seealso \code{\link{nls}}
 #'
 #' @examples
