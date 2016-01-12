@@ -23,6 +23,8 @@
 #' @param minimize_log logical. If \code{TRUE}, the adjustment is based on the
 #'        minimization of the error of the logarithmic count.
 #' @param ... other arguments for \code{\link{modMCMC}}.
+#' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
+#'        The time for observatins taken at time 0 are changed for this value.
 #'
 #' @importFrom dplyr mutate_
 #' @importFrom dplyr %>%
@@ -67,15 +69,15 @@
 #' MCMC_fit <- fit_inactivation_MCMC(dynamic_inactivation, simulation_model,
 #'                                      dummy_temp, starting_points,
 #'                                      upper_bounds, lower_bounds,
-#'                                      known_params, minimize_log, niter = 500)
+#'                                      known_params, niter = 500)
 #'
 #' plot(MCMC_fit)
 #' ## END EXAMPLE 1 -----
 #'
 fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profile,
                                   starting_points, upper_bounds, lower_bounds,
-                                  known_params, minimize_log,
-                                  ...) {
+                                  known_params, ...,
+                                  minimize_log = TRUE, tol0 = 1e-5) {
 
     #- Check of the model parameters
 
@@ -98,8 +100,8 @@ fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profil
 
     #- Add a small tolerance to data at time 0 to avoid singularities
 
-    data_0 <- data_for_fit$time == 0
-    data_for_fit[data_0, "time"] <- 1e-5
+    data_0 <- data_for_fit$time < tol0
+    data_for_fit[data_0, "time"] <- tol0
 
     #- Call the fitting function
 

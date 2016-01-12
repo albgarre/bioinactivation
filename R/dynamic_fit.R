@@ -19,7 +19,10 @@
 #' @param known_params named numerical vector with the fixed (i.e., not
 #'        adjustable) model parameters.
 #' @param minimize_log logical. If \code{TRUE}, the adjustment is based on the
-#'        minimization of the error of the logarithmic count.
+#'        minimization of the error of the logarithmic count. \code{TRUE} by
+#'        default.
+#' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
+#'        The time for observatins taken at time 0 are changed for this value.
 #'
 #' @importFrom dplyr mutate_
 #' @importFrom dplyr %>%
@@ -75,7 +78,7 @@
 #'
 fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_profile,
                                      starting_points, upper_bounds, lower_bounds,
-                                     known_params, minimize_log) {
+                                     known_params, minimize_log = TRUE, tol0 = 1e-5) {
 
     #- Check of the model parameters
 
@@ -95,6 +98,11 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
     } else {
         data_for_fit <- select_(experiment_data, as.name("time"), as.name("N"))
     }
+
+    #- Add a small tolerance to data at time 0 to avoid singularities
+
+    data_0 <- data_for_fit$time < tol0
+    data_for_fit[data_0, "time"] <- tol0
 
     #- Call the fitting function
 

@@ -16,6 +16,8 @@
 #' @param parms list of parameters defining the parameters of the model.
 #' @param temp_profile data frame with discrete values of the temperature for
 #'        each time.
+#' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
+#'        The time for observatins taken at time 0 are changed for this value.
 #'
 #' @importFrom deSolve ode
 #' @importFrom dplyr mutate_
@@ -75,11 +77,15 @@
 #'
 #' ## END EXAMPLE 1 -----------
 #'
-predict_inactivation <- function(simulation_model, times, parms, temp_profile){
+predict_inactivation <- function(simulation_model, times, parms, temp_profile, tol0 = 1e-5){
 
     #- Check of the model parameters
 
     check_model_params(simulation_model, c(), parms, TRUE)
+
+    #- Remove 0 values of times
+
+    times[times < 0] <- tol0
 
     #- Gather the information
 
