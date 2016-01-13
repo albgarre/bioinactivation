@@ -15,15 +15,17 @@
 #'        desired. If \code{NULL}, the times in \code{MCMC_fit$best_prediction}
 #'        are used. \code{NULL} by default.
 #' @param quantiles numeric vector indicating the quantiles to calculate in
-#'        percentage. By default, it is set to c(5, 95) (i.e. 5% and 95%).
+#'        percentage. By default, it is set to c(2.5, 97.5) which generates a
+#'        prediction interval with confidence 0.95.
+#'
+#'
+#' @importFrom dplyr sample_n
 #'
 #' @return A data frame of class \code{PredictionMCMC}. On its first column,
 #'         time at which the calculation has been made is indicated.
 #'         The second column provides the mean of all the Monte Carlo
 #'         simulations at that time point.
 #'         Following columns contain the quantiles of the results.
-#'
-#' @importFrom dplyr sample_n
 #'
 #' @export
 #'
@@ -59,7 +61,7 @@
 #' ## END EXAMPLE 1 -----
 #'
 predict_inactivation_MCMC <- function(MCMC_fit, n_simulations = 100,
-                                      times = NULL, quantiles = c(5, 95)) {
+                                      times = NULL, quantiles = c(2.5, 97.5)) {
 
     ## Extract fitted parameters and identify known pars
 
