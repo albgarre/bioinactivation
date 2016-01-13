@@ -1,5 +1,5 @@
 
-#' Dynamic Prediction with Markov Chain Monte Carlo
+#' Dynamic Prediction Intervals using Monte Carlo
 #'
 #' Given an MCMC adjustment of a dynamic microbial inactivation process
 #' performed using \code{\link{fit_inactivation_MCMC}} calculates
@@ -55,6 +55,7 @@
 #'                                   known_params, niter = 500)
 #'
 #' MCMC_prediction <- predict_inactivation_MCMC(MCMC_fit)
+#' plot(MCMC_prediction)
 #' ## END EXAMPLE 1 -----
 #'
 predict_inactivation_MCMC <- function(MCMC_fit, n_simulations = 100,
