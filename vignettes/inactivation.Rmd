@@ -42,7 +42,7 @@ Moreover, two functions with meta information of the inactivation models impleme
 
 * `get_isothermal_model_data()`, provides meta information about the models for fitting of isothermal experiments.
 
-Furthermore, two data sets mimicking the results of an isothermal inactivation experiment (`isothermal_inactivation`) and a dynamic experiment (`dynamic_inactivation`) are included in the package.
+Furthermore, four data sets mimicking the results of an isothermal inactivation experiment (`isothermal_inactivation` and `laterosporus_iso`) and a dynamic experiment (`dynamic_inactivation` and `laterosporus_dyna`) are included in the package.
 
 __bioinactivation__ does not require the user to introduce the data in any particular units system. The units system used for input is kept on the output. For this reason, units are not shown in any figure within this document.
 
