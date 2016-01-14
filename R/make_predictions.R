@@ -85,7 +85,7 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile, t
 
     #- Remove 0 values of times
 
-    times[times < 0] <- tol0
+    times[times < tol0] <- tol0
 
     #- Gather the information
 
