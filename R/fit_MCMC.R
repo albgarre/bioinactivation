@@ -115,7 +115,7 @@ fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profil
 
     #- Prepare the output
 
-    prediction_time <- seq(1e-6, max(data_for_fit$time), length=100)
+    prediction_time <- seq(tol0, max(data_for_fit$time), length=100)
 
     best_prediction <- predict_inactivation(simulation_model,
                                             prediction_time,
