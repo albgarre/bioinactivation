@@ -206,14 +206,20 @@ plot.PredictionMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
 
     if (make_gg) {  # with ggplot 2
 
-        MCMC_prediction$logN <- log10(MCMC_prediction[ , 2])
-        MCMC_prediction$lower <- log10(MCMC_prediction[ , 3])
-        MCMC_prediction$upper <- log10(MCMC_prediction[ , 4])
+        if (!names(x)[2] == "mean"){
+            stop("ggplot plots not available for PredictionMCMC objects without
+                    quantiles calculated. Generate base plot instead.")
+        }
 
-        p <- ggplot(MCMC_prediction, aes(x = times)) +
+        x$mean <- log10(x[ , 2])
+        x$median <- log10(x[ , 3])
+        x$lower <- log10(x[ , 4])
+        x$upper <- log10(x[ , 5])
+
+        p <- ggplot(x, aes(x = times)) +
             geom_ribbon(aes(ymax = upper, ymin = lower), alpha = 0.6, fill = "#56B4E9") +
-            geom_line(aes(y = logN), linetype = 2, colour = "darkblue")
-#         print(p)
+            geom_line(aes(y = mean), linetype = 2, colour = "darkblue") +
+            geom_line(aes(y = median), linetype = 3, colour = "darkblue")
         return(p)
 
     } else {
@@ -222,14 +228,20 @@ plot.PredictionMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
         min_N <- min(x[nrow(x), 2:ncol(x)])
         y_lim <- c(floor(log10(min_N)), ceiling(log10(max_N)))
 
-        plot(log10(mean) ~ times, data = x, type = 'l',
-             ylab = "logN", ylim = y_lim)
+        if ("mean" %in% names(x)) {
 
-        for (i in 3:ncol(x)) {
-            lines(x$times, log10(x[ , i]), type = 'l', lty = i-1)
+            plot(log10(mean) ~ times, data = x, type = 'l',
+                 ylab = "logN", ylim = y_lim)
+
+        } else {
+            plot(x$times, log10(x[ , 2]), type = "l")
         }
 
-        legend("topright", names(x[-1]), lty = 1:(ncol(x)-1))
+        for (i in 3:ncol(x)) {
+            lines(x$times, log10(x[ , i]), type = 'l', lty = i-1, col = i-1)
+        }
+
+        legend("topright", names(x[-1]), lty = 1:(ncol(x)-1), col = 1:(ncol(x)-1))
 
     }
 
