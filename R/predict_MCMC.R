@@ -1,11 +1,9 @@
 
-#' Dynamic Prediction Intervals using Monte Carlo
+#' Dynamic Prediction Intervals from a Monte Carlo Adjustment
 #'
 #' Given an MCMC adjustment of a dynamic microbial inactivation process
 #' performed using \code{\link{fit_inactivation_MCMC}} calculates
 #' probability intervals at each time point using a Monte Carlo method.
-#'
-#'
 #'
 #' @param MCMC_fit An object of class \code{FitInactivationMCMC} as generated
 #'        by \code{\link{fit_inactivation_MCMC}}.
@@ -16,16 +14,18 @@
 #'        are used. \code{NULL} by default.
 #' @param quantiles numeric vector indicating the quantiles to calculate in
 #'        percentage. By default, it is set to c(2.5, 97.5) which generates a
-#'        prediction interval with confidence 0.95.
-#'
+#'        prediction interval with confidence 0.95. If \code{NULL}, the quantiles
+#'        are not calculated and all the simulations are returned.
 #'
 #' @importFrom dplyr sample_n
+#' @importFrom stats quantile median
 #'
 #' @return A data frame of class \code{PredictionMCMC}. On its first column,
 #'         time at which the calculation has been made is indicated.
-#'         The second column provides the mean of all the Monte Carlo
-#'         simulations at that time point.
-#'         Following columns contain the quantiles of the results.
+#'         If \code{quantiles = NULL}, the following columns contain the
+#'         results of each simulation. Otherwise, the second and third columns
+#'         provide the mean and median of the simulations at the given time
+#'         point. Following columns contain the quantiles of the results.
 #'
 #' @export
 #'
@@ -101,9 +101,20 @@ predict_inactivation_MCMC <- function(MCMC_fit, n_simulations = 100,
 
     ## Take means and quantiles from the results
 
-    quantile_matrix <- apply(result_matrix, 1, quantile, probs = quantiles/100)
-    mean_matrix <- rowMeans(result_matrix)
-    out_matrix <- as.data.frame(cbind(times, mean = mean_matrix, t(quantile_matrix)))
+    if (is.null(quantiles)) {
+        out_matrix <- as.data.frame(cbind(times, result_matrix))
+
+    } else {
+
+        quantile_matrix <- apply(result_matrix, 1, quantile, probs = quantiles/100)
+        median_matrix <- apply(result_matrix, 1, median)
+        mean_matrix <- rowMeans(result_matrix)
+        out_matrix <- as.data.frame(cbind(times,
+                                          mean = mean_matrix,
+                                          median = median_matrix,
+                                          t(quantile_matrix)))
+
+    }
 
     class(out_matrix) <- c("PredictionMCMC", class(out_matrix))
     return(out_matrix)
