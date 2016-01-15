@@ -23,6 +23,7 @@
 #'        default.
 #' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
 #'        The time for observatins taken at time 0 are changed for this value.
+#' @param ... further arguments passed to \code{\link{modFit}}
 #'
 #' @importFrom dplyr mutate_
 #' @importFrom dplyr %>%
@@ -78,7 +79,7 @@
 #'
 fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_profile,
                                      starting_points, upper_bounds, lower_bounds,
-                                     known_params, minimize_log = TRUE, tol0 = 1e-5) {
+                                     known_params, ..., minimize_log = TRUE, tol0 = 1e-5) {
 
     #- Check of the model parameters
 
@@ -111,7 +112,8 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
                   data_for_fit = data_for_fit,
                   lower = lower_bounds, upper = upper_bounds,
                   known_params = known_params,
-                  simulation_model = simulation_model
+                  simulation_model = simulation_model,
+                  ...
                   )
 
     #- Output the results
