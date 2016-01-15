@@ -246,3 +246,36 @@ plot.PredictionMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
     }
 
 }
+
+#' Summary of a FitInactivation object
+#'
+#' @param object Instance of SimulInactivation
+#' @param ... ignored
+#'
+#' @export
+#'
+summary.FitInactivation <- function(object, ...) {
+
+    summary(object$fit_results)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
