@@ -20,7 +20,7 @@
 #' @importFrom dplyr sample_n
 #' @importFrom stats quantile median
 #'
-#' @return A data frame of class \code{PredictionMCMC}. On its first column,
+#' @return A data frame of class \code{PredInactivationMCMC}. On its first column,
 #'         time at which the calculation has been made is indicated.
 #'         If \code{quantiles = NULL}, the following columns contain the
 #'         results of each simulation. Otherwise, the second and third columns
@@ -116,7 +116,7 @@ predict_inactivation_MCMC <- function(MCMC_fit, n_simulations = 100,
 
     }
 
-    class(out_matrix) <- c("PredictionMCMC", class(out_matrix))
+    class(out_matrix) <- c("PredInactivationMCMC", class(out_matrix))
     return(out_matrix)
 }
 
