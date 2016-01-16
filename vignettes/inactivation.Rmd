@@ -17,7 +17,7 @@ R-package __bioinactivation__ implements functions for the modelization of micro
 library(bioinactivation)
 ```
 
-The __bioinactivation__ package allows to predict the inactivation process of a population of microorganism microorganisms exposed to isothermal conditions (temperature remains constant with time) or non isothermal (temperature changes with time, dynmic conditions). Moreover, it can be used to adjust the parameters of different inactivation models to both isothermal and dynamic experimental data. All the functions contained in __bioinactivation__ are written in R.
+The __bioinactivation__ package allows to predict the inactivation process of a population of microorganisms exposed to isothermal conditions (temperature remains constant with time) or non isothermal (temperature changes with time, dynamic conditions). Moreover, it can be used to adjust the parameters of different inactivation models to both isothermal and dynamic experimental data. All the functions contained in __bioinactivation__ are written in R.
 
 __bioinactivation__ takes advantage of the capabilities of the packages `deSolve` (Soetaert, Petzoldt, and Setzer 2010a) and `FME` (Soetaert, Petzoldt, and Setzer 2010b) to make predictions of the inactivation process and to adjust model parameters to experimental data. The inactivation models most commonly used in the industry have been implemented in this package:
 
@@ -26,15 +26,13 @@ __bioinactivation__ takes advantage of the capabilities of the packages `deSolve
 * Weibull-Mafart model (Mafart et al., 2002),
 * Geeraerd's model (Geeraerd et al., 2005).
 
-The __bioinactivation__ package provides three functions for the modelization of microbial inactivation:
+The __bioinactivation__ package provides five functions for the modelization of microbial inactivation:
 
 * `predict_inactivation()` predicts the inactivation process of a population for some given temperature conditions, isothermal or not.
-
 * `fit_isothermal_inactivation()` adjusts the parameters of a selected inactivation model to a set of isothermal inactivation experiments.
-
 * `fit_dynamic_inactivation()` fits the parameters of a chosen inactivation model to a set of dynamic inactivation experiments using non-linear regression.
-
 * `fit_inactivation_MCMC()` adjusts an inactivation model to a set of dynamic inactivation experiments using Markov Chain Monte Carlo methods.
+* `predict_inactivation_MCMC()` generates prediction intervals for isothermal or non-isothermal inactivation processes using Monte Carlo methods.
 
 Moreover, two functions with meta information of the inactivation models implemented are included:
 
@@ -45,8 +43,6 @@ Moreover, two functions with meta information of the inactivation models impleme
 Furthermore, four data sets mimicking the results of an isothermal inactivation experiment (`isothermal_inactivation` and `laterosporus_iso`) and a dynamic experiment (`dynamic_inactivation` and `laterosporus_dyna`) are included in the package.
 
 __bioinactivation__ does not require the user to introduce the data in any particular units system. The units system used for input is kept on the output. For this reason, units are not shown in any figure within this document.
-
-In this document, the functionalities of the __bioinactivation__ package are presented.
 
 ## Example data sets included in the package
 
@@ -69,12 +65,11 @@ This data set supplies experiments made at six different temperature levels, wit
 The following plot illustrates the data contained in the data set.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-plot(log_diff ~ time, data=isothermal_inactivation, col = as.factor(temp))
-title("Example dataset: isothermal_inactivation")
-temps <- sort(unique(isothermal_inactivation$temp))
-legend("bottomright",
-       as.character(temps), col = 1:length(temps), pch = 1,
-       cex=1, title = "Temperature")
+library(ggplot2)
+ggplot(data = isothermal_inactivation) +
+    geom_point(aes(x = time, y = log_diff, col = as.factor(temp))) +
+    ggtitle("Example dataset: isothermal_inactivation")
+
 ```
 
 ### The example data set of a dynamic experiment
@@ -87,14 +82,69 @@ data(dynamic_inactivation)
 
 This example data set contains 3 variables and 19 observations. The first column, `time`, reflects the time point at which the observation was taken. The second and third ones provide the number of microorganism (`N`) and the temperature (`temperature`) recorded.
 
-The following plot depicts the data contained in the data set.
+The following plots depicts the data contained in the data set.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-plot(log10(N)  ~ time, data=dynamic_inactivation)
-title("Example dataset: dynamic_inactivation")
-plot(temperature  ~ time, data=dynamic_inactivation)
-title("Example dataset: dynamic_inactivation")
+ggplot(data = dynamic_inactivation) +
+    geom_point(aes(x = time, y = log10(N))) +
+    ggtitle("Example dataset: dynamic_inactivation. Observations")
 ```
+```{r, fig.width=6, fig.height=4, fig.align='center'}
+ggplot(data = dynamic_inactivation) +
+    geom_point(aes(x = time, y = temperature))  +
+    ggtitle("Example dataset: dynamic_inactivation. Temperature profile")
+```
+
+### The example data set of an isothermal study of laterosporus
+
+__bioinactivation__  contains a data set with the isothermal inactivation observed in a population of _laterosporus_. This data set can be loaded as:
+
+```{r}
+data(laterosporus_iso)
+```
+
+This data set contains 52 observations and 3 different variables:
+
+* The first variable (`time`) provides the experiment time at which the observation was made.
+* The second column (`temp`) contains the temperature of the experiment at a given time.
+* The logarithmic difference between the initial concentration and the one at a time-temperature combination is given by the third column (`log_diff`).
+
+The following plot illustrates the data contained in the data set.
+
+```{r, fig.width=6, fig.height=4, fig.align='center'}
+ggplot(data = laterosporus_iso) +
+    geom_point(aes(x = time, y = log_diff, col = as.factor(temp))) +
+    ggtitle("Example dataset: laterosporus_iso")
+
+```
+
+### The example data set of a non-isothermal study of laterosporus
+
+The data set `laterosporus_dyna` included in __bioinactivation__ contains the results of a series of non-isothermals studies performed on a population of _laterosporus_. This data set can be loaded  as:
+
+```{r}
+data(laterosporus_dyna)
+```
+
+This data set contains 20 observations with 3 variables:
+
+* `time` includes the time spent betwen the beginning of the experiment and the measurement.
+* `temp` is the temperature recorded at the moment of the observation.
+* `logN` is the logarithmic number of microorganism observed.
+
+The following plots depict the data within the data set.
+
+```{r, fig.width=6, fig.height=4, fig.align='center'}
+ggplot(data = laterosporus_dyna) +
+    geom_point(aes(x = time, y = logN)) +
+    ggtitle("Example dataset: laterosporus_dyna. Observations")
+```
+```{r, fig.width=6, fig.height=4, fig.align='center'}
+ggplot(data = laterosporus_dyna) +
+    geom_point(aes(x = time, y = temp))  +
+    ggtitle("Example dataset: laterosporus_dyna. Temperature profile")
+```
+
 
 ## Inactivation models implemented
 
@@ -241,12 +291,13 @@ where $N_{res}$ stands for the residual number of microorganism after the treatm
 
 The __bioinactivation__ package includes capabilities for the prediction of the inactivation process of a microorganism under either isothermal or dynamic conditions. This is accomplished through the `predict_inactivation()` function, which solves the differential equation of the model using the `ode` function from the `deSolve` package (Soetaert, Petzoldt, and Setzer 2010).
 
-`predict_inactivation()` requires four input variables:
+`predict_inactivation()` requires five input arguments:
 
 * `simulation_model`,
 * `times`,
-* `parms` and
-* `temp_profile`.
+* `parms`,
+* `temp_profile` and
+* `tol0` (optional).
 
 `simulation_model` is a string identifying the model to be used. A list of the available models can be obtained by calling the function `get_model_data()` without any argument.
 
@@ -298,8 +349,9 @@ temperature_profile <- data.frame(time = c(0, 5),
 plot(temperature_profile, type = "l")
 title("Example temperature profile")
 ```
+The inactivation models based on the Weibull distribution are singular for $t=0$. For this reason, every value of time in `times` lower than the optional argument `tol0` is changed for `tol0`. By default, `tol0 = 1e-05`.
 
-The prediction is calculated by calling the function `predict_inactivation()` with the parameters described afore.
+The prediction is calculated by calling the function `predict_inactivation()` with the parameters described before. The optional argument will not be modified.
 
 ```{r}
 prediction_results <- predict_inactivation(example_model, times, model_parms, temperature_profile)
@@ -318,13 +370,12 @@ The entry _simulation_ provides a data frame with the calculated results.
 head(prediction_results$simulation)
 ```
 
-The first columns contains the output times.
-
 The first column contains the times at which results are output are given. They are equal to the values provided by the `times` input variable, although sorted. In case there were some repeated values in the input argument `times`, results are output only once.
 
 The following columns provide the results obtained for the variables of the models. In this case, as Geeraerd's model has been used, `N` and `C_c`. The last three columns provide the values of $\mathrm{log}_{10}(N)$, $S$ and $\mathrm{log}_{10}(S)$.
 
-The `SimulInactivation` object includes an S3 method for the plotting of its results. This method is able to generate the plot using ggplot2 (default) or base R. The ggplot2 graphic can be generated by calling the `plot()` function with the instance of `SimulInactivation` as argument. The function returns an instance of `ggplot` which can be represented by calling the function `print()`.
+The `SimulInactivation` object includes an S3 method for the plotting of its results. This method is able to generate the plot using __ggplot2__ (default) or base R. The __ggplot2__ graphic can be generated by calling the `plot()` function with the instance of `SimulInactivation` as argument. The function returns an instance of `ggplot` which can be represented by calling the function `print()`.
+
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 p <- plot(prediction_results)
@@ -338,7 +389,7 @@ p + theme_light() + xlab("time (min)")
 ```
 Note that if the returned object is not assigned to any variable, the plot is automatically printed.
 
-The plot in base R can be generated including the argument `make_gg = FALSE` in the call to `plot()`.
+On the other hand, the version of the plot in base R can be generated including the argument `make_gg = FALSE` in the call to `plot()`.
 
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
@@ -362,7 +413,7 @@ prediction_no_shoulder <- predict_inactivation(example_model, times, parms_no_sh
 plot(prediction_no_shoulder)
 
 ```
-Although the effect is not fully clear with the temperature profile used due to the increasing temperature, assigning zero to the initial value of `C_c` eliminates the shoulder.
+Although the effect is not fully clear with the temperature profile used due to the increasing temperature.
 
 The model without tail effect can be obtained by assigning zero to `N_min`.
 
@@ -392,8 +443,8 @@ The `fit_isothermal_inactivation()` function requires the definition of five inp
 * `model_name`,
 * `death_data`,
 * `starting_point`,
-* `adjust_log` and 
-* `known_params`.
+* `known_params` and
+* `adjust_log` (optional).
 
 The experimental data to fit is provided by the argument `death_data`, which is a data frame. It must contain at least three columns providing the times when the observations were made (_time_), the temperature of the experiment (_temp_) and the logarithmic difference observed with respect to the original population (*log_diff*). The example data set `isothermal_inactivation`, which already has this format, is used for this demonstration.
 
@@ -422,7 +473,7 @@ model_data <- get_isothermal_model_data(model_name)
 model_data$params
 ```
 
-Therefore, the isothermal Bigelow model requires the definition of three parameters: `z`, `D_ref` and `ref_temp`. The `fit_isothermal_inactivation()` function allows to distinguish between known and unknown (i.e., to be adjusted) model parameters. The known model parameters are set by the input argument `known_parameters`, which must be a `list`. The reference temperature is usually fixed to a value close to the experimental ones, so we will set it to 100ºC in this example.
+Therefore, the isothermal Bigelow model requires the definition of three parameters: `z`, `D_ref` and `ref_temp`. The `fit_isothermal_inactivation()` function allows to distinguish between known and unknown (i.e., to be adjusted) model parameters. The known model parameters are set by the input argument `known_parameters`, which must be a `list`. The reference temperature is usually fixed to a value close to the experimental ones, we will set it to 100ºC in this example.
 
 ```{r}
 known_params = list(temp_ref = 100)
@@ -436,19 +487,15 @@ starting_point <- list(z = 10,
                        )
 ```
 
-Definition of unrealistic starting points might result in `nls` raising an error. Hence, it is important to define values relatively close to the solution. This can be done from experience, consulting the literature or testing isothermal predictions with the `predict_inactivation` function.
+Definition of unrealistic starting points might result in `nls` raising an error. Hence, it is important to define values relatively close to the solution. This can be done from experience, consulting the literature or testing isothermal predictions with the `predict_inactivation()` function.
 
-The `fit_isothermal_inactivation()` functions can base the adjustment on the minimization of the error of either the logarithmic count ($\mathrm{log}_{10}(N)$) or the total number of microorganisms ($N$). In this example, the adjustment is based on the minimization of the error of the logarithmic count, so the `adjust_log` argument will be set to `TRUE`.
-
-```{r}
-adjust_log <- TRUE
-```
+The `fit_isothermal_inactivation()` functions can base the adjustment on the minimization of the error of either the logarithmic count ($\mathrm{log}_{10}(N)$) or the total number of microorganisms ($N$). This is controled by the boolean variable `adjust_log`. In case it is `TRUE` (default case), the adjustment is based on the error of the logarithmic count. Ohterwise, it is based on the error in the total number of microorganism. In this example, the default option will be used.
 
 The adjustment is made by calling the `fit_isothermal_inactivation()` function:
 
 ```{r}
 iso_fit <- fit_isothermal_inactivation(model_name, isothermal_inactivation,  
-                                       starting_point, known_params, adjust_log)
+                                       starting_point, known_params)
 ```
 This function returns a list of class `IsoFitInactivation`. This object contains the results of the adjustment, as well as the statistical information of the adjustment process. This information is divided in four entries:
 
@@ -501,8 +548,10 @@ The function `fit_dynamic_inactivation()` requires the definition of eight input
 * `starting_points`,
 * `upper_bounds`,
 * `lower_bounds`,
-* `known_params` and
-* `minimize_log`.
+* `known_params`,
+* `...`,
+* `minimize_log` (optional) and
+* `tol0` (optional).
 
 The experimental data to fit is provided by the variable `experiment_data`. It has to be a data frame with at least a column named _time_, which provides the times when the measurements were taken, and another one named _N_, with the number of microorganisms counted at each time. The function requires the initial number of microorganism $N_0$ to be the same for each experiment. The data set `dynamic_inactivation` included in the __bioinactivation__ package is used for this demonstration.
 
@@ -564,18 +613,18 @@ Unrealistic initial points for the adjustment will cause the fitting algorithm t
 
 It is advisable to use reasonable lower and upper bounds, so degrees of freedom do not become negative or unrealistically large.
 
-The adjustment can be based on the minimization of the error of the total count of microorganism ($N$) or on the logarithmic count ($\mathrm{log}_{10}N$). This distinction is made by the boolean input argument `minimize_log`. In case it is `TRUE`, the error of the logarithmic count is minimized. For this example, the latter will be used.
+The adjustment can be based on the minimization of the error of the total count of microorganism ($N$) or on the logarithmic count ($\mathrm{log}_{10}N$). This distinction is made by the boolean input argument `minimize_log`. In case it is `TRUE`, the error of the logarithmic count is minimized. By default, this parameter is set to `TRUE`. It will not be modified.
 
-```{r}
-minimize_log = TRUE
-```
+The inactivation models based on the Weibull distribution are singular for $t=0$. For this reason, every value of time in `times` lower than the optional argument `tol0` is changed for `tol0`. By default, `tol0 = 1e-05`.
+
+Further arguments can be passed to the `modFit` function through the `...` argument.
 
 The adjustment is made by calling the function `fit_dynamic_inactivation()`:
 
 ```{r}
 dynamic_fit <- fit_dynamic_inactivation(dynamic_inactivation, simulation_model, dummy_temp,  
                                         starting_points, upper_bounds, lower_bounds,  
-                                        known_params, minimize_log)
+                                        known_params)
 ``` 
 
 The function returns a list of class `FitInactivation` with three entries:
@@ -584,7 +633,7 @@ The function returns a list of class `FitInactivation` with three entries:
 * *data* and
 * *best_prediction*.
 
-*fit_results* provides the instance of `modFit` returned by the `FME::modFit()` function. This variable contains broad information regarding the adjustment process. For more information, refer to the help page of the function.
+*fit_results* provides the instance of `modFit` returned by the `modFit()` function. This variable contains broad information regarding the adjustment process. For more information, refer to the help page of the function.
 
 ```{r}
 summary(dynamic_fit$fit_results)
@@ -596,7 +645,7 @@ The header _data_ contains a data frame with the experimental data used for the 
 head(dynamic_fit$data)
 ```
 
-Under *best_prediction* an instance `SimulInactivation` with the results of the best prediction is saved. For more information about this instance, read the documentation of `predict_inactivation()`.
+Under *best_prediction*, an instance `SimulInactivation` with the results of the best prediction is saved. For more information about this instance, refer to the documentation of `predict_inactivation()`.
 
 The parameters of the model calculated are saved under the entry `model_parameters` of the `SimulInactivation` instance.
 
@@ -604,11 +653,14 @@ The parameters of the model calculated are saved under the entry `model_paramete
 dynamic_fit$best_prediction$model_parameters
 ```
 
-The `FitInactivation` object includes S3 methods for the creation of a comparison plot between the experimental results and the prediction made by the model parameters adjusted. Two different versions of this function are implemented, one in `ggplot2` (default) and another one in base R. By default, the plot `ggplot2` implementation is called. The base R graph can be generated including the argument `make_gg = FALSE`.
+The `FitInactivation` object includes S3 methods for the creation of a comparison plot between the experimental results and the prediction made by the model parameters adjusted. Two different versions of this function are implemented, one in `ggplot2` (default) and another one in base R. By default, the plot `ggplot2` implementation is called, which returns an object of class `ggplot`with the graphic generated. This allows for further editting:  
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-plot(dynamic_fit)
+p <- plot(dynamic_fit)
+p + theme_light()
 ```
+
+The base R graph can be generated including the argument `make_gg = FALSE`.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 plot(dynamic_fit, make_gg = FALSE)
@@ -618,7 +670,7 @@ plot(dynamic_fit, make_gg = FALSE)
 
 The function `fit_inactivation_MCMC()` from __bioinactivation__ is able to wrap the `modMCMC()` function from the FME package (Soetaert, Petzoldt, and Setzer 2010b). Therefore, inactivation models can be adjusted to dynamic experiments using Markov Chain Monte Carlo methods.
 
-The function `fit_inactivation_MCMC()` has nine input arguments:
+The function `fit_inactivation_MCMC()` has ten input arguments:
 
 * `experiment_data`,
 * `simulation_model`,
@@ -627,12 +679,14 @@ The function `fit_inactivation_MCMC()` has nine input arguments:
 * `upper_bounds`,
 * `lower_bounds`,
 * `known_params`,
+* `...`, 
 * `minimize_log` and
-* `...`.
+* `tol0`.
 
-The first eight are identical in contents and format to those defined for `fit_dynamic_inactivation()` and will not be described again here. The only addition is the `...` argument, which permits to include additional arguments for the `modMCMC()` function.
+All of the input arguments except for `...` are identical in meaning and format to those defined for `fit_dynamic_inactivation()`, enabling for easy switch between both adjustment methods. The only differents is that the `...` arguments allows to send further arguments to the `modMCMC()` function.
 
-The same arguments used for the demonstration of `fit_dynamic_inactivation()` will be used in this example, with the addition of the `niter` argument, which sets the number of iterations of the MCMC.
+In order to highlight the similitudes between this function and `fit_dynamic_inactivation()`, the input arguments shared by both functions will be reused in this example. An additional argument will be passed to the `modMCMC()` function, the `niter` argument. This argument defines the number of iterations of the Markov Chain Monte Carlo algorithm for the adjustment.
+
 
 ```{r}
 set.seed(82619)
@@ -654,11 +708,16 @@ _modMCMC_ provides the instance of _modMCMC_ returned by the function `modMCMC()
 summary(MCMC_fit$modMCMC)
 ```
 
-*best_prediction* contains a list of class `SimulInactivation` with the prediction of the adjusted parameters. Finally, the data used for the fit is saved under _data_. The `FitInactivationMCMC` instance includes a S3 implementation of `plot()` for comparing the prediction against the data. Two different versions of this function are implemented, one in `ggplot2` (default) and another one in base R. By default, the plot `ggplot2` implementation is called. The base R graph can be generated including the argument `make_gg = FALSE`.
+*best_prediction* contains a list of class `SimulInactivation` with the prediction of the adjusted parameters. This object has already been described in the description of the function `predict_inactivation()`. Finally, the data used for the fit is saved under _data_.
+
+The `FitInactivationMCMC` instance includes a S3 implementation of `plot()` for comparing the prediction against the data. Two different versions of this function are implemented, one in `ggplot2` (default) and another one in base R. The default version returns an instance of `ggplot` with the graphic generated, allowing further edition.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-plot(MCMC_fit)
+p <- plot(MCMC_fit)
+p + xlab("Time (min)")
 ```
+
+The base R graph can be generated including the argument `make_gg = FALSE`.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 plot(MCMC_fit, make_gg = FALSE)
