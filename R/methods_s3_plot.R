@@ -17,14 +17,15 @@
 #' @export
 #'
 #' @importFrom graphics plot
-#' @importFrom ggplot2 ggplot geom_line aes
+#' @importFrom ggplot2 ggplot geom_line aes_string
 #'
 plot.SimulInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 
     if (make_gg) {
 
-        p <- ggplot(x$simulation) + geom_line(aes(x = time, y = logN))
-        #         print(p)
+        p <- ggplot(x$simulation) +
+            geom_line(aes_string(x = "time", y = "logN"))
+
         return(p)
 
     } else {
@@ -92,7 +93,7 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 #' @export
 #'
 #' @importFrom graphics plot points
-#' @importFrom ggplot2 geom_point aes
+#' @importFrom ggplot2 geom_point aes_string
 #'
 plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 
@@ -107,8 +108,7 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 
         pred_plot <- plot(x$best_prediction)
         p <- pred_plot +
-            geom_point(data = death_data, aes(x = time, y = logN))
-        #         print(p)
+            geom_point(data = death_data, aes_string(x = "time", y = "logN"))
         return(p)
 
     } else {
@@ -173,7 +173,7 @@ plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' wth the mean of the MC simulations. Each one of the other quantiles included
 #' in the data frame are added with different
 #'
-#' @importFrom ggplot2 ggplot aes
+#' @importFrom ggplot2 ggplot aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_ribbon
 #'
@@ -202,10 +202,10 @@ plot.PredInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
         x$lower <- log10(x[ , 4])
         x$upper <- log10(x[ , 5])
 
-        p <- ggplot(x, aes(x = times)) +
-            geom_ribbon(aes(ymax = upper, ymin = lower), alpha = 0.6, fill = "#56B4E9") +
-            geom_line(aes(y = mean), linetype = 2, colour = "darkblue") +
-            geom_line(aes(y = median), linetype = 3, colour = "darkblue")
+        p <- ggplot(x, aes_string(x = "times")) +
+            geom_ribbon(aes_string(ymax = "upper", ymin = "lower"), alpha = 0.6, fill = "#56B4E9") +
+            geom_line(aes_string(y = "mean"), linetype = 2, colour = "darkblue") +
+            geom_line(aes_string(y = "median"), linetype = 3, colour = "darkblue")
         return(p)
 
         } else {
