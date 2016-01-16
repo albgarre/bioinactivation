@@ -33,9 +33,10 @@
 #'
 #' @return A list of class \code{FitInactivation} with the following items:
 #'      \itemize{
-#'          \item fit_results: a list of class \code{modFit}.
+#'          \item fit_results: a list of class \code{modFit} with the info
+#'                of the adjustment.
 #'          \item best_prediction: a list of class \code{SimulInactivation}
-#'                with the results.
+#'                with prediction made by the adjusted model.
 #'          \item data: a data frame with the data used for the fitting.
 #'          }
 #'
@@ -66,12 +67,10 @@
 #' upper_bounds <- c(n = 2, k_b = 1, N0 = Inf)
 #' lower_bounds <- c(n = 0, k_b = 0, N0 = 1e4)
 #'
-#' minimize_log = TRUE
-#'
 #' dynamic_fit <- fit_dynamic_inactivation(dynamic_inactivation, simulation_model,
 #'                                         dummy_temp, starting_points,
 #'                                         upper_bounds, lower_bounds,
-#'                                         known_params, minimize_log)
+#'                                         known_params)
 #'
 #' plot(dynamic_fit)
 #'
