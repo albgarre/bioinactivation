@@ -15,7 +15,9 @@
 #' @param times numeric vector of output times.
 #' @param parms list of parameters defining the parameters of the model.
 #' @param temp_profile data frame with discrete values of the temperature for
-#'        each time.
+#'        each time. It must have one column named \code{time} and another named
+#'        \code{temperature} providing discrete values of the temperature at
+#'        time points.
 #' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
 #'        The time for observatins taken at time 0 are changed for this value.
 #'        By default (`tol0 = 1e-5`)

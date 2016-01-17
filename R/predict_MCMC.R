@@ -1,15 +1,17 @@
 
 #' Dynamic Prediction Intervals from a Monte Carlo Adjustment
 #'
-#' Given an MCMC adjustment of a dynamic microbial inactivation process
-#' performed using \code{\link{fit_inactivation_MCMC}} calculates
+#' Given a model adjustment of a dynamic microbial inactivation process
+#' performed using any of the functions in \code{bioinactivation} calculates
 #' probability intervals at each time point using a Monte Carlo method.
 #'
 #' @param fit_object An object of classes \code{FitInactivationMCMC},
-#'        \code{IsoFitInactivation}
+#'        \code{IsoFitInactivation} or \code{FitInactivation}.
 #'
-#' @param temp_profile a data frame indicating the temperature profile to use
-#'        for the simulation.
+#' @param temp_profile data frame with discrete values of the temperature for
+#'        each time. It must have one column named \code{time} and another named
+#'        \code{temperature} providing discrete values of the temperature at
+#'        time points.
 #'
 #' @param n_simulations a numeric indicating how many Monte Carlo simulations
 #'        to perform. \code{100} by default.
@@ -92,9 +94,9 @@ predict_inactivation_MCMC <- function(fit_object, temp_profile, n_simulations = 
 
     } else {
 
-        quantile_matrix <- apply(result_matrix, 1, quantile, probs = quantiles/100)
-        median_matrix <- apply(result_matrix, 1, median)
-        mean_matrix <- rowMeans(result_matrix)
+        quantile_matrix <- apply(result_matrix, 1, quantile, probs = quantiles/100, na.rm = TRUE)
+        median_matrix <- apply(result_matrix, 1, median, na.rm = TRUE)
+        mean_matrix <- rowMeans(result_matrix, na.rm = TRUE)
         out_matrix <- as.data.frame(cbind(times,
                                           mean = mean_matrix,
                                           median = median_matrix,
@@ -208,6 +210,11 @@ sample_IsoFit <- function(iso_fit, times, n_simulations){
                                         vcov(iso_fit$nls))
                                 )
 
+    ## Remove rows where any parameter is below 0
+
+    bad_index <- apply(par_sample, 1, function(x) any(x<0))
+    par_sample <- par_sample[!bad_index, ]
+
     ## Identify known pars
 
     fit_pars <- names(par_sample)
@@ -274,6 +281,11 @@ sample_dynaFit <- function(dynamic_fit, times, n_simulations){
                                         coef(dynamic_fit$fit_results),
                                         sP$cov.unscaled)
                                 )
+
+    ## Remove rows where any parameter is below 0
+
+    bad_index <- apply(par_sample, 1, function(x) any(x<0))
+    par_sample <- par_sample[!bad_index, ]
 
     ## Identify known pars
 

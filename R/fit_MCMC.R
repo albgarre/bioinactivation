@@ -10,7 +10,9 @@
 #'        \dQuote{N}.
 #' @param simulation_model character identifying the model to be used.
 #' @param temp_profile data frame with discrete values of the temperature for
-#'        each time.
+#'        each time. It must have one column named \code{time} and another named
+#'        \code{temperature} providing discrete values of the temperature at
+#'        time points.
 #' @param starting_points starting values of the parameters for the adjustment.
 #' @param upper_bounds named numerical vector defining the upper bounds of the
 #'        parameters for the adjustment.
