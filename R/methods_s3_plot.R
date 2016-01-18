@@ -208,27 +208,29 @@ plot.PredInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
             geom_line(aes_string(y = "median"), linetype = 3, colour = "darkblue")
         return(p)
 
+    } else {
+
+        max_N <- max(x[1, 2:ncol(x)])
+        min_N <- min(x[nrow(x), 2:ncol(x)])
+        y_lim <- c(floor(log10(min_N)), ceiling(log10(max_N)))
+
+        if ("mean" %in% names(x)) {
+
+            plot(log10(mean) ~ times, data = x, type = 'l',
+                 ylab = "logN", ylim = y_lim)
+
         } else {
+            plot(x$times, log10(x[ , 2]), type = "l")
+        }
 
-            max_N <- max(x[1, 2:ncol(x)])
-            min_N <- min(x[nrow(x), 2:ncol(x)])
-            y_lim <- c(floor(log10(min_N)), ceiling(log10(max_N)))
+        for (i in 3:ncol(x)) {
+            lines(x$times, log10(x[ , i]), type = 'l', lty = i-1, col = i-1)
+        }
 
-            if ("mean" %in% names(x)) {
-
-                plot(log10(mean) ~ times, data = x, type = 'l',
-                     ylab = "logN", ylim = y_lim)
-
-            } else {
-                plot(x$times, log10(x[ , 2]), type = "l")
-            }
-
-            for (i in 3:ncol(x)) {
-                lines(x$times, log10(x[ , i]), type = 'l', lty = i-1, col = i-1)
-            }
+        if ("mean" %in% names(x)) {
 
             legend("topright", names(x[-1]), lty = 1:(ncol(x)-1), col = 1:(ncol(x)-1))
 
         }
-
+    }
 }
