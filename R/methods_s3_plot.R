@@ -6,7 +6,8 @@
 #' instance of \code{SimulInactivation}.
 #'
 #' @param x The object of class \code{SimulInactivation} to plot.
-#' @param y,... ignored
+#' @param y ignored
+#' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
@@ -42,7 +43,8 @@ plot.SimulInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' \code{IsoFitInactivation}.
 #'
 #' @param x the object of class \code{IsoFitInactivation} to plot.
-#' @param y,... ignored
+#' @param y ignored
+#' @param ... additional arguments passed to \code{plot}.
 #'
 #' @export
 #'
@@ -60,7 +62,7 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 
         # my_data <- subset(death_data, temp == each_temp)
 
-        plot(log_diff ~ time, data = my_data)
+        plot(log_diff ~ time, data = my_data, ...)
 
         max_time <- max(my_data$time)
         times <- seq(0, max_time, length= 100)
@@ -82,7 +84,8 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 #' \code{FitInactivation}.
 #'
 #' @param x the object of class \code{FitInactivation} to plot.
-#' @param y,... ignored
+#' @param y ignored
+#' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
@@ -127,7 +130,7 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 
         #- Make the plot
 
-        plot(x$best_prediction, ylim = ylim, make_gg = FALSE)
+        plot(x$best_prediction, ylim = ylim, make_gg = FALSE, ...)
 
         points(logN ~ time, data = death_data)
     }
@@ -142,7 +145,8 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' \code{FitInactivationMCMC}.
 #'
 #' @param x the object of class \code{FitInactivation} to plot.
-#' @param y,... ignored
+#' @param y ignored
+#' @param ... additional arguments passed to \code{plot}.
 #'
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
@@ -155,7 +159,7 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #'
 plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
 
-    plot.FitInactivation(x, make_gg = make_gg)
+    plot.FitInactivation(x, make_gg = make_gg, ...)
 
 }
 
@@ -178,7 +182,8 @@ plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @importFrom ggplot2 geom_ribbon
 #'
 #' @param x the object of class \code{PredInactivationMCMC} to plot.
-#' @param y,... ignored
+#' @param y ignored
+#' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
@@ -217,10 +222,10 @@ plot.PredInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
         if ("mean" %in% names(x)) {
 
             plot(log10(mean) ~ times, data = x, type = 'l',
-                 ylab = "logN", ylim = y_lim)
+                 ylab = "logN", ylim = y_lim, ...)
 
         } else {
-            plot(x$times, log10(x[ , 2]), type = "l")
+            plot(x$times, log10(x[ , 2]), type = "l", ...)
         }
 
         for (i in 3:ncol(x)) {
