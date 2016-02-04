@@ -9,3 +9,5 @@ intervals using Monte Carlo methods.
 * MCMC prediction intervals using MCMC.
 * `is.` methods for all the objects defined.
 * Some minor corrections in function documentation.
+* Extended README file.
+* Corrected names of the authors in DESCRIPTION.
