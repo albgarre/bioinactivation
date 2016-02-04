@@ -9,7 +9,7 @@
 #' @param y ignored
 #' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
-#' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
+#' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
@@ -87,7 +87,7 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 #' @param y ignored
 #' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
-#' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
+#' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
@@ -96,7 +96,8 @@ plot.IsoFitInactivation <- function(x, y=NULL, ...) {
 #' @export
 #'
 #' @importFrom graphics plot points
-#' @importFrom ggplot2 geom_point aes_string
+#' @importFrom ggplot2 geom_point
+#' @importFrom ggplot2 aes_string
 #'
 plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 
@@ -149,7 +150,7 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @param ... additional arguments passed to \code{plot}.
 #'
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
-#' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
+#' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
@@ -185,7 +186,7 @@ plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @param y ignored
 #' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
-#' \code{\link{ggplot2}}. Otherwise, the plot is crated with base \code{R}.
+#' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
