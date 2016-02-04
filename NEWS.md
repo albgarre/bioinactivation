@@ -8,3 +8,4 @@ intervals using Monte Carlo methods.
 * Plots with `ggplot2`.
 * MCMC prediction intervals using MCMC.
 * `is.` methods for all the objects defined.
+* Some minor corrections in function documentation.

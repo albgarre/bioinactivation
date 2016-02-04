@@ -60,7 +60,7 @@ NULL
 #' \itemize{
 #'   \item time: Time in minutes of the measurement.
 #'   \item temp: observed temperature.
-#'   \item N: recorded number of microorganism.
+#'   \item logN: recorded number of microorganism.
 #' }
 #'
 #' @docType data

@@ -2,7 +2,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Updated the Date field of the DESCRIPTION to 2015-10-12 (the day I first sent
+* Updated the Date field of the DESCRIPTION to 2015-12-10 (the day I first sent
   the package to CRAN).
 
 * Included missing "importFrom" in the NAMESPACE for functions:
