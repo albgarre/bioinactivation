@@ -198,6 +198,8 @@ sample_MCMCfit <- function(MCMC_fit, times, n_simulations){
 #'              }
 #'
 #' @importFrom MASS mvrnorm
+#' @importFrom stats coef
+#' @importFrom stats vcov
 #'
 #' @seealso \code{\link{mvrnorm}}
 #'
@@ -270,6 +272,10 @@ sample_IsoFit <- function(iso_fit, times, n_simulations){
 #'              \item known_pars: parameters of the model known
 #'              \item times: points where the calculation is made.
 #'              }
+#'
+#' @importFrom MASS mvrnorm
+#' @importFrom stats coef
+#' @importFrom stats vcov
 #'
 sample_dynaFit <- function(dynamic_fit, times, n_simulations){
 

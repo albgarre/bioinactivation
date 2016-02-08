@@ -1,4 +1,9 @@
 
+# Version 1.1.1
+
+* Added graphics::legend to NAMESPACE.
+* Added stats::coef and stats::vcov to NAMESPACE.
+
 # Version 1.1.0
 
 * The adjustment is, by default, made targetting the logarithmic count for all cases now.

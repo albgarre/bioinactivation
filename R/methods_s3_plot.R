@@ -192,6 +192,8 @@ plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
 #'         an instance of \code{ggplot} is generated, printed and returned.
 #'
+#' @importFrom graphics legend
+#'
 #' @export
 #'
 plot.PredInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
