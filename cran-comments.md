@@ -1,9 +1,4 @@
 
-## Resubmission
-This is a resubmission. In this version I have:
-
-* Added graphics::legend, stats::coef and stats::vcov to NAMESPACE.
-
 ## Test environments
 
 * Windows 7, R version 3.1.3

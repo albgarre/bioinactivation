@@ -1,4 +1,8 @@
 
+# Version 1.1.2
+
+* Corrected a bug in Geeraerd's model.
+
 # Version 1.1.1
 
 * Added graphics::legend to NAMESPACE.
