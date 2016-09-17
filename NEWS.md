@@ -1,4 +1,9 @@
 
+# Version 1.1.3
+
+* Added the possibility to pass additional arguments to ode when making predictions.
+* Minor corrections and improvements to the vignette.
+
 # Version 1.1.2
 
 * Corrected a bug in Geeraerd's model.

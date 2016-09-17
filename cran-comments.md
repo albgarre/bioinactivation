@@ -6,19 +6,7 @@
 
 ## R CMD check results
 
-There were no ERRORs, or WARNINGs. 
-
-There was one NOTE:
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Alberto Garre <garre.alberto@gmail.com>'
-New maintainer:
-  Alberto Garre <garre.alberto@gmail.com>
-Old maintainer(s):
-  Alberto Garre Perez <garre.alberto@gmail.com>
-  
-The second family name has been removed from the authors.
-The e-mail has not been modified, so this NOTE should be irrelevant.
+There were no ERRORs, WARNINGs or NOTEs. 
 
 ## Reverse dependencies
 
