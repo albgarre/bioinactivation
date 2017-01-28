@@ -1,4 +1,8 @@
 
+# Version 1.1.4
+
+* Added CITATION file with the information of the paper recently published in Food Research International.
+
 # Version 1.1.3
 
 * Added the possibility to pass additional arguments to ode when making predictions.
