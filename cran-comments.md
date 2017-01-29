@@ -1,4 +1,9 @@
 
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Corrected the DOI in the CITATION file.
+
 ## Test environments
 
 * Windows 7, R version 3.1.3
@@ -6,7 +11,7 @@
 
 ## R CMD check results
 
-There were no ERRORs, WARNINGs or NOTEs. 
+There were no ERRORs, WARNINGs or NOTEs.
 
 ## Reverse dependencies
 
