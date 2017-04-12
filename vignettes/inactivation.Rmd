@@ -541,6 +541,15 @@ plot(iso_fit, ylab = "Number of logarithmic reductions",
      xlab = "Time (min)")
 ```
 
+The plot can also be generated using ggplot2. To do that, the argument `make_gg = TRUE` must be added to the call to the `plot()` function.
+
+```{r, fig.width=6, fig.height=4, fig.align='center'}
+plot(iso_fit, make_gg = TRUE) +
+    ylab("Number of logarithmic reductions") +
+    xlab("Time (min)")
+```
+
+
 ## Fitting of dynamic experiments using non-linear regression
 
 The __bioinactivation__ package implements the function `fit_dynamic_inactivation()`, which permits the adjustment of inactivation models to experimental data with time dependent temperature profiles. This is accomplished using the function `modFit()` of the FME package (Soetaert, Petzoldt, and Setzer 2010b), which adjusts the model using non-linear regression.

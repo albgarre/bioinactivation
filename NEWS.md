@@ -1,4 +1,12 @@
 
+# Version 1.1.6
+
+* Implemented the ggplot2 plotting of isothermal fit objects.
+
+# Version 1.1.5
+
+* Corrected the DOI in the citation file.
+
 # Version 1.1.4
 
 * Added CITATION file with the information of the paper recently published in Food Research International.

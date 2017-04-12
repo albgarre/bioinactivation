@@ -47,7 +47,7 @@ plot.SimulInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @param ... additional arguments passed to \code{plot}.
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
-#' \code{TRUE} by default.
+#' \code{FALSE} by default.
 #'
 #' @export
 #'
