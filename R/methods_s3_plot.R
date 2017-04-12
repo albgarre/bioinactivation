@@ -45,34 +45,52 @@ plot.SimulInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @param x the object of class \code{IsoFitInactivation} to plot.
 #' @param y ignored
 #' @param ... additional arguments passed to \code{plot}.
+#' @param make_gg logical. If \code{TRUE}, the plot is created using
+#' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
+#' \code{TRUE} by default.
 #'
 #' @export
 #'
 #' @importFrom graphics plot lines title
+#' @importFrom dplyr mutate %>%
+#' @importFrom lazyeval interp
+#' @importFrom ggplot2 aes_string ggplot geom_point geom_line facet_wrap
+#' @importFrom stats predict
 #'
-plot.IsoFitInactivation <- function(x, y=NULL, ...) {
+plot.IsoFitInactivation <- function(x, y=NULL, ..., make_gg = FALSE) {
 
-    death_data <- x$data
-    model_data <- get_isothermal_model_data(x$model)
+    if (!make_gg) {
 
-    for (each_temp in unique(death_data$temp)) {
+        death_data <- x$data
+        model_data <- get_isothermal_model_data(x$model)
 
-        temp_indexes <- death_data$temp == each_temp
-        my_data <- death_data[temp_indexes, ]
+        for (each_temp in unique(death_data$temp)) {
 
-        # my_data <- subset(death_data, temp == each_temp)
+            temp_indexes <- death_data$temp == each_temp
+            my_data <- death_data[temp_indexes, ]
 
-        plot(log_diff ~ time, data = my_data, ...)
+            # my_data <- subset(death_data, temp == each_temp)
 
-        max_time <- max(my_data$time)
-        times <- seq(0, max_time, length= 100)
-        arguments_call <- c(list(time = times, temp = each_temp), x$parameters)
+            plot(log_diff ~ time, data = my_data, ...)
 
-        prediction <- do.call(model_data$prediction, arguments_call)
+            max_time <- max(my_data$time)
+            times <- seq(0, max_time, length= 100)
+            arguments_call <- c(list(time = times, temp = each_temp), x$parameters)
 
-        lines(times, prediction)
-        title(paste("Temperature:", each_temp))
+            prediction <- do.call(model_data$prediction, arguments_call)
 
+            lines(times, prediction)
+            title(paste("Temperature:", each_temp))
+
+        }
+
+    } else {
+        x$data %>%
+            mutate(prediction = predict(x$nls, newdata = x$data)) %>%
+            ggplot(aes_string(x = "time")) +
+                geom_point(aes_string(y = "log_diff")) +
+                geom_line(aes_string(y = "prediction"), linetype = 2) +
+                facet_wrap("temp", scales = "free")
     }
 }
 
