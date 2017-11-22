@@ -11,6 +11,8 @@
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
+#' @param plot_temp logical. Whether the temperature profile will
+#' be added to the plot. \code{FALSE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
 #'         an instance of \code{ggplot} is generated, printed and returned.
@@ -20,14 +22,42 @@
 #' @importFrom graphics plot
 #' @importFrom ggplot2 ggplot geom_line aes_string
 #'
-plot.SimulInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
+plot.SimulInactivation <- function(x, y=NULL, ...,
+                                   make_gg = TRUE, plot_temp = FALSE) {
 
     if (make_gg) {
 
-        p <- ggplot(x$simulation) +
-            geom_line(aes_string(x = "time", y = "logN"))
+        if (plot_temp) {
 
-        return(p)
+            min_time <- min(x$simulation$time)
+            max_time <- max(x$simulation$time)
+
+            max_count <- max(x$simulation$logN)
+
+            tt <- seq(min_time, max_time, length = 100)
+            min_temp <- min(x$temp_approximations$temp(tt))
+            max_temp <- max(x$temp_approximations$temp(tt))
+
+            slope <- (max_count)/(max_temp - min_temp)
+            intercept <- (min_temp * (max_count-0)/(max_temp - min_temp) - 0)
+
+            x$simulation %>%
+                mutate(temperature = x$temp_approximations$temp(time),
+                       fake_temp = temperature * slope - intercept) %>%
+                ggplot() +
+                geom_line(aes(x = time, y = logN), linetype = 2) +
+                geom_line(aes(x = time, y = fake_temp)) +
+                scale_y_continuous(limits = c(0, max_count),
+                                   sec.axis = sec_axis(~(. + intercept)/slope,
+                                                       name = "Temperature"))
+
+
+        } else {
+
+            ggplot(x$simulation) +
+                geom_line(aes_string(x = "time", y = "logN"))
+
+        }
 
     } else {
 
@@ -107,6 +137,8 @@ plot.IsoFitInactivation <- function(x, y=NULL, ..., make_gg = FALSE) {
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
+#' @param plot_temp logical. Whether the temperature profile will
+#' be added to the plot. \code{FALSE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
 #'         an instance of \code{ggplot} is generated, printed and returned.
@@ -117,7 +149,8 @@ plot.IsoFitInactivation <- function(x, y=NULL, ..., make_gg = FALSE) {
 #' @importFrom ggplot2 geom_point
 #' @importFrom ggplot2 aes_string
 #'
-plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
+plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE,
+                                 plot_temp = FALSE) {
 
     death_data <- x$data
 
@@ -128,9 +161,13 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 
     if (make_gg) {
 
-        pred_plot <- plot(x$best_prediction)
+        maxlogN0 <- max(c(x$data$logN,
+                          log10(x$best_prediction$model_parameters$N0)))
+
+        pred_plot <- plot(x$best_prediction, plot_temp = plot_temp)
         p <- pred_plot +
-            geom_point(data = death_data, aes_string(x = "time", y = "logN"))
+            geom_point(data = death_data, aes_string(x = "time", y = "logN")) +
+            ylim(0, ceiling(maxlogN0))
         return(p)
 
     } else {
@@ -170,15 +207,18 @@ plot.FitInactivation <- function(x, y=NULL, ..., make_gg = TRUE) {
 #' @param make_gg logical. If \code{TRUE}, the plot is created using
 #' \code{ggplot2}. Otherwise, the plot is crated with base \code{R}.
 #' \code{TRUE} by default.
+#' @param plot_temp logical. Whether the temperature profile will
+#' be added to the plot. \code{FALSE} by default.
 #'
 #' @return If \code{make_gg = FALSE}, the plot is created. Otherwise, an
 #'         an instance of \code{ggplot} is generated, printed and returned.
 #'
 #' @export
 #'
-plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
+plot.FitInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE,
+                                     plot_temp = FALSE) {
 
-    plot.FitInactivation(x, make_gg = make_gg, ...)
+    plot.FitInactivation(x, make_gg = make_gg, plot_temp = plot_temp, ...)
 
 }
 
@@ -260,3 +300,7 @@ plot.PredInactivationMCMC <- function(x, y=NULL, ..., make_gg = TRUE) {
         }
     }
 }
+
+
+
+
