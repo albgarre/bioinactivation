@@ -2,12 +2,12 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Corrected the DOI in the CITATION file.
+* Reduced the size of the example, so that there is no longer a NOTE.
 
 ## Test environments
 
-* Windows 7, R version 3.1.3
-* OS X Yosemite 10.10.2, R version 3.2.2
+* Windows 7, R version 3.4.2
+* OS X Yosemite 10.10.2, R version 3.4.2
 
 ## R CMD check results
 

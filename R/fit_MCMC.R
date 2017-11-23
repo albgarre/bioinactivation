@@ -68,7 +68,9 @@
 #' MCMC_fit <- fit_inactivation_MCMC(dynamic_inactivation, simulation_model,
 #'                                      dummy_temp, starting_points,
 #'                                      upper_bounds, lower_bounds,
-#'                                      known_params, niter = 500)
+#'                                      known_params,
+#'                                      niter = 100)
+#'                                      # It is recommended to increase niter
 #'
 #' plot(MCMC_fit)
 #' ## END EXAMPLE 1 -----
