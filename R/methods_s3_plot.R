@@ -26,12 +26,16 @@
 #' @importFrom graphics plot
 #' @importFrom ggplot2 ggplot geom_line aes_string sec_axis scale_y_continuous
 #' @importFrom ggplot2 ylab ylim
+#' @importFrom rlang .data
 #'
 plot.SimulInactivation <- function(x, y=NULL, ...,
                                    make_gg = TRUE, plot_temp = FALSE,
                                    label_y1 = "logN",
                                    label_y2 = "Temperature",
                                    ylims = NULL) {
+
+    # time <- NULL
+    # temperature <- NULL
 
     if (make_gg) {
 
@@ -50,11 +54,11 @@ plot.SimulInactivation <- function(x, y=NULL, ...,
             intercept <- (min_temp * (max_count-0)/(max_temp - min_temp) - 0)
 
             p <- x$simulation %>%
-                mutate(temperature = x$temp_approximations$temp(time),
-                       fake_temp = temperature * slope - intercept) %>%
+                mutate(temperature = x$temp_approximations$temp(.data$time),
+                       fake_temp = .data$temperature * slope - intercept) %>%
                 ggplot() +
-                geom_line(aes_string(x = "time", y = "logN"), linetype = 2) +
-                geom_line(aes_string(x = "time", y = "fake_temp"))
+                    geom_line(aes_string(x = "time", y = "logN"), linetype = 2) +
+                    geom_line(aes_string(x = "time", y = "fake_temp"))
 
             if (is.null(ylims)) {
                 ylims <- c(0, max_count)
