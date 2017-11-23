@@ -40,7 +40,7 @@
 #' @examples
 #' ## EXAMPLE 1 -----------
 #'
-#' data(isothermal_inactivation)  # data set used for the example.
+#' data("isothermal_inactivation")  # data set used for the example.
 #'
 #' get_isothermal_model_data()  # retrieve valid model keys.
 #' model_name <- "Bigelow"  # Bigelow's model will be used for the adjustment.
