@@ -17,3 +17,11 @@ The inactivation models most commonly used in industry and academia are implemen
 -   Geeraerd's model.
 
 Furthermore, this package includes some training data sets mimicking isothermal and non-isothermal inactivation experiments.
+
+A user friendly web interface to every function in the package can be found in:
+https://opada-upct.shinyapps.io/bioinactivationFull/
+
+When using this package in scientific publications, please refer to it as:
+Garre, A., Fernández, P. S., Lindqvist, R., & Egea, J. A. (2017). Bioinactivation: Software for modelling dynamic microbial inactivation. Food Research International, 93, 66–74. https://doi.org/10.1016/j.foodres.2017.01.012
+
+
