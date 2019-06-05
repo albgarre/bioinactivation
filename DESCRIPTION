@@ -1,8 +1,8 @@
 Package: bioinactivation
 Type: Package
 Title: Simulation of Dynamic Microbial Inactivation
-Version: 1.2.1
-Date: 2017-12-15
+Version: 1.2.2
+Date: 2019-06-04
 Authors@R: c(person("Alberto", "Garre", email = "garre.alberto@gmail.com", role = c("aut", "cre")),
              person("Pablo S.", "Fernandez", email = "pablo.fernandez@upct.es", role = "aut"),
              person("Jose A.", "Egea", email = "josea.egea@upct.es", role = "aut")
@@ -25,4 +25,4 @@ Suggests:
     knitr (>= 1.9),
     testthat (>= 0.9.1)
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
