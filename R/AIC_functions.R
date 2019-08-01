@@ -4,6 +4,7 @@
 #' @param object An object of class IsoFitInactivation.
 #' 
 #' @importFrom purrr %>%
+#' @importFrom stats logLik
 #' 
 #' 
 goodness_iso <- function(object) {
@@ -20,10 +21,10 @@ goodness_iso <- function(object) {
                RMSE = sqrt(mean(residuals^2)),
                loglik = logLik(object$nls)
     ) %>%
-        mutate(AIC = 2*n_pars - 2*loglik) %>%
-        mutate(AICc = AIC + 2*n_pars*(n_pars + 1)/(n_obs - n_pars - 1),
-               BIC = log(n_obs)*n_pars - 2*loglik) %>%
-        mutate(Af = 10^RMSE, Bf = 10^ME)
+        mutate(AIC = 2*n_pars - 2*.data$loglik) %>%
+        mutate(AICc = .data$AIC + 2*n_pars*(n_pars + 1)/(n_obs - n_pars - 1),
+               BIC = log(n_obs)*n_pars - 2*.data$loglik) %>%
+        mutate(Af = 10^.data$RMSE, Bf = 10^.data$ME)
     
 }
 
@@ -32,10 +33,12 @@ goodness_iso <- function(object) {
 #' @importFrom FME modCost
 #' @importFrom dplyr select
 #' 
+#' @param object An instance of FitInactivation
+#' 
 goodness_dyna <- function(object) {
     
     my_simulation <- object$best_prediction$simulation %>%
-        select(time, logN)
+        select("time", "logN")
     
     my_cost <- modCost(model = my_simulation, obs = object$data)
     
@@ -49,10 +52,10 @@ goodness_dyna <- function(object) {
                RMSE = my_cost$model,
                loglik = my_cost$minlogp
     ) %>%
-        mutate(AIC = 2*n_pars - 2*loglik) %>%
-        mutate(AICc = AIC + 2*n_pars*(n_pars + 1)/(n_obs - n_pars - 1),
-               BIC = log(n_obs)*n_pars - 2*loglik) %>%
-        mutate(Af = 10^RMSE, Bf = 10^ME)
+        mutate(AIC = 2*n_pars - 2*.data$loglik) %>%
+        mutate(AICc = .data$AIC + 2*n_pars*(n_pars + 1)/(n_obs - n_pars - 1),
+               BIC = log(n_obs)*n_pars - 2*.data$loglik) %>%
+        mutate(Af = 10^.data$RMSE, Bf = 10^.data$ME)
     
 }
 
@@ -60,11 +63,14 @@ goodness_dyna <- function(object) {
 #' 
 #' @importFrom FME modCost
 #' @importFrom dplyr select
+#' @importFrom rlang .data
+#' 
+#' @param object An instance of FitInactivationMCMC
 #' 
 goodness_MCMC <- function(object) {
     
     my_simulation <- object$best_prediction$simulation %>%
-        select(time, logN)
+        select("time", "logN")
     
     my_cost <- modCost(model = my_simulation, obs = object$data)
     
@@ -78,10 +84,10 @@ goodness_MCMC <- function(object) {
                       RMSE = my_cost$model,
                       loglik = my_cost$minlogp
     ) %>%
-        mutate(AIC = 2*n_pars - 2*loglik) %>%
-        mutate(AICc = AIC + 2*n_pars*(n_pars + 1)/(n_obs - n_pars - 1),
-               BIC = log(n_obs)*n_pars - 2*loglik) %>%
-        mutate(Af = 10^RMSE, Bf = 10^ME)
+        mutate(AIC = 2*n_pars - 2*.data$loglik) %>%
+        mutate(AICc = .data$AIC + 2*n_pars*(n_pars + 1)/(n_obs - n_pars - 1),
+               BIC = log(n_obs)*n_pars - 2*.data$loglik) %>%
+        mutate(Af = 10^.data$RMSE, Bf = 10^.data$ME)
 
     
 }

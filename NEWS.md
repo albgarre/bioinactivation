@@ -1,4 +1,11 @@
 
+# Version 1.2.3
+
+* Included function to calculate treatment time to reach X log reductions.
+* Implemented function to get a table with indexes for the goodness of fit.
+* Extended examples in documentation with new functions.
+* Improved the DESCRIPTION
+
 # Version 1.2.2
 
 * Corrected bug in the plotting of dynamic predictions when there were NAs in logN.

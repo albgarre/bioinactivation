@@ -11,6 +11,10 @@
 #' 
 #' @export
 #' 
+#' @importFrom utils head tail
+#' @importFrom dplyr filter
+#' @importFrom rlang .data
+#' 
 time_to_logreduction <- function(n_logs, my_prediction) {
     
     if (length(n_logs) > 1) stop("n_logs must have length 1")
@@ -20,11 +24,11 @@ time_to_logreduction <- function(n_logs, my_prediction) {
     if (n_logs <= 0) stop("n_logs must be positive")
     
     first_below <- my_prediction$simulation %>%
-        filter(logS < -n_logs) %>%
+        filter(.data$logS < -n_logs) %>%
         head(1)
     
     last_above <- my_prediction$simulation %>%
-        filter(logS >= -n_logs) %>%
+        filter(.data$logS >= -n_logs) %>%
         tail(1)
     
     s2 <- -first_below$logS
