@@ -329,7 +329,7 @@ example_model <- "Geeraerd"
 `times` is a numeric vector which specifies the values of time when results will be returned. It does not define the points at which the numerical integration is done, so changing it does not affect the values calculated at individual time points. An arbitrary equally spaced vector will be used for this example.
 
 ```{r}
-times <- seq(0, 5, length=100)
+times <- seq(0, 4.5, length=100)
 ```
 
 `parms` is a named numeric vector specifying the values of the model parameters, as well as the initial values of the model variables. A call to the function `get_model_data()` with a valid model identifier as an input argument provides several data concerning this model as a list. Namely, its parameters and variables.
@@ -343,7 +343,7 @@ print(model_data$variables)
 The input argument `parms` must provide values for every degree of freedom of the model, i.e. model parameters and variables. The names of the model parameters must be identical to those provided by the function `get_model_data()`. On the other hand, the names assigned to the initial values of the model variables must be equal to the ones provided by `get_model_data()` plus a character `"0"`. For instance, the initial value for the variable named `N` needs to be labeled `"N0"`.
 
 ```{r}
-model_parms <- c(D_R = 1,
+model_parms <- c(D_R = 3,
                  z = 10,
                  N_min = 1e2,
                  temp_ref = 100,
@@ -356,11 +356,12 @@ The last input variable required for the function is a data frame defining a dis
 
 Predictions for isothermal conditions can also be calculated using this function. In this case, a constant temperature profile has to be defined.
 
-A temperature profile with a constant slope of 10ºC/min ranging between 70 and 120ºC will be used for the prediction.
+A temperature profile with a constant slope ranging between 70 and 120ºC will be used for the prediction.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-temperature_profile <- data.frame(time = c(0, 5),
+temperature_profile <- data.frame(time = c(0, 4.5),
                                   temperature = c(70, 120))
+
 plot(temperature_profile, type = "l")
 title("Example temperature profile")
 ```
@@ -417,7 +418,7 @@ plot(prediction_results, make_gg = FALSE,
 The implementation of the Geeraerd model allows to model inactivation process without shoulder and/or tail effects. For the model without shoulder, assign zero to the parameter `C_c0`:
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-parms_no_shoulder <- c(D_R = 1,
+parms_no_shoulder <- c(D_R = 3,
                        z = 10,
                        N_min = 100,
                        temp_ref = 100,
@@ -436,7 +437,7 @@ Although the effect is not fully clear with the temperature profile used due to 
 The model without tail effect can be obtained by assigning zero to `N_min`.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-parms_no_tail <- c(D_R = 1,
+parms_no_tail <- c(D_R = 3,
                    z = 10,
                    N_min = 0,
                    temp_ref = 100,
@@ -601,10 +602,10 @@ The inactivation model is specified by the character variable `simulation_model`
 get_model_data()
 ```
 
-The Weibull-Peleg model is used in this example.
+The Weibull-Mafart model is used in this example.
 
 ```{r}
-simulation_model <- "Peleg"
+simulation_model <- "Mafart"
 ```
 
 The temperature profile of the experiment is given by the data frame `temp_profile`, which provides the values of the temperature at discrete time points. Temperatures at time points not included in `temp_profile` are calculated by linear interpolation. The `dynamic_inactivation` data set includes the temperature of each observation. Hence, the temperature profile defined by this observations is used for the adjustment.
@@ -623,26 +624,29 @@ model_data$parameters
 model_data$variables
 ```
 
-The degrees of freedom (parameters or inial values of variables) known are defined through the named list `known_parameters`. The names of known model parameters need to be identical to those provided by the function `get_model_data()`. The names of known initial values must be equal to the variable name provided by `get_model_data()` plus a caracter zero (`"0"`). In this example, solely the parameter *temp_crit* will be considered as known.
+The degrees of freedom (parameters or inial values of variables) known are defined through the named list `known_parameters`. The names of known model parameters need to be identical to those provided by the function `get_model_data()`. The names of known initial values must be equal to the variable name provided by `get_model_data()` plus a caracter zero (`"0"`). In the specific casee of the initial count, if the parameters are called `N0`, the model will estimate the microbial count. If they are named `logN0`, the log-microbial count will be estimated. In this example, solely the parameter *temp_ref* will be considered as known. This parameter is usually considered fixed for microbial inactivation.
 
 ```{r}
-known_params = c(temp_crit = 100)
+known_params = c(temp_ref = 90)
 ```
 
 The rest of the degrees of freedom are adjusted to the experimental data.
 The fitting algorithm requires the definition of starting points for the adjustment of unknown parameters, as well as upper and lower bounds. This information is passed by the input arguments `starting_points`, `upper_bounds` and `lower_bounds`, which share format with the input argument `known_params`. In case of unbounded variables, `+Inf` or `-Inf` must be assigned to the desired entries of `upper_bounds` or `lower_bounds`.
 
 ```{r}
-starting_points <- c(n = 1,
-                     k_b = 0.25,
-                     N0 = 1e+05)
-upper_bounds <- c(n = 2,
-                  k_b = 1,
-                  N0 = Inf)
+starting_points <- c(delta_ref = 10,
+                     p = 1,
+                     z = 10,
+                     logN0 = 5)
+upper_bounds <- c(delta_ref = 20,
+                  p = 2,
+                  z = 20,
+                  logN0 = Inf)
 
-lower_bounds <- c(n = 0,
-                  k_b = 0,
-                  N0 = 1e4)
+lower_bounds <- c(delta_ref = 5,
+                  p = .5,
+                  z = 5,
+                  logN0 = 4)
 ```
 
 Unrealistic initial points for the adjustment will cause the fitting algorithm to fail. Realistic initial points can be obtained from experience, literature or by testing different predictions using `predict_inactivation()`.
@@ -800,7 +804,7 @@ sP <- summary(dynamic_fit)
 sample_iso <- mvrnorm(1000, coef(dynamic_fit$fit_results), sP$cov.unscaled)
 
 ggplot(as.data.frame(sample_iso)) +
-    geom_point(aes(x = N0, y = k_b), alpha = 0.5, size = 3) +
+    geom_point(aes(x = z, y = delta_ref), alpha = 0.5, size = 3) +
     ggtitle("Example of multivariate normal sampling")
 ```
 
@@ -809,7 +813,7 @@ Due to the hypothesis used, the sampling may produce negative values of the mode
 The temperature profile to use for the prediction is defined by the argument `temp_profile`. It must be a data frame with one column named `time` and another one named `temperature`. 
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
-dummy_temp <- data.frame(time = c(0, 1, 4, 6), temperature = c(80, 110, 110, 80))
+dummy_temp <- data.frame(time = c(0, 1, 2, 6), temperature = c(80, 100, 100, 80))
 ggplot(dummy_temp) +
     geom_line(aes(x = time, y = temperature)) +
     ggtitle("Temperature profile used for the prediction interval")
@@ -858,11 +862,11 @@ p <- plot(pred_MCMC_3)
 p + ylab("logN")
 ```
 
-The function `predict_inactivation_MCMC()` allows the generation of assymetrical prediction intervals. In food microbiology, the more resistant microorganism are usually more relevant than the most weaks. A one-sided prediction interval can be generated by defining `quantiles = c(0, 95)`.
+The function `predict_inactivation_MCMC()` allows the generation of assymetrical prediction intervals. In food microbiology, the more resistant microorganism are usually more relevant than the most weaks. A one-sided prediction interval can be generated by defining `quantiles = c(1, 100)`.
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 set.seed(7163)
-pred_MCMC_4 <- predict_inactivation_MCMC(dynamic_fit, dummy_temp, quantiles = c(0, 95))
+pred_MCMC_4 <- predict_inactivation_MCMC(dynamic_fit, dummy_temp, quantiles = c(1, 100))
 p <- plot(pred_MCMC_4)
 p + ylab("logN")
 ```
@@ -880,7 +884,7 @@ As already mentioned, the initial number of microorganisms is not needed for the
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 set.seed(918734)
 times <- seq(0, 6, length = 50)
-dummy_temp <- data.frame(time = c(0, 3, 4, 6), temperature = c(80, 110, 110, 80))
+dummy_temp <- data.frame(time = c(0, 1, 2, 6), temperature = c(80, 100, 100, 80))
 pred_int_iso <- predict_inactivation_MCMC(iso_fit, dummy_temp,
                                           times = times,
                                           additional_pars = c(N0 = 1e5))
@@ -894,7 +898,7 @@ Appart from this difference in the hypothesis, the call to the function `predict
 
 ```{r, fig.width=6, fig.height=4, fig.align='center'}
 set.seed(918734)
-dummy_temp <- data.frame(time = c(0, 1, 4, 6), temperature = c(80, 110, 110, 80))
+dummy_temp <- data.frame(time = c(0, 1, 2, 6), temperature = c(80, 100, 100, 80))
 pred_int_MCMC <- predict_inactivation_MCMC(MCMC_fit, dummy_temp)
 p <- plot(pred_int_MCMC)
 p + xlab("time")
