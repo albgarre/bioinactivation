@@ -5,6 +5,7 @@
 * Implemented function to get a table with indexes for the goodness of fit.
 * Extended examples in documentation with new functions.
 * Improved the DESCRIPTION
+* Updated the vignette.
 
 # Version 1.2.2
 

@@ -1,4 +1,9 @@
 
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Improved the vignette, trying to fix the issues with CRAN submission.
+
 ## Test environments
 
 * Windows 7, R version 3.4.2
