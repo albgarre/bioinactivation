@@ -6,7 +6,16 @@
 
 ## R CMD check results
 
-There were no ERRORs, WARNINGs or NOTEs.
+There were no ERRORs or WARNINGs.
+
+There was one NOTE: 
+
+>Possibly mis-spelled words in DESCRIPTION:
+ isothermal (11:5, 13:93)
+
+The word 'isothermal' is broadly used by food scientists,
+to reffer to pasteurization treatments at constant temperature.
+Hence, I would rather keep it in the text.
 
 ## Reverse dependencies
 
