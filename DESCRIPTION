@@ -1,13 +1,13 @@
 Package: bioinactivation
 Type: Package
-Title: Mathematical modelling of (Dynamic) Microbial Inactivation
+Title: Mathematical Modelling of (Dynamic) Microbial Inactivation
 Version: 1.2.3
 Date: 2019-08-01
 Authors@R: c(person("Alberto", "Garre", email = "garre.alberto@gmail.com", role = c("aut", "cre")),
              person("Pablo S.", "Fernandez", email = "pablo.fernandez@upct.es", role = "aut"),
              person("Jose A.", "Egea", email = "josea.egea@upct.es", role = "aut")
              )
-Description: This package includes several functions for modelling microbial inactivation under
+Description: Functions for modelling microbial inactivation under
     isothermal or dynamic conditions. The calculations are based on several mathematical models broadly
     used by the scientific community and industry. Functions enable to make predictions for cases where the
     kinetic parameters are known. It also implements functions for parameter estimation for isothermal and
@@ -28,6 +28,7 @@ Imports:
     purrr (>= 0.3.2)
 Suggests:
     knitr (>= 1.9),
-    testthat (>= 0.9.1)
+    testthat (>= 0.9.1),
+    rmarkdown (>= 1.12)
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
