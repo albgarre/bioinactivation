@@ -19,9 +19,12 @@ The inactivation models most commonly used in industry and academia are implemen
 Furthermore, this package includes some training data sets mimicking isothermal and non-isothermal inactivation experiments.
 
 A user friendly web interface to every function in the package can be found in:
-https://opada-upct.shinyapps.io/bioinactivationFull/
+https://foodlab-upct.shinyapps.io/bioinactivationFE/
 
 When using this package in scientific publications, please refer to it as:
-Garre, A., Fernández, P. S., Lindqvist, R., & Egea, J. A. (2017). Bioinactivation: Software for modelling dynamic microbial inactivation. Food Research International, 93, 66–74. https://doi.org/10.1016/j.foodres.2017.01.012
+
+>Garre, A., Fernández, P. S., Lindqvist, R., & Egea, J. A. (2017). Bioinactivation: Software for modelling dynamic microbial inactivation. Food Research International, 93, 66–74. https://doi.org/10.1016/j.foodres.2017.01.012
+
+> Garre, A., Clemente-Carazo, M., Fernández, P. S., Lindqvist, R., & Egea, J. A. (2018). Bioinactivation FE: A free web application for modelling isothermal and dynamic microbial inactivation. Food Research International, 112, 353–360. https://doi.org/10.1016/j.foodres.2018.06.057
 
 
