@@ -29,7 +29,7 @@
 #'
 #' @importFrom dplyr mutate_
 #' @importFrom dplyr %>%
-#' @importFrom dplyr select_
+#' @importFrom dplyr select
 #' @importFrom FME modFit
 #' @importFrom lazyeval interp
 #'
@@ -96,10 +96,10 @@ fit_dynamic_inactivation <- function(experiment_data, simulation_model, temp_pro
         data_for_fit <- mutate_(experiment_data,
                                 logN = interp(~log10(N), N=as.name("N")))
 
-        data_for_fit <- select_(data_for_fit, as.name("time"), as.name("logN"))
+        data_for_fit <- select(data_for_fit, "time", "logN")
 
     } else {
-        data_for_fit <- select_(experiment_data, as.name("time"), as.name("N"))
+        data_for_fit <- select(experiment_data, "time", "N")
     }
 
     #- Add a small tolerance to data at time 0 to avoid singularities
