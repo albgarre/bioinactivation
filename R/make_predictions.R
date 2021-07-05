@@ -24,8 +24,9 @@
 #' @param ... Additional arguments passed to \code{\link{ode}}.
 #'
 #' @importFrom deSolve ode
-#' @importFrom dplyr mutate_
+#' @importFrom dplyr mutate
 #' @importFrom lazyeval interp
+#' @importFrom rlang .data
 #'
 #' @return A list of class \code{SimulInactivation} with the results. It has
 #'         the following entries:
@@ -159,19 +160,20 @@ predict_inactivation <- function(simulation_model, times, parms, temp_profile,
 
     if ("N" %in% names(out)) {
 
-        out <- mutate_(out,
-                       logN = interp(~log10(N), N=as.name("N")),
-                       S = interp(~N/parms[["N0"]], N=as.name("N")))
+        out <- mutate(out,
+                      logN = log10(.data$N),
+                      S = .data$N/parms[["N0"]]
+                      )
 
-        out <- mutate_(out, logS = interp(~log10(S), S=as.name("S")))
+        out <- mutate(out, logS = log10(.data$S))
 
     } else {
 
-        out <- mutate_(out,
-                       S = interp(~10^logS, logS=as.name("logS")),
-                       N = interp(~S*parms[["N0"]], S=as.name("S")))
+        out <- mutate(out,
+                      S = 10^.data$logS,
+                      N = .data$S*parms[["N0"]])
 
-        out <- mutate_(out, logN = interp(~log10(N), N=as.name("N")))
+        out <- mutate(out, logN = log10(.data$N))
 
     }
 

@@ -26,11 +26,12 @@
 #' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
 #'        The time for observatins taken at time 0 are changed for this value.
 #'
-#' @importFrom dplyr mutate_
+#' @importFrom dplyr mutate
 #' @importFrom dplyr %>%
 #' @importFrom dplyr select
 #' @importFrom FME modMCMC
 #' @importFrom lazyeval interp
+#' @importFrom rlang .data
 #'
 #' @return A list of class \code{FitInactivationMCMC} with the following items:
 #'      \itemize{
@@ -92,8 +93,8 @@ fit_inactivation_MCMC <- function(experiment_data, simulation_model, temp_profil
 
     if (minimize_log) {
 
-        data_for_fit <- mutate_(experiment_data,
-                                logN = interp(~log10(N), N=as.name("N")))
+        data_for_fit <- mutate(experiment_data,
+                                logN = log10(.data$N))
 
         data_for_fit <- select(data_for_fit, "time", "logN")
 
