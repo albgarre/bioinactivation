@@ -19,7 +19,7 @@ The inactivation models most commonly used in industry and academia are implemen
 Furthermore, this package includes some training data sets mimicking isothermal and non-isothermal inactivation experiments.
 
 A user friendly web interface to every function in the package can be found in:
-https://foodlab-upct.shinyapps.io/bioinactivationFE/
+https://foodlab-upct.shinyapps.io/bioinactivation4/
 
 When using this package in scientific publications, please refer to it as:
 
