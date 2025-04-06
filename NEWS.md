@@ -1,4 +1,12 @@
 
+# Version
+
+# Version 1.3.0
+
+* Got rid of mutate_ and select_ as these functions are now deprecated.
+* Removed most of the horrible base plots from the vignette
+* Fixed a bug in plot.IsoFitInactivation. It was giving an error when the data was grouped
+
 # Version 1.2.3
 
 * Included function to calculate treatment time to reach X log reductions.
