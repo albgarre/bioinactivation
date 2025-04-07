@@ -40,7 +40,7 @@ parameters for the adjustment.}
 \item{known_params}{named numerical vector with the fixed (i.e., not
 adjustable) model parameters.}
 
-\item{...}{further arguments passed to \code{\link{modFit}}}
+\item{...}{further arguments passed to \link[FME:modFit]{FME::modFit}}
 
 \item{minimize_log}{logical. If \code{TRUE}, the adjustment is based on the
 minimization of the error of the logarithmic count. \code{TRUE} by
@@ -51,18 +51,18 @@ The time for observatins taken at time 0 are changed for this value.}
 }
 \value{
 A list of class \code{FitInactivation} with the following items:
-     \itemize{
-         \item fit_results: a list of class \code{modFit} with the info
-               of the adjustment.
-         \item best_prediction: a list of class \code{SimulInactivation}
-               with prediction made by the adjusted model.
-         \item data: a data frame with the data used for the fitting.
-         }
+\itemize{
+\item fit_results: a list of class \code{modFit} with the info
+of the adjustment.
+\item best_prediction: a list of class \code{SimulInactivation}
+with prediction made by the adjusted model.
+\item data: a data frame with the data used for the fitting.
+}
 }
 \description{
 Fits the parameters of an inactivation model to experimental data.
-The function \code{\link{modFit}} of the package \code{\link{FME}} is
-used for the adjustment.
+The function \link[FME:modFit]{FME::modFit} is
+used for the fitting.
 }
 \examples{
 ## EXAMPLE 1 ------
@@ -97,7 +97,4 @@ goodness_of_fit(dynamic_fit)
 
 ## END EXAMPLE 1 -----
 
-}
-\seealso{
-\code{\link{modFit}}
 }

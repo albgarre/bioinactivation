@@ -2,8 +2,8 @@
 #' Fitting of Dynamic Inactivation Models
 #'
 #' Fits the parameters of an inactivation model to experimental data.
-#' The function \code{\link{modFit}} of the package \code{\link{FME}} is
-#' used for the adjustment.
+#' The function [FME::modFit] is
+#' used for the fitting.
 #'
 #' @param experiment_data data frame with the experimental data to be adjusted.
 #'        It must have a column named \dQuote{time} and another one named
@@ -25,7 +25,7 @@
 #'        default.
 #' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
 #'        The time for observatins taken at time 0 are changed for this value.
-#' @param ... further arguments passed to \code{\link{modFit}}
+#' @param ... further arguments passed to [FME::modFit]
 #'
 #' @importFrom dplyr mutate
 #' @importFrom dplyr %>%
@@ -44,8 +44,6 @@
 #'          }
 #'
 #' @export
-#'
-#' @seealso \code{\link{modFit}}
 #'
 #' @examples
 #' ## EXAMPLE 1 ------

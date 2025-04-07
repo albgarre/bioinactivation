@@ -3,7 +3,7 @@
 #'
 #' Fits the parameters of an inactivation model to experimental using
 #' the Markov Chain Monte Carlo fitting algorithm implemented in
-#' the function \code{\link{modMCMC}} of the package \code{\link{FME}}.
+#' the function [FME::modMCMC].
 #'
 #' @param experiment_data data frame with the experimental data to be adjusted.
 #'        It must have a column named \dQuote{time} and another one named
@@ -22,7 +22,7 @@
 #'        adjustable) model parameters.
 #' @param minimize_log logical. If \code{TRUE}, the adjustment is based on the
 #'        minimization of the error of the logarithmic count.
-#' @param ... other arguments for \code{\link{modMCMC}}.
+#' @param ... other arguments for [FME::modMCMC].
 #' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
 #'        The time for observatins taken at time 0 are changed for this value.
 #'

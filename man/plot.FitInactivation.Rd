@@ -38,7 +38,7 @@ y-axis. \code{NULL} by default (0, max_count).}
 }
 \value{
 If \code{make_gg = FALSE}, the plot is created. Otherwise, an
-        an instance of \code{ggplot} is generated, printed and returned.
+an instance of \code{ggplot} is generated, printed and returned.
 }
 \description{
 Plots a comparison between the experimental data provided and the prediction

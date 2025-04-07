@@ -29,16 +29,12 @@ must have a column named \dQuote{time} and another named
 not adjusted)}
 }
 \value{
-An instance of \code{\link{modCost}} with the error of the
-        prediction.
+An instance of \link[FME:modCost]{FME::modCost} with the error of the
+prediction.
 }
 \description{
 Calculates the error of the prediction of microbial inactivation for
 the chosen inactivation model and the given parameters with respect to
 the experimental data provided.
-This function is compatible with the function
-\code{\link{fit_dynamic_inactivation}}.
-}
-\seealso{
-\code{\link{modCost}}, \code{\link{fit_dynamic_inactivation}}
+This function is compatible with the function \link{fit_dynamic_inactivation}.
 }

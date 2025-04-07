@@ -16,9 +16,9 @@ microorganism.
 }
 \details{
 \itemize{
-  \item time: Time in minutes of the measurement.
-  \item N: Number of microorganism.
-  \item temperature: Observed temperature.
+\item time: Time in minutes of the measurement.
+\item N: Number of microorganism.
+\item temperature: Observed temperature.
 }
 }
 \keyword{datasets}

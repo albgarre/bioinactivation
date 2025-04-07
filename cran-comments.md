@@ -1,8 +1,10 @@
 
-## Resubmission
-This is a resubmission. In this version I have:
+## This is a resubmission
 
-* Improved the vignette, trying to fix the issues with CRAN submission.
+In this version I have:
+
+- Fixed a broken link in the vignette
+
 
 ## Test environments
 
@@ -11,17 +13,10 @@ This is a resubmission. In this version I have:
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs.
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-There was one NOTE: 
+R CMD check succeeded
 
->Possibly mis-spelled words in DESCRIPTION:
- isothermal (11:5, 13:93)
+## Issues with previous version
 
-The word 'isothermal' is broadly used by food scientists,
-to reffer to pasteurization treatments at constant temperature.
-Hence, I would rather keep it in the text.
-
-## Reverse dependencies
-
-I have run devtools::revdep_check() and every package passed.
+I was notified of a few broken links in the documentation (https://cran.r-project.org/web/checks/check_results_bioinactivation.html). They have been fixed.

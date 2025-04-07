@@ -120,6 +120,12 @@ Metselaar_iso <- function(time, temp, D_R, z, p, Delta, temp_ref) {
 #' The isothermal prediction is calculated by analytical integration of the
 #' ode for constant temperature
 #'
+#' @param time numeric vector with the treatment time
+#' @param temp numeric vector with the treatment temperature
+#' @param logC0 model parameter describing the shoulder length
+#' @param a model parameter describing the intercept of the relation
+#' @param z z-value
+#'
 Geeraerd_iso <- function(time, temp, logC0, a, z) {
 
   # browser()

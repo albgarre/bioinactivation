@@ -8,7 +8,7 @@
 #' The value of the temperature is calculated at each value of time by
 #' linear interpolation of the values provided by the input argument
 #' \code{temp_profile}.
-#' The function \code{\link{ode}} of the package \code{\link{deSolve}} is
+#' The function [deSolve::ode] is
 #' used for the resolution of the differential equation.
 #'
 #' @param simulation_model character identifying the model to be used.
@@ -21,7 +21,7 @@
 #' @param tol0 numeric. Observations at time 0 make Weibull-based models singular.
 #'        The time for observatins taken at time 0 are changed for this value.
 #'        By default (`tol0 = 1e-5`)
-#' @param ... Additional arguments passed to \code{\link{ode}}.
+#' @param ... Additional arguments passed to [deSolve::ode].
 #'
 #' @importFrom deSolve ode
 #' @importFrom dplyr mutate
@@ -49,8 +49,6 @@
 #'
 #'
 #' @export
-#'
-#' @seealso \code{\link{ode}}, \code{\link{get_model_data}}
 #'
 #' @examples
 #' ## EXAMPLE 1 -----------

@@ -803,6 +803,6 @@ Geeraerd AH, Valdramidis V and Van Impe JF, (2005). GInaFiT, a freeware tool to 
 
 H. Wickham. (2009) ggplot2: elegant graphics for data analysis. Springer New York.
 
-Soetaert K., Petzoldt T., Setzer R.W. (2010).  Solving Differential Equations in R: Package deSolve. _Journal of Statistical Software_, 33(9), 1--25.  URL http://www.jstatsoft.org/v33/i09/.
+Soetaert K., Petzoldt T., Setzer R.W. (2010).  Solving Differential Equations in R: Package deSolve. _Journal of Statistical Software_, 33(9), 1--25.
 
-Soetaert K., Petzoldt T., Setzer R.W. (2010). Inverse Modelling, Sensitivity and Monte Carlo Analysis in R Using Package FME. _Journal of Statistical Software_, 33(3), 1-28. URL http://www.jstatsoft.org/v33/i03/.
+Soetaert K., Petzoldt T., Setzer R.W. (2010). Inverse Modelling, Sensitivity and Monte Carlo Analysis in R Using Package FME. _Journal of Statistical Software_, 33(3), 1-28.

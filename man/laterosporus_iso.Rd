@@ -16,9 +16,9 @@ Laterosporus.
 }
 \details{
 \itemize{
-  \item time: Time in minutes of the measurement.
-  \item temp: Temperature at which the experiment was made.
-  \item log_diff: Logarithmic difference.
+\item time: Time in minutes of the measurement.
+\item temp: Temperature at which the experiment was made.
+\item log_diff: Logarithmic difference.
 }
 }
 \keyword{datasets}

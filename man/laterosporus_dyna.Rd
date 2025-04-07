@@ -16,9 +16,9 @@ Laterosporus
 }
 \details{
 \itemize{
-  \item time: Time in minutes of the measurement.
-  \item temp: observed temperature.
-  \item logN: recorded number of microorganism.
+\item time: Time in minutes of the measurement.
+\item temp: observed temperature.
+\item logN: recorded number of microorganism.
 }
 }
 \keyword{datasets}

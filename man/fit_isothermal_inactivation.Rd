@@ -18,10 +18,10 @@ fit_isothermal_inactivation(
 \item{death_data}{data frame with the experiment data where each row is one
 observation. It must have the following columns:
 \itemize{
-  \item log_diff: Number of logarithmic reductions at each data point.
-  \item temp: Temperature of the data point.
-  \item time: Time of the data point.
-  }}
+\item log_diff: Number of logarithmic reductions at each data point.
+\item temp: Temperature of the data point.
+\item time: Time of the data point.
+}}
 
 \item{starting_point}{List with the initial values of the parameters
 for the adjustment.}
@@ -35,15 +35,15 @@ microbial count. \code{TRUE} by default.}
 }
 \value{
 An instance of class \code{IsoFitInactivation} with the results.
-        This list has four entries:
-        \itemize{
-          \item nls: The object of class \code{\link{nls}} with the results
-                     of the adjustment.
-          \item parameters: a list with the values of the model parameters,
-                            both fixed and adjusted.
-          \item model: a string with the key identifying the model used.
-          \item data: the inactivation data used for the fit.
-          }
+This list has four entries:
+\itemize{
+\item nls: The object of class \code{\link{nls}} with the results
+of the adjustment.
+\item parameters: a list with the values of the model parameters,
+both fixed and adjusted.
+\item model: a string with the key identifying the model used.
+\item data: the inactivation data used for the fit.
+}
 }
 \description{
 Fits the parameters of the model chosen to a set of isothermal experiments
